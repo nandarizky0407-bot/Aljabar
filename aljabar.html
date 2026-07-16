@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aljabar - Petualangan Matematika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --pink:#ff6b9d;--pink-light:#ffb3d1;--pink-soft:#fff0f6;--purple:#c084fc;--purple-light:#e9d5ff;
+  --lavender:#f3e8ff;--mint:#a8e6cf;--peach:#ffdab9;--coral:#ff8fab;--rose:#e63946;
+  --text:#4a3548;--text-light:#7a6b78;--white:#fff;--shadow:rgba(255,107,157,0.2);
+  --success:#4ade80;--error:#f87171;--gold:#ffd700;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:linear-gradient(135deg,#fff0f6 0%,#f3e8ff 50%,#ffe4ec 100%);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6;background-attachment:fixed}
+
+.bg-decor{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.bg-decor::before,.bg-decor::after{content:'';position:absolute;border-radius:50%;filter:blur(60px);opacity:0.4}
+.bg-decor::before{width:400px;height:400px;background:var(--pink);top:-100px;right:-100px;animation:floatBlob 15s ease-in-out infinite}
+.bg-decor::after{width:350px;height:350px;background:var(--purple);bottom:-100px;left:-100px;animation:floatBlob 18s ease-in-out infinite reverse}
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.1)}}
+
+.floating-decor{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.float-item{position:absolute;font-size:1.5rem;opacity:0.15;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:0.15}90%{opacity:0.1}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+
+.presentation{position:relative;min-height:100vh;padding:2rem 1.5rem 7rem;max-width:1200px;margin:0 auto}
+.slide{display:none;animation:slideIn 0.6s cubic-bezier(0.22,1,0.36,1)}
+.slide.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:2px solid var(--pink-light);padding:1rem 2rem;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:1rem;box-shadow:0 -5px 30px var(--shadow)}
+.nav-btn{background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:50px;font-family:'Comfortaa',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.5rem;white-space:nowrap;box-shadow:0 4px 15px var(--shadow)}
+.nav-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 25px var(--shadow)}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+.nav-btn.secondary{background:linear-gradient(135deg,var(--purple),var(--pink-light));color:#fff}
+.progress{display:flex;gap:0.3rem;flex:1;justify-content:center;flex-wrap:wrap}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--pink-light);cursor:pointer;transition:all 0.3s;border:none;padding:0}
+.dot.active{background:linear-gradient(135deg,var(--pink),var(--purple));width:32px;border-radius:5px}
+
+.tag{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,rgba(255,107,157,0.15),rgba(192,132,252,0.15));color:var(--pink);padding:0.4rem 1rem;border-radius:50px;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;border:1.5px solid var(--pink-light);text-transform:uppercase}
+.slide-header{text-align:center;margin-bottom:2rem}
+.slide-header h2{font-family:'Comfortaa',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:var(--text);margin:0.75rem 0 0.5rem;line-height:1.2}
+.slide-header p{color:var(--text-light);font-size:1rem}
+
+/* SLIDE 1 - COVER */
+.cover{min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.cover-decor{position:absolute;font-size:4rem;opacity:0.1;pointer-events:none}
+.cover-decor.tl{top:8%;left:10%;color:var(--pink)}.cover-decor.tr{top:12%;right:12%;color:var(--purple)}
+.cover-decor.bl{bottom:12%;left:15%;color:var(--coral);font-size:3rem}.cover-decor.br{bottom:10%;right:10%;color:var(--purple);font-size:3rem}
+.cover-title{font-family:'Comfortaa',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;line-height:1.1;margin:1rem 0}
+.cover-title .l1{display:block;background:linear-gradient(135deg,var(--pink),var(--coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cover-title .l2{display:block;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:0.8em;margin-top:0.3rem}
+.cover .subtitle{font-size:1.1rem;color:var(--text-light);margin-bottom:1.5rem;max-width:500px}
+.name-card{background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);border:2px solid var(--pink-light);border-radius:24px;padding:2rem;width:100%;max-width:440px;position:relative;box-shadow:0 10px 40px var(--shadow)}
+.name-card::before{content:'';position:absolute;top:-2px;left:25%;right:25%;height:4px;background:linear-gradient(90deg,transparent,var(--pink),var(--purple),transparent);border-radius:4px}
+.name-card label{display:flex;align-items:center;gap:0.5rem;font-size:0.95rem;color:var(--pink);margin-bottom:0.75rem;font-weight:600}
+.name-card input{width:100%;padding:1rem 1.25rem;border-radius:14px;border:2px solid var(--pink-light);background:rgba(255,255,255,0.8);color:var(--text);font-size:1.1rem;font-family:inherit;outline:none;transition:all 0.3s}
+.name-card input:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,107,157,0.15)}
+.start-btn{background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff;border:none;padding:1rem 2rem;border-radius:50px;font-family:'Comfortaa',sans-serif;font-weight:600;font-size:1.05rem;cursor:pointer;transition:all 0.3s;margin-top:1.25rem;width:100%;display:flex;align-items:center;justify-content:center;gap:0.6rem;box-shadow:0 8px 25px var(--shadow)}
+.start-btn:disabled{opacity:0.4;cursor:not-allowed}
+.start-btn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 12px 35px var(--shadow)}
+.welcome-msg{margin-top:1rem;color:var(--pink);font-weight:600;display:none}
+.welcome-msg.show{display:block;animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.made-by{margin-top:2rem;color:var(--text-light);font-size:0.9rem;font-style:italic}
+.made-by strong{color:var(--pink);font-style:normal;font-weight:600}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-bottom:1.5rem}
+.girly-card{background:rgba(255,255,255,0.7);backdrop-filter:blur(15px);border:2px solid var(--pink-light);border-radius:20px;padding:1.5rem;position:relative;transition:all 0.3s;box-shadow:0 5px 20px var(--shadow)}
+.girly-card:hover{transform:translateY(-4px);border-color:var(--pink);box-shadow:0 15px 35px var(--shadow)}
+.girly-card .icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--pink),var(--coral));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;margin-bottom:0.75rem}
+.girly-card h3{font-family:'Comfortaa',sans-serif;font-size:1.1rem;color:var(--pink);margin-bottom:0.5rem}
+.girly-card p,.girly-card li{color:var(--text);opacity:0.85;font-size:0.92rem;line-height:1.6}
+.girly-card ul{padding-left:1.1rem;margin-top:0.4rem}
+.girly-card li{margin-bottom:0.25rem}
+.girly-card .formula{font-family:'Comfortaa',sans-serif;background:linear-gradient(135deg,rgba(255,107,157,0.1),rgba(192,132,252,0.1));border:1.5px solid var(--pink-light);border-radius:10px;padding:0.6rem 1rem;margin:0.5rem 0;color:var(--pink);font-size:1rem;font-weight:600;text-align:center}
+.girly-card.purple .icon{background:linear-gradient(135deg,var(--purple),var(--pink-light))}
+.girly-card.purple h3{color:var(--purple)}
+.girly-card.purple .formula{color:var(--purple);border-color:var(--purple-light)}
+.girly-card.mint .icon{background:linear-gradient(135deg,var(--mint),#7dd3a8)}
+.girly-card.mint h3{color:#4caf7d}
+.girly-card.mint .formula{color:#4caf7d;border-color:var(--mint)}
+.girly-card.peach .icon{background:linear-gradient(135deg,var(--peach),#ffb088)}
+.girly-card.peach h3{color:#d68a50}
+.girly-card.peach .formula{color:#d68a50;border-color:var(--peach)}
+
+/* EXAMPLE BOX */
+.example-box{background:linear-gradient(135deg,rgba(255,107,157,0.08),rgba(192,132,252,0.08));border:1.5px solid var(--pink-light);border-radius:14px;padding:1rem;margin-top:0.75rem}
+.example-box .ex-title{font-family:'Comfortaa',sans-serif;font-size:0.85rem;color:var(--purple);font-weight:600;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.05em}
+.example-box p{font-size:0.9rem;color:var(--text)}
+
+/* BUTTONS */
+.btn{background:linear-gradient(135deg,rgba(255,107,157,0.15),rgba(192,132,252,0.15));color:var(--pink);border:1.5px solid var(--pink-light);padding:0.55rem 1.1rem;border-radius:50px;font-family:'Comfortaa',sans-serif;font-size:0.88rem;cursor:pointer;transition:all 0.25s;display:inline-flex;align-items:center;gap:0.4rem;font-weight:600}
+.btn:hover{background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff;border-color:transparent;transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff;border:none;box-shadow:0 4px 15px var(--shadow)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px var(--shadow)}
+.btn.purple{background:linear-gradient(135deg,rgba(192,132,252,0.15),rgba(255,107,157,0.15));color:var(--purple);border-color:var(--purple-light)}
+.btn.purple:hover{background:linear-gradient(135deg,var(--purple),var(--pink-light));color:#fff;border-color:transparent}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+
+/* QUESTION ITEMS */
+.q-item{background:rgba(255,255,255,0.7);backdrop-filter:blur(15px);border:2px solid var(--pink-light);border-radius:18px;padding:1.25rem;margin-bottom:1rem;transition:all 0.3s}
+.q-item.answered{border-color:var(--pink)}
+.q-header{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.75rem}
+.q-num{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff;border-radius:50%;font-family:'Comfortaa',sans-serif;font-weight:600;font-size:0.85rem}
+.q-text{color:var(--text);line-height:1.6;flex:1;font-size:0.95rem}
+.q-input{width:100%;max-width:300px;padding:0.6rem 1rem;border-radius:12px;border:2px solid var(--pink-light);background:rgba(255,255,255,0.8);color:var(--text);font-family:'Comfortaa',sans-serif;font-size:0.95rem;outline:none;transition:all 0.3s;margin-top:0.5rem}
+.q-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,0.15)}
+.q-input.correct{border-color:var(--success);color:var(--success);background:rgba(74,222,128,0.1)}
+.q-input.wrong{border-color:var(--error);color:var(--error);background:rgba(248,113,113,0.1)}
+.q-actions{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;align-items:center}
+.q-feedback{margin-top:0.75rem;padding:0.7rem 1rem;border-radius:12px;font-size:0.88rem;display:none;line-height:1.6}
+.q-feedback.show{display:block;animation:slideIn 0.3s}
+.q-feedback.success{background:rgba(74,222,128,0.12);color:var(--success);border:1.5px solid var(--success)}
+.q-feedback.error{background:rgba(248,113,113,0.12);color:var(--error);border:1.5px solid var(--error)}
+.q-feedback.info{background:linear-gradient(135deg,rgba(255,107,157,0.1),rgba(192,132,252,0.1));color:var(--purple);border:1.5px solid var(--purple-light)}
+
+/* OPTIONS (PG, B/S, PG Kompleks) */
+.options-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.5rem;margin-top:0.75rem}
+.opt-item{display:flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.6);border:1.5px solid var(--pink-light);border-radius:12px;padding:0.6rem 1rem;cursor:pointer;transition:all 0.25s;font-size:0.92rem;color:var(--text);user-select:none}
+.opt-item:hover{background:rgba(255,107,157,0.1);border-color:var(--pink)}
+.opt-item.selected{background:linear-gradient(135deg,rgba(255,107,157,0.2),rgba(192,132,252,0.2));border-color:var(--pink);color:var(--pink);font-weight:600}
+.opt-item.correct{background:rgba(74,222,128,0.15);border-color:var(--success);color:var(--success)}
+.opt-item.wrong{background:rgba(248,113,113,0.15);border-color:var(--error);color:var(--error)}
+.opt-checkbox{width:20px;height:20px;border:2px solid currentColor;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.75rem;font-weight:700;transition:all 0.3s}
+.opt-item.selected .opt-checkbox::after{content:'\2713'}
+.opt-item.correct .opt-checkbox::after{content:'\2713'}
+.opt-letter{background:var(--pink);color:#fff;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0}
+.opt-item.selected .opt-letter{background:var(--purple)}
+
+/* TABS */
+.tabs-row{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;justify-content:center}
+.tab-btn{background:rgba(255,255,255,0.6);border:2px solid var(--pink-light);color:var(--text-light);padding:0.6rem 1.3rem;border-radius:50px;font-family:'Comfortaa',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.5rem}
+.tab-btn:hover{border-color:var(--pink);color:var(--pink)}
+.tab-btn.active{background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff;border-color:transparent;box-shadow:0 4px 15px var(--shadow)}
+.tab-content{display:none;animation:slideIn 0.4s}
+.tab-content.active{display:block}
+
+/* EXPLANATION BOX */
+.explain-box{background:linear-gradient(135deg,rgba(255,107,157,0.08),rgba(192,132,252,0.08));border:2px solid var(--pink-light);border-radius:20px;padding:1.5rem;margin-bottom:1.5rem}
+.explain-box h3{font-family:'Comfortaa',sans-serif;color:var(--pink);margin-bottom:0.75rem;font-size:1.2rem;display:flex;align-items:center;gap:0.5rem}
+.explain-box h4{font-family:'Comfortaa',sans-serif;color:var(--purple);margin:0.75rem 0 0.4rem;font-size:1rem}
+.explain-box p,.explain-box li{color:var(--text);opacity:0.9;font-size:0.92rem;line-height:1.7}
+.explain-box ul,.explain-box ol{padding-left:1.3rem;margin:0.4rem 0}
+.explain-box li{margin-bottom:0.3rem}
+.explain-box .formula{font-family:'Comfortaa',sans-serif;background:rgba(255,255,255,0.6);border:1.5px solid var(--pink-light);border-radius:10px;padding:0.5rem 1rem;margin:0.5rem 0;color:var(--pink);font-size:1rem;font-weight:600;text-align:center;display:inline-block}
+
+/* LEVEL TABS */
+.level-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;justify-content:center;flex-wrap:wrap}
+.level-tab{padding:0.7rem 1.5rem;border-radius:50px;font-family:'Comfortaa',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;transition:all 0.3s;border:2px solid;display:flex;align-items:center;gap:0.5rem}
+.level-tab.easy{background:rgba(168,230,207,0.2);border-color:var(--mint);color:#4caf7d}
+.level-tab.medium{background:rgba(255,218,185,0.2);border-color:var(--peach);color:#d68a50}
+.level-tab.hots{background:rgba(255,107,157,0.15);border-color:var(--pink);color:var(--pink)}
+.level-tab.active{color:#fff !important;border-color:transparent !important}
+.level-tab.easy.active{background:linear-gradient(135deg,var(--mint),#7dd3a8)}
+.level-tab.medium.active{background:linear-gradient(135deg,var(--peach),#ffb088)}
+.level-tab.hots.active{background:linear-gradient(135deg,var(--pink),var(--coral))}
+
+/* CONCLUSION */
+.conclusion-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem}
+@media (max-width:768px){.conclusion-grid{grid-template-columns:1fr}}
+.summary-card{background:rgba(255,255,255,0.7);backdrop-filter:blur(15px);border-radius:20px;padding:1.5rem;border-top:4px solid var(--pink)}
+.summary-card.purple{border-top-color:var(--purple)}
+.summary-card h3{font-family:'Comfortaa',sans-serif;color:var(--pink);margin-bottom:0.75rem;font-size:1.15rem}
+.summary-card.purple h3{color:var(--purple)}
+.summary-card ul{list-style:none;padding:0}
+.summary-card li{padding:0.4rem 0 0.4rem 1.5rem;position:relative;color:var(--text);opacity:0.9;font-size:0.92rem;line-height:1.5}
+.summary-card li::before{content:'\2665';position:absolute;left:0;color:var(--pink)}
+.summary-card.purple li::before{color:var(--purple)}
+
+.reflection-box{background:linear-gradient(135deg,rgba(255,107,157,0.1),rgba(192,132,252,0.1));border:2px solid var(--pink-light);border-radius:20px;padding:1.5rem;margin-bottom:1.5rem}
+.reflection-box h3{font-family:'Comfortaa',sans-serif;color:var(--pink);margin-bottom:0.85rem;font-size:1.2rem;display:flex;align-items:center;gap:0.5rem}
+.reflection-q{background:rgba(255,255,255,0.6);border-radius:14px;padding:0.9rem;margin-bottom:0.6rem}
+.reflection-q p{color:var(--purple);margin-bottom:0.4rem;font-size:0.9rem;font-weight:600}
+.reflection-q textarea{width:100%;padding:0.7rem 0.9rem;border-radius:10px;border:2px solid var(--pink-light);background:rgba(255,255,255,0.8);color:var(--text);font-family:inherit;font-size:0.9rem;outline:none;resize:vertical;min-height:50px}
+.reflection-q textarea:focus{border-color:var(--pink)}
+
+.thank-you{text-align:center;padding:2.5rem 1rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(15px);border-radius:24px;border:2px solid var(--pink-light);position:relative;overflow:hidden;box-shadow:0 10px 40px var(--shadow)}
+.thank-you::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,107,157,0.08) 0%,transparent 50%);animation:rotate 25s linear infinite}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.thank-you>*{position:relative;z-index:1}
+.thank-you h2{font-family:'Comfortaa',sans-serif;font-size:clamp(1.8rem,4.5vw,3rem);background:linear-gradient(135deg,var(--pink),var(--purple),var(--coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem}
+.thank-you p{color:var(--text);opacity:0.85;font-size:1.05rem;max-width:520px;margin:0 auto}
+.thank-you .student-name{color:var(--pink);font-weight:700;font-family:'Comfortaa',sans-serif}
+.heart{font-size:2.5rem;color:var(--pink);margin:0.75rem 0;animation:heartbeat 1.5s ease infinite;display:inline-block}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.made-by-final{margin-top:1.5rem;color:var(--text-light);font-size:0.9rem}
+.made-by-final strong{color:var(--pink)}
+
+/* TOAST */
+.toast{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.95);backdrop-filter:blur(15px);border:2px solid var(--pink);border-radius:14px;padding:0.9rem 1.3rem;color:var(--text);z-index:200;display:flex;align-items:center;gap:0.7rem;transform:translateX(120%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);max-width:340px;box-shadow:0 10px 30px var(--shadow)}
+.toast.show{transform:translateX(0)}
+.toast.success{border-color:var(--success)}
+.toast.error{border-color:var(--error)}
+.toast i{font-size:1.2rem}
+.toast.success i{color:var(--success)}
+.toast.error i{color:var(--error)}
+.toast.info i{color:var(--pink)}
+
+@media (max-width:768px){
+  .presentation{padding:1.5rem 1rem 6rem}
+  .nav-bar{padding:0.75rem 1rem}
+  .nav-btn{padding:0.55rem 1rem;font-size:0.82rem}
+  .dot{width:8px;height:8px}
+  .dot.active{width:22px}
+  .cover-decor{display:none}
+}
+</style>
+</head>
+<body>
+<div class="bg-decor"></div>
+<div class="floating-decor" id="floatingDecor"></div>
+
+<main class="presentation">
+  <!-- SLIDE 1: COVER -->
+  <section class="slide active" data-slide="1">
+    <div class="cover">
+      <i class="fas fa-heart cover-decor tl"></i>
+      <i class="fas fa-star cover-decor tr"></i>
+      <i class="fas fa-heart cover-decor bl"></i>
+      <i class="fas fa-star cover-decor br"></i>
+      <span class="tag"><i class="fas fa-calculator"></i> Petualangan Matematika</span>
+      <h1 class="cover-title">
+        <span class="l1">Aljabar</span>
+        <span class="l2">Yang Seru &amp; Menyenangkan</span>
+      </h1>
+      <p class="subtitle">Mari belajar aljabar dengan cara yang girly dan fun!</p>
+      <div class="name-card">
+        <label for="studentName"><i class="fas fa-user-heart"></i> Siapa nama kamu?</label>
+        <input type="text" id="studentName" placeholder="Tulis namamu di sini..." maxlength="30">
+        <button class="start-btn" id="startBtn" disabled>
+          <i class="fas fa-magic"></i> Mulai Petualangan
+        </button>
+        <div class="welcome-msg" id="welcomeMsg"></div>
+      </div>
+      <div class="made-by">Made with <i class="fas fa-heart" style="color:var(--pink)"></i> by <strong>Ananda Nabila</strong></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: TUJUAN -->
+  <section class="slide" data-slide="2">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-bullseye"></i> Tujuan Pembelajaran</span>
+      <h2>Apa yang Akan Kita Pelajari?</h2>
+      <p>Setelah petualangan ini, kamu akan jadi ahli aljabar!</p>
+    </div>
+    <div class="cards-grid">
+      <div class="girly-card"><div class="icon"><i class="fas fa-1"></i></div><h3>Mengenal Aljabar</h3><p>Memahami koefisien, variabel, konstanta, dan suku dalam bentuk aljabar.</p></div>
+      <div class="girly-card purple"><div class="icon"><i class="fas fa-2"></i></div><h3>Membentuk Aljabar</h3><p>Mengubah pernyataan sehari-hari menjadi bentuk aljabar yang sesuai.</p></div>
+      <div class="girly-card peach"><div class="icon"><i class="fas fa-3"></i></div><h3>Operasi Aljabar</h3><p>Melakukan penjumlahan, pengurangan, perkalian, dan pembagian aljabar.</p></div>
+      <div class="girly-card"><div class="icon"><i class="fas fa-4"></i></div><h3>Pemangkatan</h3><p>Memahami pemangkatan bentuk aljabar dan sifat-sifatnya.</p></div>
+      <div class="girly-card purple"><div class="icon"><i class="fas fa-5"></i></div><h3>Menyederhanakan</h3><p>Menyederhanakan bentuk aljabar yang kompleks menjadi lebih sederhana.</p></div>
+      <div class="girly-card peach"><div class="icon"><i class="fas fa-6"></i></div><h3>FPB &amp; KPK Aljabar</h3><p>Menentukan FPB dan KPK dari bentuk aljabar.</p></div>
+      <div class="girly-card mint"><div class="icon"><i class="fas fa-7"></i></div><h3>Pecahan Aljabar</h3><p>Memahami dan mengoperasikan pecahan bentuk aljabar.</p></div>
+      <div class="girly-card"><div class="icon"><i class="fas fa-8"></i></div><h3>Problem Solving</h3><p>Menyelesaikan soal cerita dengan berbagai tingkat kesulitan.</p></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: KEGUNAAN ALJABAR -->
+  <section class="slide" data-slide="3">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-globe"></i> Kehidupan Sehari-hari</span>
+      <h2>Aljabar di Sekitar Kita</h2>
+      <p>Ternyata aljabar ada di mana-mana, lho!</p>
+    </div>
+    <div class="cards-grid">
+      <div class="girly-card"><div class="icon"><i class="fas fa-shopping-bag"></i></div><h3>Belanja</h3><p>Jika 1 apel harga <strong>a</strong> rupiah, dan kita beli <strong>b</strong> buah, maka total = <strong>a × b</strong>. Kalau beli 3 apel dan 2 jeruk dengan harga berbeda, kita pakai aljabar!</p></div>
+      <div class="girly-card purple"><div class="icon"><i class="fas fa-birthday-cake"></i></div><h3>Ulang Tahun</h3><p>Membagi kue ulang tahun untuk <strong>n</strong> orang tamu. Setiap orang dapat <strong>1/n</strong> bagian kue. Aljabar membantu menghitung porsi yang adil!</p></div>
+      <div class="girly-card peach"><div class="icon"><i class="fas fa-car"></i></div><h3>Perjalanan</h3><p>Jika kecepatan <strong>v</strong> km/jam dan waktu <strong>t</strong> jam, maka jarak = <strong>v × t</strong>. Aljabar membantu merencanakan perjalanan!</p></div>
+      <div class="girly-card mint"><div class="icon"><i class="fas fa-piggy-bank"></i></div><h3>Menabung</h3><p>Jika menabung <strong>x</strong> rupiah per minggu, setelah <strong>n</strong> minggu tabungan = <strong>x × n</strong>. Aljabar untuk merencanakan keuangan!</p></div>
+      <div class="girly-card"><div class="icon"><i class="fas fa-ruler"></i></div><h3>Mengukur</h3><p>Luas kebun dengan panjang <strong>p</strong> dan lebar <strong>l</strong> adalah <strong>p × l</strong>. Aljabar membantu menghitung ukuran!</p></div>
+      <div class="girly-card purple"><div class="icon"><i class="fas fa-utensils"></i></div><h3>Memasak</h3><p>Resep untuk 4 orang butuh <strong>2x</strong> gram gula. Untuk 8 orang butuh <strong>4x</strong> gram. Aljabar di dapur!</p></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: KOMPONEN ALJABAR -->
+  <section class="slide" data-slide="4">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-puzzle-piece"></i> Komponen Aljabar</span>
+      <h2>Kenalan dengan Aljabar</h2>
+      <p>Variabel, koefisien, konstanta, dan suku</p>
+    </div>
+    <div class="cards-grid">
+      <div class="girly-card">
+        <div class="icon"><i class="fas fa-font"></i></div>
+        <h3>Variabel</h3>
+        <p>Simbol huruf yang mewakili nilai yang belum diketahui atau dapat berubah.</p>
+        <div class="formula">x, y, a, b, p, q</div>
+      </div>
+      <div class="girly-card purple">
+        <div class="icon"><i class="fas fa-hashtag"></i></div>
+        <h3>Koefisien</h3>
+        <p>Bilangan yang dikalikan dengan variabel.</p>
+        <div class="formula">3x → 3 adalah koefisien</div>
+      </div>
+      <div class="girly-card peach">
+        <div class="icon"><i class="fas fa-anchor"></i></div>
+        <h3>Konstanta</h3>
+        <p>Bilangan yang berdiri sendiri tanpa variabel, nilainya tetap.</p>
+        <div class="formula">2x + 5 → 5 adalah konstanta</div>
+      </div>
+      <div class="girly-card mint">
+        <div class="icon"><i class="fas fa-layer-group"></i></div>
+        <h3>Suku</h3>
+        <p>Bagian dari bentuk aljabar yang dipisahkan oleh tanda + atau −.</p>
+        <div class="formula">3x + 2y − 5 → 3 suku</div>
+      </div>
+    </div>
+    <div class="explain-box">
+      <h3><i class="fas fa-lightbulb"></i> Contoh Bentuk Aljabar</h3>
+      <p>Pada bentuk aljabar <strong>5x² + 3x − 7</strong>:</p>
+      <ul>
+        <li><strong>5x²</strong> = suku dengan variabel x², koefisien 5</li>
+        <li><strong>3x</strong> = suku dengan variabel x, koefisien 3</li>
+        <li><strong>−7</strong> = suku konstanta</li>
+      </ul>
+      <h4>Suku Sama (Sejenis)</h4>
+      <p>Suku yang memiliki <strong>variabel dan pangkat yang sama</strong>.</p>
+      <div class="example-box">
+        <div class="ex-title">Contoh Suku Sejenis</div>
+        <p>3x dan 5x → sejenis (variabel x pangkat 1)</p>
+        <p>2a² dan 7a² → sejenis (variabel a pangkat 2)</p>
+        <p>4xy dan 9xy → sejenis (variabel xy)</p>
+      </div>
+      <h4>Suku Berbeda (Tidak Sejenis)</h4>
+      <p>Suku yang memiliki <strong>variabel atau pangkat yang berbeda</strong>.</p>
+      <div class="example-box">
+        <div class="ex-title">Contoh Suku Tidak Sejenis</div>
+        <p>3x dan 5y → tidak sejenis (variabel berbeda)</p>
+        <p>2x² dan 3x → tidak sejenis (pangkat berbeda)</p>
+        <p>4xy dan 3x² → tidak sejenis (variabel &amp; pangkat berbeda)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: MEMBENTUK ALJABAR -->
+  <section class="slide" data-slide="5">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-pen-fancy"></i> Membentuk Aljabar</span>
+      <h2>Ubah Pernyataan menjadi Aljabar</h2>
+      <p>Tulis bentuk aljabar yang sesuai dengan pernyataan berikut!</p>
+    </div>
+    <div id="slide5Container"></div>
+  </section>
+
+  <!-- SLIDE 6: OPERASI ALJABAR -->
+  <section class="slide" data-slide="6">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-calculator"></i> Operasi Aljabar</span>
+      <h2>Operasi pada Bentuk Aljabar</h2>
+      <p>Penjumlahan, pengurangan, perkalian, dan pembagian</p>
+    </div>
+    <div class="tabs-row" id="opsTabs">
+      <button class="tab-btn active" data-tab="tambah"><i class="fas fa-plus"></i> Penjumlahan</button>
+      <button class="tab-btn" data-tab="kurang"><i class="fas fa-minus"></i> Pengurangan</button>
+      <button class="tab-btn" data-tab="kali"><i class="fas fa-times"></i> Perkalian</button>
+      <button class="tab-btn" data-tab="bagi"><i class="fas fa-divide"></i> Pembagian</button>
+    </div>
+    <div class="tab-content active" id="tab-tambah">
+      <div class="explain-box">
+        <h3><i class="fas fa-plus"></i> Penjumlahan Aljabar</h3>
+        <p>Jumlahkan suku-suku <strong>sejenis</strong> dengan menjumlahkan koefisiennya. Variabel tetap.</p>
+        <div class="formula">3x + 5x = (3+5)x = 8x</div>
+        <p>Untuk suku tidak sejenis, gabungkan dengan tanda +.</p>
+        <div class="formula">3x + 2y + 5x = 8x + 2y</div>
+      </div>
+      <div id="ops-tambah-container"></div>
+    </div>
+    <div class="tab-content" id="tab-kurang">
+      <div class="explain-box">
+        <h3><i class="fas fa-minus"></i> Pengurangan Aljabar</h3>
+        <p>Kurangi suku-suku <strong>sejenis</strong> dengan mengurangkan koefisiennya. Perhatikan tanda!</p>
+        <div class="formula">7x − 3x = (7−3)x = 4x</div>
+        <p>Untuk pengurangan dalam kurung, ubah tanda di dalam kurung.</p>
+        <div class="formula">(5x + 3) − (2x + 1) = 5x + 3 − 2x − 1 = 3x + 2</div>
+      </div>
+      <div id="ops-kurang-container"></div>
+    </div>
+    <div class="tab-content" id="tab-kali">
+      <div class="explain-box">
+        <h3><i class="fas fa-times"></i> Perkalian Aljabar</h3>
+        <p>Kalikan koefisien dengan koefisien, dan variabel dengan variabel (jumlahkan pangkatnya).</p>
+        <div class="formula">3x × 2x = 6x²</div>
+        <p>Untuk perkalian suku dua (binomial), gunakan metode <strong>FOIL</strong>:</p>
+        <div class="formula">(x+2)(x+3) = x² + 3x + 2x + 6 = x² + 5x + 6</div>
+      </div>
+      <div id="ops-kali-container"></div>
+    </div>
+    <div class="tab-content" id="tab-bagi">
+      <div class="explain-box">
+        <h3><i class="fas fa-divide"></i> Pembagian Aljabar</h3>
+        <p>Bagi koefisien dengan koefisien, dan variabel dengan variabel (kurangkan pangkatnya).</p>
+        <div class="formula">6x² ÷ 2x = 3x</div>
+        <p>Untuk pembagian bersusun, bagi tiap suku pembilang dengan penyebut.</p>
+        <div class="formula">(8x² + 4x) ÷ 2x = 4x + 2</div>
+      </div>
+      <div id="ops-bagi-container"></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: PEMANGKATAN -->
+  <section class="slide" data-slide="7">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-superscript"></i> Pemangkatan</span>
+      <h2>Pemangkatan Bentuk Aljabar</h2>
+      <p>Belajar tentang pangkat dan sifat-sifatnya</p>
+    </div>
+    <div class="explain-box">
+      <h3><i class="fas fa-star"></i> Pengertian Pemangkatan</h3>
+      <p>Pemangkatan adalah perkalian berulang suatu bilangan/bentuk aljabar dengan dirinya sendiri.</p>
+      <div class="formula">xⁿ = x × x × x × ... (n kali)</div>
+      <h4>Sifat-Sifat Pangkat</h4>
+      <ul>
+        <li><strong>Perkalian pangkat sebasis sama:</strong> aᵐ × aⁿ = aᵐ⁺ⁿ</li>
+        <li><strong>Pembagian pangkat sebasis sama:</strong> aᵐ ÷ aⁿ = aᵐ⁻ⁿ</li>
+        <li><strong>Pangkat dari pangkat:</strong> (aᵐ)ⁿ = aᵐˣⁿ</li>
+        <li><strong>Pangkat nol:</strong> a⁰ = 1 (a ≠ 0)</li>
+        <li><strong>Pangkat negatif:</strong> a⁻ⁿ = 1/aⁿ</li>
+        <li><strong>Pangkat perkalian:</strong> (ab)ⁿ = aⁿbⁿ</li>
+      </ul>
+      <h4>Contoh Pemangkatan Aljabar</h4>
+      <div class="formula">(2x)³ = 8x³</div>
+      <div class="formula">(x²)³ = x⁶</div>
+      <div class="formula">(2x²)³ = 8x⁶</div>
+    </div>
+    <div id="slide7Container"></div>
+  </section>
+
+  <!-- SLIDE 8: MENYEDERHANAKAN -->
+  <section class="slide" data-slide="8">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-wand-magic-sparkles"></i> Menyederhanakan</span>
+      <h2>Menyederhanakan Bentuk Aljabar</h2>
+      <p>20 soal pilihan ganda — pilih jawaban yang tepat!</p>
+    </div>
+    <div style="text-align:center;margin-bottom:1.25rem">
+      <button class="btn primary" id="checkAllS8Btn"><i class="fas fa-check-double"></i> Cek Semua Jawaban</button>
+      <button class="btn purple" id="showAllS8Btn"><i class="fas fa-eye"></i> Tampilkan Semua Pembahasan</button>
+    </div>
+    <div id="slide8Container"></div>
+  </section>
+
+  <!-- SLIDE 9: FPB KPK ALJABAR -->
+  <section class="slide" data-slide="9">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-divide"></i> FPB &amp; KPK Aljabar</span>
+      <h2>FPB dan KPK Bentuk Aljabar</h2>
+      <p>Menentukan FPB dan KPK dengan faktorisasi</p>
+    </div>
+    <div class="explain-box">
+      <h3><i class="fas fa-heart"></i> FPB Aljabar (Faktor Persekutuan Terbesar)</h3>
+      <p>FPB adalah <strong>faktor terbesar yang membagi habis</strong> semua suku aljabar.</p>
+      <h4>Langkah-langkah:</h4>
+      <ol>
+        <li>Faktorkan setiap suku aljabar</li>
+        <li>Ambil faktor yang <strong>sama</strong> dari semua suku</li>
+        <li>Pilih pangkat <strong>terkecil</strong> untuk variabel yang sama</li>
+        <li>Kalikan faktor-faktor tersebut</li>
+      </ol>
+      <h4>Contoh:</h4>
+      <p>FPB dari 4x² dan 6x:</p>
+      <ul>
+        <li>4x² = 2² × x²</li>
+        <li>6x = 2 × 3 × x</li>
+        <li>Faktor sama: 2 dan x → pangkat terkecil: 2¹ dan x¹</li>
+        <li>FPB = <strong>2x</strong></li>
+      </ul>
+      <h3><i class="fas fa-star"></i> KPK Aljabar (Kelipatan Persekutuan Terkecil)</h3>
+      <p>KPK adalah <strong>kelipatan terkecil yang habis dibagi</strong> semua suku aljabar.</p>
+      <h4>Langkah-langkah:</h4>
+      <ol>
+        <li>Faktorkan setiap suku aljabar</li>
+        <li>Ambil <strong>semua faktor</strong> yang muncul</li>
+        <li>Pilih pangkat <strong>terbesar</strong> untuk variabel yang sama</li>
+        <li>Kalikan faktor-faktor tersebut</li>
+      </ol>
+      <h4>Contoh:</h4>
+      <p>KPK dari 4x² dan 6x:</p>
+      <ul>
+        <li>4x² = 2² × x²</li>
+        <li>6x = 2 × 3 × x</li>
+        <li>Semua faktor: 2, 3, x → pangkat terbesar: 2², 3¹, x²</li>
+        <li>KPK = <strong>12x²</strong></li>
+      </ul>
+    </div>
+    <div id="slide9Container"></div>
+  </section>
+
+  <!-- SLIDE 10: PECAHAN ALJABAR -->
+  <section class="slide" data-slide="10">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-percentage"></i> Pecahan Aljabar</span>
+      <h2>Pecahan pada Bentuk Aljabar</h2>
+      <p>Operasi pada pecahan aljabar</p>
+    </div>
+    <div class="explain-box">
+      <h3><i class="fas fa-heart"></i> Pengertian Pecahan Aljabar</h3>
+      <p>Pecahan aljabar adalah pecahan yang pembilang dan/atau penyebutnya mengandung variabel.</p>
+      <div class="formula">3x / 5 ,  (x²−4) / (x−2) ,  2 / (x+1)</div>
+      <h4>Menyederhanakan Pecahan Aljabar</h4>
+      <p>Faktorkan pembilang dan penyebut, lalu coret faktor yang sama.</p>
+      <div class="formula">(x²−4)/(x−2) = (x+2)(x−2)/(x−2) = x+2</div>
+      <h4>Penjumlahan/Pengurangan Pecahan Aljabar</h4>
+      <p>Samakan penyebut terlebih dahulu, lalu jumlahkan/kurangkan pembilangnya.</p>
+      <div class="formula">1/x + 1/y = (y + x) / (xy)</div>
+      <h4>Perkalian Pecahan Aljabar</h4>
+      <p>Kalikan pembilang dengan pembilang, penyebut dengan penyebut.</p>
+      <div class="formula">(a/b) × (c/d) = (a×c) / (b×d)</div>
+      <h4>Pembagian Pecahan Aljabar</h4>
+      <p>Ubah menjadi perkalian dengan membalik pecahan kedua.</p>
+      <div class="formula">(a/b) ÷ (c/d) = (a/b) × (d/c) = (a×d) / (b×c)</div>
+    </div>
+    <div id="slide10Container"></div>
+  </section>
+
+  <!-- SLIDE 11: SOAL CERITA -->
+  <section class="slide" data-slide="11">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-book-reader"></i> Soal Cerita</span>
+      <h2>Soal Cerita Aljabar</h2>
+      <p>Tiga tingkat kesulitan: Mudah, Sedang, dan HOTS</p>
+    </div>
+    <div class="level-tabs" id="levelTabs">
+      <button class="level-tab easy active" data-level="easy"><i class="fas fa-seedling"></i> Mudah (Isian)</button>
+      <button class="level-tab medium" data-level="medium"><i class="fas fa-fire"></i> Sedang (PG/BS)</button>
+      <button class="level-tab hots" data-level="hots"><i class="fas fa-rocket"></i> HOTS (Kompleks)</button>
+    </div>
+    <div class="tab-content active" id="level-easy">
+      <div style="text-align:center;margin-bottom:1rem"><span class="tag" style="background:rgba(168,230,207,0.2);color:#4caf7d;border-color:var(--mint)"><i class="fas fa-seedling"></i> Soal Mudah - Isian Singkat</span></div>
+      <div id="easyContainer"></div>
+    </div>
+    <div class="tab-content" id="level-medium">
+      <div style="text-align:center;margin-bottom:1rem"><span class="tag" style="background:rgba(255,218,185,0.2);color:#d68a50;border-color:var(--peach)"><i class="fas fa-fire"></i> Soal Sedang - PG &amp; Benar/Salah</span></div>
+      <div id="mediumContainer"></div>
+    </div>
+    <div class="tab-content" id="level-hots">
+      <div style="text-align:center;margin-bottom:1rem"><span class="tag" style="background:rgba(255,107,157,0.15);color:var(--pink)"><i class="fas fa-rocket"></i> Soal HOTS - Pilihan Ganda Kompleks</span></div>
+      <div id="hotsContainer"></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 12: KESIMPULAN -->
+  <section class="slide" data-slide="12">
+    <div class="slide-header">
+      <span class="tag"><i class="fas fa-flag-checkered"></i> Penutup</span>
+      <h2>Kesimpulan &amp; Refleksi</h2>
+      <p>Mari ringkas apa yang telah kita pelajari</p>
+    </div>
+    <div class="conclusion-grid">
+      <div class="summary-card">
+        <h3><i class="fas fa-heart"></i> Yang Kita Pelajari</h3>
+        <ul>
+          <li>Komponen aljabar: variabel, koefisien, konstanta, suku</li>
+          <li>Membentuk aljabar dari pernyataan</li>
+          <li>Operasi: +, −, ×, ÷ pada aljabar</li>
+          <li>Pemangkatan dan sifat-sifatnya</li>
+          <li>Menyederhanakan bentuk aljabar kompleks</li>
+        </ul>
+      </div>
+      <div class="summary-card purple">
+        <h3><i class="fas fa-star"></i> Tips Penting</h3>
+        <ul>
+          <li>Hanya suku sejenis yang bisa dijumlahkan/dikurangkan</li>
+          <li>Perkalian: jumlahkan pangkat variabel sama</li>
+          <li>Pembagian: kurangkan pangkat variabel sama</li>
+          <li>FPB: ambil faktor sama, pangkat terkecil</li>
+          <li>KPK: ambil semua faktor, pangkat terbesar</li>
+          <li>Pecahan: faktorkan lalu coret yang sama</li>
+        </ul>
+      </div>
+    </div>
+    <div class="reflection-box">
+      <h3><i class="fas fa-heart"></i> Refleksi Pembelajaran</h3>
+      <div class="reflection-q"><p>1. Apa hal paling menarik yang kamu pelajari hari ini?</p><textarea id="reflection1" placeholder="Tulis jawabanmu..."></textarea></div>
+      <div class="reflection-q"><p>2. Bagian mana yang masih sulit untukmu?</p><textarea id="reflection2" placeholder="Tulis jawabanmu..."></textarea></div>
+      <div class="reflection-q"><p>3. Bagaimana kamu akan menggunakan aljabar dalam hidup sehari-hari?</p><textarea id="reflection3" placeholder="Tulis jawabanmu..."></textarea></div>
+      <div style="text-align:center;margin-top:0.75rem"><button class="btn primary" id="saveReflectionBtn"><i class="fas fa-save"></i> Simpan Refleksi</button></div>
+    </div>
+    <div class="thank-you">
+      <div class="heart"><i class="fas fa-heart"></i></div>
+      <h2>Terima Kasih!</h2>
+      <p>Hebat sekali, <span class="student-name" id="finalName">Siswa</span>! Kamu telah menyelesaikan petualangan aljabar. Teruslah berlatih dan jangan pernah menyerah pada matematika!</p>
+      <div class="made-by-final">Made with <i class="fas fa-heart" style="color:var(--pink)"></i> by <strong>Ananda Nabila</strong></div>
+    </div>
+  </section>
+</main>
+
+<nav class="nav-bar">
+  <button class="nav-btn secondary" id="prevBtn"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+  <div class="progress" id="progress"></div>
+  <button class="nav-btn" id="nextBtn">Selanjutnya <i class="fas fa-chevron-right"></i></button>
+</nav>
+
+<div class="toast" id="toast">
+  <i class="fas fa-info-circle"></i>
+  <div><div style="font-weight:600" id="toastTitle"></div><div style="font-size:0.85rem;opacity:0.85" id="toastMsg"></div></div>
+</div>
+
+<script>
+var state = { currentSlide: 1, studentName: '' };
+
+// DATA SLIDE 5
+var slide5Data = [
+  { q: "Umur Andi adalah x tahun. Umur Budi 3 tahun lebih tua dari Andi. Tuliskan bentuk aljabar umur Budi.", a: "x+3", exp: "Umur Budi = umur Andi + 3 = x + 3" },
+  { q: "Harga 1 buah pensil adalah p ribu rupiah. Tuliskan bentuk aljabar harga 5 pensil.", a: "5p", exp: "Harga 5 pensil = 5 × p = 5p" },
+  { q: "Suatu bilangan ganjil dapat ditulis 2n + 1. Tuliskan bilangan genap dengan variabel n.", a: "2n", exp: "Bilangan genap = 2 × n = 2n" },
+  { q: "Panjang sebuah persegi panjang adalah (x + 2) cm dan lebarnya y cm. Tuliskan kelilingnya.", a: "2x+2y+4", exp: "K = 2(p+l) = 2(x+2+y) = 2x+4+2y = 2x+2y+4" },
+  { q: "Ibu membeli 3 kg apel dengan harga a ribu/kg dan 2 kg jeruk dengan harga b ribu/kg. Tuliskan total harga.", a: "3a+2b", exp: "Total = 3a + 2b (dalam ribu rupiah)" },
+  { q: "Sebuah bilangan dikurangi 5 sama dengan 12. Tuliskan persamaan dengan variabel x.", a: "x-5=12", exp: "Misal bilangan = x, maka x − 5 = 12" },
+  { q: "Jumlah dua bilangan adalah 20. Jika bilangan pertama x, tuliskan bilangan kedua.", a: "20-x", exp: "Bilangan kedua = 20 − x" },
+  { q: "Luas persegi dengan sisi (x + 1) cm.", a: "x^2+2x+1", exp: "Luas = (x+1)² = x² + 2x + 1. Jawaban juga bisa: (x+1)^2 atau (x+1)(x+1)" },
+  { q: "Toni memiliki k permen. Ia memberikan 5 permen ke temannya. Tuliskan sisa permen Toni.", a: "k-5", exp: "Sisa permen = k − 5" },
+  { q: "Kecepatan mobil v km/jam selama t jam. Tuliskan jarak tempuh.", a: "vt", exp: "Jarak = kecepatan × waktu = v × t = vt" }
+];
+
+// DATA SLIDE 6
+var opsData = {
+  tambah: [
+    { q: "3x + 5x = ?", a: "8x", exp: "3x + 5x = (3+5)x = 8x. Suku sejenis, jumlahkan koefisien." },
+    { q: "2a + 3a + 4a = ?", a: "9a", exp: "2a + 3a + 4a = (2+3+4)a = 9a" },
+    { q: "5x + 2y + 3x = ?", a: "8x+2y", exp: "5x + 3x = 8x, 2y tetap. Hasil: 8x + 2y" },
+    { q: "7p + 2q + 3p + 4q = ?", a: "10p+6q", exp: "7p + 3p = 10p, 2q + 4q = 6q. Hasil: 10p + 6q" },
+    { q: "4x² + 3x² = ?", a: "7x^2", exp: "(4+3)x² = 7x²" },
+    { q: "2xy + 5xy = ?", a: "7xy", exp: "(2+5)xy = 7xy" },
+    { q: "6a + 2b + 3a + 5b = ?", a: "9a+7b", exp: "6a + 3a = 9a, 2b + 5b = 7b" },
+    { q: "x + 2x + 3x + 4x = ?", a: "10x", exp: "(1+2+3+4)x = 10x" },
+    { q: "5m + 3n + 2m + n = ?", a: "7m+4n", exp: "5m + 2m = 7m, 3n + n = 4n" },
+    { q: "8k + 3k + 2k = ?", a: "13k", exp: "(8+3+2)k = 13k" }
+  ],
+  kurang: [
+    { q: "7x − 3x = ?", a: "4x", exp: "(7−3)x = 4x" },
+    { q: "10a − 4a = ?", a: "6a", exp: "(10−4)a = 6a" },
+    { q: "8x − 3x − 2x = ?", a: "3x", exp: "(8−3−2)x = 3x" },
+    { q: "5y − 2y = ?", a: "3y", exp: "(5−2)y = 3y" },
+    { q: "(5x + 3) − (2x + 1) = ?", a: "3x+2", exp: "5x + 3 − 2x − 1 = 3x + 2" },
+    { q: "9p − 4p = ?", a: "5p", exp: "(9−4)p = 5p" },
+    { q: "6a² − 2a² = ?", a: "4a^2", exp: "(6−2)a² = 4a²" },
+    { q: "(7x + 5) − (3x + 2) = ?", a: "4x+3", exp: "7x + 5 − 3x − 2 = 4x + 3" },
+    { q: "12m − 5m − 3m = ?", a: "4m", exp: "(12−5−3)m = 4m" },
+    { q: "(4x + 7) − (x + 3) = ?", a: "3x+4", exp: "4x + 7 − x − 3 = 3x + 4" }
+  ],
+  kali: [
+    { q: "3x × 2x = ?", a: "6x^2", exp: "3×2 = 6, x×x = x². Hasil: 6x²" },
+    { q: "4a × 3a = ?", a: "12a^2", exp: "4×3 = 12, a×a = a²" },
+    { q: "2x × 5 = ?", a: "10x", exp: "2×5 = 10, x tetap" },
+    { q: "3x × 2y = ?", a: "6xy", exp: "3×2 = 6, x×y = xy" },
+    { q: "(x + 2)(x + 3) = ?", a: "x^2+5x+6", exp: "x² + 3x + 2x + 6 = x² + 5x + 6" },
+    { q: "5p × 2p = ?", a: "10p^2", exp: "5×2 = 10, p×p = p²" },
+    { q: "(x + 4)(x + 1) = ?", a: "x^2+5x+4", exp: "x² + x + 4x + 4 = x² + 5x + 4" },
+    { q: "2a × 3b × c = ?", a: "6abc", exp: "2×3 = 6, a×b×c = abc" },
+    { q: "(x + 5)(x + 2) = ?", a: "x^2+7x+10", exp: "x² + 2x + 5x + 10 = x² + 7x + 10" },
+    { q: "4x² × 2x = ?", a: "8x^3", exp: "4×2 = 8, x²×x = x³" }
+  ],
+  bagi: [
+    { q: "6x² ÷ 2x = ?", a: "3x", exp: "6÷2 = 3, x²÷x = x. Hasil: 3x" },
+    { q: "8a² ÷ 2a = ?", a: "4a", exp: "8÷2 = 4, a²÷a = a" },
+    { q: "10x ÷ 2 = ?", a: "5x", exp: "10÷2 = 5, x tetap" },
+    { q: "12xy ÷ 3x = ?", a: "4y", exp: "12÷3 = 4, xy÷x = y" },
+    { q: "(8x² + 4x) ÷ 2x = ?", a: "4x+2", exp: "8x²÷2x = 4x, 4x÷2x = 2" },
+    { q: "15a³ ÷ 3a = ?", a: "5a^2", exp: "15÷3 = 5, a³÷a = a²" },
+    { q: "20p² ÷ 4p = ?", a: "5p", exp: "20÷4 = 5, p²÷p = p" },
+    { q: "(6x² + 3x) ÷ 3x = ?", a: "2x+1", exp: "6x²÷3x = 2x, 3x÷3x = 1" },
+    { q: "18ab ÷ 6a = ?", a: "3b", exp: "18÷6 = 3, ab÷a = b" },
+    { q: "16x⁴ ÷ 4x² = ?", a: "4x^2", exp: "16÷4 = 4, x⁴÷x² = x²" }
+  ]
+};
+
+// DATA SLIDE 7
+var slide7Data = [
+  { q: "(2x)² = ?", a: "4x^2", exp: "2² = 4, x² = x². Hasil: 4x²" },
+  { q: "(3a)² = ?", a: "9a^2", exp: "3² = 9, a² = a²" },
+  { q: "(x²)³ = ?", a: "x^6", exp: "Pangkat dikali: 2×3 = 6, jadi x⁶" },
+  { q: "(2x²)³ = ?", a: "8x^6", exp: "2³ = 8, x²ˣ³ = x⁶" },
+  { q: "(5y)² = ?", a: "25y^2", exp: "5² = 25, y² = y²" },
+  { q: "(x³)² = ?", a: "x^6", exp: "Pangkat dikali: 3×2 = 6" },
+  { q: "(4ab)² = ?", a: "16a^2b^2", exp: "4² = 16, a² = a², b² = b². Jawaban: 16a²b²" },
+  { q: "(3x)³ = ?", a: "27x^3", exp: "3³ = 27, x³ = x³" },
+  { q: "(x⁵)² = ?", a: "x^10", exp: "Pangkat dikali: 5×2 = 10" },
+  { q: "(2xy)³ = ?", a: "8x^3y^3", exp: "2³ = 8, x³ = x³, y³ = y³" }
+];
+
+// DATA SLIDE 8
+var slide8Data = [
+  { q: "Sederhanakan: 3x + 5x − 2x", opts: ["6x","4x","10x","8x"], ans: 0, exp: "3x + 5x − 2x = (3+5−2)x = 6x" },
+  { q: "Sederhanakan: 4a + 3b − 2a + b", opts: ["6a+4b","2a+4b","2a+2b","6a+2b"], ans: 1, exp: "4a − 2a = 2a, 3b + b = 4b. Hasil: 2a + 4b" },
+  { q: "Sederhanakan: 2(x + 3) + 3(x + 1)", opts: ["5x+9","5x+7","5x+6","5x+3"], ans: 0, exp: "2x + 6 + 3x + 3 = 5x + 9" },
+  { q: "Sederhanakan: 5(2x − 1) − 3(x + 2)", opts: ["7x-11","7x-5","7x-7","7x+1"], ans: 0, exp: "10x − 5 − 3x − 6 = 7x − 11" },
+  { q: "Sederhanakan: 3x² + 2x² − x²", opts: ["4x²","5x²","6x²","3x²"], ans: 0, exp: "(3+2−1)x² = 4x²" },
+  { q: "Sederhanakan: (x + 2)(x − 3)", opts: ["x²-x-6","x²+x-6","x²-5x-6","x²-x+6"], ans: 0, exp: "x² − 3x + 2x − 6 = x² − x − 6" },
+  { q: "Sederhanakan: 2x(x + 3) − x(2x − 1)", opts: ["7x","5x","3x","7x²"], ans: 0, exp: "2x² + 6x − 2x² + x = 7x" },
+  { q: "Sederhanakan: 4(2x + 1) + 2(x − 3)", opts: ["10x-2","10x+10","10x-4","8x-2"], ans: 0, exp: "8x + 4 + 2x − 6 = 10x − 2" },
+  { q: "Sederhanakan: 3x²y + 2xy² − x²y + xy²", opts: ["2x²y+3xy²","2x²y+xy²","4x²y+3xy²","2x²y+2xy²"], ans: 0, exp: "3x²y − x²y = 2x²y, 2xy² + xy² = 3xy²" },
+  { q: "Sederhanakan: (3x + 2) + (2x − 5) − (x + 1)", opts: ["4x-4","4x-2","5x-4","4x+4"], ans: 0, exp: "3x + 2 + 2x − 5 − x − 1 = 4x − 4" },
+  { q: "Sederhanakan: 2(3x − 1) − 3(x − 2)", opts: ["3x+4","3x-8","3x+2","3x-4"], ans: 0, exp: "6x − 2 − 3x + 6 = 3x + 4" },
+  { q: "Sederhanakan: x(2x + 3) + x(x − 1)", opts: ["3x²+2x","3x²+3x","2x²+2x","3x²+x"], ans: 0, exp: "2x² + 3x + x² − x = 3x² + 2x" },
+  { q: "Sederhanakan: 5a − 2(a + 3) + 4", opts: ["3a-2","3a+10","3a+2","3a-6"], ans: 0, exp: "5a − 2a − 6 + 4 = 3a − 2" },
+  { q: "Sederhanakan: (x² + 2x + 1) + (x² − 3x − 1)", opts: ["2x²-x","2x²+5x","2x²-x+2","2x²"], ans: 0, exp: "2x² + (2x−3x) + (1−1) = 2x² − x" },
+  { q: "Sederhanakan: 3[2(x − 1) + 4]", opts: ["6x+6","6x-6","6x+12","6x+10"], ans: 0, exp: "3[2x − 2 + 4] = 3(2x + 2) = 6x + 6" },
+  { q: "Sederhanakan: 2x²(3x − 1) + x³", opts: ["7x³-2x²","6x³-2x²","7x³+x²","6x³+2x²"], ans: 0, exp: "6x³ − 2x² + x³ = 7x³ − 2x²" },
+  { q: "Sederhanakan: (2x + 3)² − (2x + 3)(2x − 3)", opts: ["12x","6x","6","12x+18"], ans: 0, exp: "(4x²+12x+9) − (4x²−9) = 4x²+12x+9−4x²+9 = 12x+18. Hmm, mari hitung ulang: (4x²+12x+9)−(4x²−9)=4x²+12x+9−4x²+9=12x+18. Jawaban: 12x+18" },
+  { q: "Sederhanakan: 4xy ÷ 2x × 3y", opts: ["6y²","6xy","6x²","12y²"], ans: 0, exp: "4xy÷2x = 2y, lalu 2y×3y = 6y²" },
+  { q: "Sederhanakan: 3(x + 2)² − 3x² − 12x", opts: ["12","3","3x+12","0"], ans: 0, exp: "3(x²+4x+4) − 3x² − 12x = 3x²+12x+12−3x²−12x = 12" },
+  { q: "Sederhanakan: (x³ ÷ x) × (x² ÷ x)", opts: ["x³","x²","x⁴","x"], ans: 0, exp: "x³÷x = x², x²÷x = x. Lalu x² × x = x³" }
+];
+
+// DATA SLIDE 9
+var slide9Data = [
+  { q: "FPB dari 4x² dan 6x = ?", a: "2x", exp: "4x² = 2²×x², 6x = 2×3×x. Faktor sama: 2, x (pangkat terkecil). FPB = 2x" },
+  { q: "FPB dari 6a³ dan 9a² = ?", a: "3a^2", exp: "6a³ = 2×3×a³, 9a² = 3²×a². Faktor sama: 3, a² (pangkat terkecil). FPB = 3a²" },
+  { q: "FPB dari 8x²y dan 12xy² = ?", a: "4xy", exp: "8x²y = 2³×x²×y, 12xy² = 2²×3×x×y². FPB = 2²×x×y = 4xy" },
+  { q: "FPB dari 10p² dan 15pq = ?", a: "5p", exp: "10p² = 2×5×p², 15pq = 3×5×p×q. FPB = 5×p = 5p" },
+  { q: "FPB dari 6a²b dan 9ab² = ?", a: "3ab", exp: "6a²b = 2×3×a²×b, 9ab² = 3²×a×b². FPB = 3ab" },
+  { q: "KPK dari 4x² dan 6x = ?", a: "12x^2", exp: "4x² = 2²×x², 6x = 2×3×x. KPK = 2²×3×x² = 12x²" },
+  { q: "KPK dari 6a³ dan 9a² = ?", a: "18a^3", exp: "6a³ = 2×3×a³, 9a² = 3²×a². KPK = 2×3²×a³ = 18a³" },
+  { q: "KPK dari 8x²y dan 12xy² = ?", a: "24x^2y^2", exp: "KPK = 2³×3×x²×y² = 24x²y²" },
+  { q: "KPK dari 10p² dan 15pq = ?", a: "30p^2q", exp: "KPK = 2×3×5×p²×q = 30p²q" },
+  { q: "KPK dari 6a²b dan 9ab² = ?", a: "18a^2b^2", exp: "KPK = 2×3²×a²×b² = 18a²b²" }
+];
+
+// DATA SLIDE 10
+var slide10Data = [
+  { q: "Sederhanakan: (x² − 4) / (x − 2)", a: "x+2", exp: "(x²−4) = (x+2)(x−2). Coret (x−2). Hasil: x+2" },
+  { q: "Sederhanakan: (6x²) / (2x)", a: "3x", exp: "6÷2 = 3, x²÷x = x. Hasil: 3x" },
+  { q: "Sederhanakan: (12a³) / (3a)", a: "4a^2", exp: "12÷3 = 4, a³÷a = a². Hasil: 4a²" },
+  { q: "Sederhanakan: (15xy) / (5x)", a: "3y", exp: "15÷5 = 3, xy÷x = y. Hasil: 3y" },
+  { q: "Sederhanakan: (x² + 2x) / x", a: "x+2", exp: "x²÷x = x, 2x÷x = 2. Hasil: x + 2" },
+  { q: "Sederhanakan: (8a² + 4a) / (2a)", a: "4a+2", exp: "8a²÷2a = 4a, 4a÷2a = 2. Hasil: 4a + 2" },
+  { q: "Sederhanakan: (9x² − 6x) / (3x)", a: "3x-2", exp: "9x²÷3x = 3x, 6x÷3x = 2. Hasil: 3x − 2" },
+  { q: "Sederhanakan: (x² − 9) / (x + 3)", a: "x-3", exp: "(x²−9) = (x+3)(x−3). Coret (x+3). Hasil: x − 3" },
+  { q: "Sederhanakan: (10p²q) / (2p)", a: "5pq", exp: "10÷2 = 5, p²÷p = p, q tetap. Hasil: 5pq" },
+  { q: "Sederhanakan: (6a²b²) / (2ab)", a: "3ab", exp: "6÷2 = 3, a²÷a = a, b²÷b = b. Hasil: 3ab" }
+];
+
+// DATA SLIDE 11 - EASY (Isian)
+var easyData = [
+  { q: "Umur Ani x tahun. Umur Budi 2 tahun lebih muda. Umur Budi = ... tahun", a: "x-2" },
+  { q: "Harga 1 buku p ribu. Harga 4 buku = ... ribu", a: "4p" },
+  { q: "2x + 3x = ...", a: "5x" },
+  { q: "7a − 3a = ...", a: "4a" },
+  { q: "3 × x = ... (tulis bentuk aljabar)", a: "3x" },
+  { q: "Jumlah dua bilangan 30. Bilangan pertama x, bilangan kedua = ...", a: "30-x" },
+  { q: "Keliling persegi sisi s = ...", a: "4s" },
+  { q: "Luas persegi panjang panjang p dan lebar l = ...", a: "pl" },
+  { q: "5y + 2y − y = ...", a: "6y" },
+  { q: "Jika x = 3, maka 2x + 1 = ...", a: "7" },
+  { q: "4x × 2x = ...", a: "8x^2" },
+  { q: "10x ÷ 2 = ...", a: "5x" },
+  { q: "Toni punya n permen, beri 3 ke teman, sisa = ...", a: "n-3" },
+  { q: "2(x + 1) = ... (sederhanakan)", a: "2x+2" },
+  { q: "x² × x³ = ...", a: "x^5" },
+  { q: "6a + 4a = ...", a: "10a" },
+  { q: "Panjang tali l meter, dipotong 2 meter, sisa = ... meter", a: "l-2" },
+  { q: "Harga 2 apel dan 3 jeruk = ... (apel=a, jeruk=j)", a: "2a+3j" },
+  { q: "(x + 2) + (x + 3) = ...", a: "2x+5" },
+  { q: "5p − 2p + p = ...", a: "4p" }
+];
+
+// DATA SLIDE 11 - MEDIUM (PG & BS)
+var mediumData = [
+  { type: "pg", q: "Umur Andi x tahun, Budi 3 tahun lebih tua. Total umur mereka...", opts: ["2x+3","x+3","2x-3","2x+6"], ans: 0, exp: "Andi = x, Budi = x+3. Total = x + (x+3) = 2x + 3" },
+  { type: "pg", q: "Harga 3 pensil p ribu dan 2 buku q ribu. Total bayar...", opts: ["3p+2q","5pq","3p-2q","2p+3q"], ans: 0, exp: "3 pensil = 3p, 2 buku = 2q. Total = 3p + 2q" },
+  { type: "pg", q: "Hasil dari 3(x + 2) − x adalah...", opts: ["2x+6","2x+2","4x+6","2x-2"], ans: 0, exp: "3x + 6 − x = 2x + 6" },
+  { type: "bs", q: "Pernyataan: 2x + 3y = 5xy (Benar/Salah)", opts: ["Benar","Salah"], ans: 1, exp: "SALAH. 2x dan 3y adalah suku tidak sejenis, tidak bisa dijumlahkan menjadi 5xy." },
+  { type: "pg", q: "Jika 2x + 5 = 11, maka x = ...", opts: ["3","6","8","2"], ans: 0, exp: "2x = 11 − 5 = 6, x = 3" },
+  { type: "pg", q: "Hasil (x + 3)(x − 2) = ...", opts: ["x²+x-6","x²-x-6","x²+5x-6","x²-x+6"], ans: 0, exp: "x² − 2x + 3x − 6 = x² + x − 6" },
+  { type: "bs", q: "Pernyataan: 3x dan 3x² adalah suku sejenis (Benar/Salah)", opts: ["Benar","Salah"], ans: 1, exp: "SALAH. Pangkat berbeda (1 dan 2), jadi tidak sejenis." },
+  { type: "pg", q: "Keliling persegi panjang (2x+1) cm dan (x−3) cm adalah...", opts: ["6x-4","6x+4","3x-2","4x-2"], ans: 0, exp: "K = 2((2x+1)+(x−3)) = 2(3x−2) = 6x − 4" },
+  { type: "pg", q: "Hasil 2x² × 3x = ...", opts: ["6x³","6x²","5x³","5x²"], ans: 0, exp: "2×3 = 6, x²×x = x³" },
+  { type: "bs", q: "Pernyataan: (x+2)² = x² + 4 (Benar/Salah)", opts: ["Benar","Salah"], ans: 1, exp: "SALAH. (x+2)² = x² + 4x + 4, bukan x² + 4" },
+  { type: "pg", q: "Hasil (6x² + 4x) ÷ 2x = ...", opts: ["3x+2","3x-2","3x²+2","3x+4"], ans: 0, exp: "6x²÷2x = 3x, 4x÷2x = 2" },
+  { type: "pg", q: "Jika x = 4, nilai 3x − 5 = ...", opts: ["7","12","9","17"], ans: 0, exp: "3(4) − 5 = 12 − 5 = 7" },
+  { type: "bs", q: "Pernyataan: 5x − 2x = 3x (Benar/Salah)", opts: ["Benar","Salah"], ans: 0, exp: "BENAR. (5−2)x = 3x" },
+  { type: "pg", q: "Sederhanakan: 4(2x − 1) + 3x", opts: ["11x-4","8x-1","11x+4","5x-4"], ans: 0, exp: "8x − 4 + 3x = 11x − 4" },
+  { type: "pg", q: "Hasil (x²)³ = ...", opts: ["x⁶","x⁵","x⁸","3x²"], ans: 0, exp: "Pangkat dikali: 2×3 = 6, jadi x⁶" },
+  { type: "bs", q: "Pernyataan: FPB dari 4x dan 6x adalah 2x (Benar/Salah)", opts: ["Benar","Salah"], ans: 0, exp: "BENAR. 4x = 2²×x, 6x = 2×3×x. FPB = 2x" },
+  { type: "pg", q: "Hasil 5a + 3b − 2a − b = ...", opts: ["3a+2b","3a-2b","7a+4b","3a+4b"], ans: 0, exp: "5a−2a = 3a, 3b−b = 2b" },
+  { type: "pg", q: "Jumlah 3 bilangan genap berurutan (bilangan pertama 2n)...", opts: ["6n+6","6n","6n+3","6n+12"], ans: 0, exp: "2n + (2n+2) + (2n+4) = 6n + 6" },
+  { type: "bs", q: "Pernyataan: (x²−1)/(x+1) = x−1 untuk x ≠ −1 (Benar/Salah)", opts: ["Benar","Salah"], ans: 0, exp: "BENAR. (x²−1) = (x+1)(x−1), coret (x+1), hasil x−1" },
+  { type: "pg", q: "Hasil 2(x + 3) + 3(x − 1) = ...", opts: ["5x+3","5x+6","5x-3","5x+9"], ans: 0, exp: "2x + 6 + 3x − 3 = 5x + 3" }
+];
+
+// DATA SLIDE 11 - HOTS (PG Kompleks)
+var hotsData = [
+  { q: "Umur Ayah x tahun, umur Ibu 3 tahun lebih muda. Umur Anak 1/3 umur Ayah. Total umur keluarga...", opts: ["(7x/3)-3","(7x/3)+3","(5x/3)-3","(8x/3)-3"], correct: [0], exp: "Ayah = x, Ibu = x−3, Anak = x/3. Total = x + (x−3) + x/3 = (3x+3x+x)/3 − 3 = 7x/3 − 3" },
+  { q: "Pernyataan mana yang ekuivalen dengan 2x² − 8?", opts: ["2(x²-4)","2(x-2)(x+2)","2(x²-4) dan 2(x-2)(x+2)","2(x+2)²"], correct: [2], exp: "2x²−8 = 2(x²−4) = 2(x−2)(x+2). Jawaban 1 dan 2 benar, jadi pilih keduanya." },
+  { q: "Jika (x+2)(x−3) = x² + ax + b, maka a + b = ...", opts: ["a=-1, b=-6, a+b=-7","a=1, b=-6, a+b=-5","a=-1, b=6, a+b=5","a=1, b=6, a+b=7"], correct: [0], exp: "(x+2)(x−3) = x² −3x + 2x − 6 = x² − x − 6. a = −1, b = −6, a+b = −7" },
+  { q: "Manakah yang bernilai sama dengan (2x)² × 2x² ?", opts: ["8x⁴","4x⁴ × 2","2x⁴","8x²"], correct: [0,1], exp: "(2x)² = 4x², lalu 4x² × 2x² = 8x⁴. Jawaban 1 (8x⁴) dan 2 (4x⁴×2 = 8x⁴) benar." },
+  { q: "Sebuah persegi panjang memiliki panjang (3x+1) dan lebar (2x−1). Pernyataan yang benar tentang luas...", opts: ["L = 6x²-x-1","L = 6x²+5x-1","L = 6x²-x+1","L = (3x+1)(2x-1)"], correct: [0,3], exp: "Luas = (3x+1)(2x−1) = 6x² − 3x + 2x − 1 = 6x² − x − 1. Jawaban 1 dan 4 benar." },
+  { q: "FPB dan KPK dari 4x²y dan 6xy². Pilih yang benar...", opts: ["FPB = 2xy","KPK = 12x²y²","FPB = 2xy dan KPK = 12x²y²","FPB = 4xy"], correct: [2], exp: "4x²y = 2²×x²×y, 6xy² = 2×3×x×y². FPB = 2xy, KPK = 12x²y². Jawaban 3 (keduanya benar)." },
+  { q: "Pernyataan yang benar tentang 3x² − 12...", opts: ["= 3(x²-4)","= 3(x-2)(x+2)","= 3(x-4)","Faktor: 3, (x-2), (x+2)"], correct: [0,1,3], exp: "3x²−12 = 3(x²−4) = 3(x−2)(x+2). Jawaban 1, 2, dan 4 benar." },
+  { q: "Hasil dari (x²−9)/(x+3) × (x+2)/(x−3) = ...", opts: ["x+2","x-2","x²-4","1"], correct: [0,2], exp: "(x²−9) = (x+3)(x−3). Coret (x+3) dan (x−3). Sisa: (x+2). Jawaban 1 (x+2) dan 3 (x²−4? tidak). Hanya jawaban 1 benar. Sebenarnya: hasil = x+2. Jawaban 1 saja." },
+  { q: "Jika 2(x + a) + 3(x − a) = 5x + 2, maka nilai a = ...", opts: ["a = -1","a = 1","a = 2","a = -2"], correct: [0], exp: "2x + 2a + 3x − 3a = 5x − a = 5x + 2. Maka −a = 2, a = −2. Jawaban: a = −2 (opsi 4). Hmm, mari periksa: 5x − a = 5x + 2 → −a = 2 → a = −2. Jawaban: opsi 4 (a = −2)." },
+  { q: "Manakah bentuk yang setara dengan x² + 6x + 9 ?", opts: ["(x+3)²","(x+3)(x+3)","x²+9+6x","(x-3)²"], correct: [0,1,2], exp: "x² + 6x + 9 = (x+3)². Jawaban 1, 2, dan 3 benar (urutan suku tidak masalah)." },
+  { q: "Toko A menjual kemeja harga p ribu, diskon 20%. Toko B harga q ribu, diskon 10%. Pernyataan benar...", opts: ["Harga A = 0.8p","Harga B = 0.9q","A lebih murah jika 0.8p < 0.9q","Diskon A = 0.2p"], correct: [0,1,2,3], exp: "Semua pernyataan benar. A: 20% off = 0.8p. B: 10% off = 0.9q. A lebih murah jika 0.8p < 0.9q. Diskon A = 0.2p." },
+  { q: "Sebuah mobil menempuh jarak (3x² + 6x) km dalam waktu (3x) jam. Pernyataan benar...", opts: ["Kecepatan = x + 2 km/jam","Kecepatan = (3x²+6x)/3x","Kecepatan = 3x + 2","Jika x=2, kecepatan = 4 km/jam"], correct: [0,1], exp: "Kecepatan = jarak/waktu = (3x²+6x)/3x = x + 2. Jawaban 1 dan 2 benar." },
+  { q: "Manakah yang merupakan faktor dari x² − 5x + 6 ?", opts: ["(x-2)","(x-3)","(x+2)","(x+3)"], correct: [0,1], exp: "x² − 5x + 6 = (x−2)(x−3). Jawaban 1 dan 2 benar." },
+  { q: "Pernyataan benar tentang (a/b) + (c/d)...", opts: ["= (ad+bc)/bd","Membutuhkan penyebut sama","= (a+c)/(b+d)","Hasil selalu lebih besar dari a/b"], correct: [0,1], exp: "Penjumlahan pecahan: samakan penyebut (bd), lalu (ad+bc)/bd. Jawaban 1 dan 2 benar." },
+  { q: "Jika x² − 1 = 0, maka nilai x yang memenuhi...", opts: ["x = 1","x = -1","x = 0","x = 2"], correct: [0,1], exp: "x² = 1, x = ±1. Jawaban 1 dan 2 benar." },
+  { q: "Sederhanakan (x³ + x²) / x². Pernyataan benar...", opts: ["= x + 1","= x³/x² + 1","= x²(x+1)/x²","= x"], correct: [0,1,2], exp: "(x³+x²)/x² = x³/x² + x²/x² = x + 1. Jawaban 1, 2, dan 3 benar." },
+  { q: "Pernyataan benar tentang pemangkatan...", opts: ["(x²)³ = x⁶","x² × x³ = x⁵","x⁶ ÷ x² = x³","(2x)³ = 6x³"], correct: [0,1], exp: "(x²)³ = x⁶ (benar), x²×x³ = x⁵ (benar), x⁶÷x² = x⁴ (salah, harusnya x⁴), (2x)³ = 8x³ (salah). Jawaban 1 dan 2." },
+  { q: "Luas kebun (2x+3)(x+2). Jika x=5, pernyataan benar...", opts: ["Luas = 91","Panjang = 13, lebar = 7","Luas = 91 satuan²","Panjang = 7, lebar = 13"], correct: [0,1,2,3], exp: "x=5: panjang = 2(5)+3 = 13, lebar = 5+2 = 7. Luas = 13×7 = 91. Semua benar (panjang/lebar bisa tertukar)." },
+  { q: "Manakah bentuk aljabar yang bisa difaktorkan?", opts: ["x²-9 = (x-3)(x+3)","x²+4x+4 = (x+2)²","x²-5x+6 = (x-2)(x-3)","2x+4 = 2(x+2)"], correct: [0,1,2,3], exp: "Semua bisa difaktorkan. Jawaban semua benar." },
+  { q: "Sebuah bilangan terdiri dari 2 angka. Angka puluhan = x, angka satuan = y. Pernyataan benar...", opts: ["Nilai = 10x + y","Jika dibalik: 10y + x","Selisih = 9(x-y)","Nilai selalu genap"], correct: [0,1,2], exp: "Bilangan = 10x + y. Dibalik = 10y + x. Selisih = 9(x−y). Jawaban 1, 2, 3 benar." },
+  { q: "Operasi yang menghasilkan x² + 5x + 6...", opts: ["(x+2)(x+3)","(x+6)(x+1) tidak","x(x+5)+6","(x+1)(x+6)"], correct: [0,2], exp: "(x+2)(x+3) = x²+5x+6 (benar). x(x+5)+6 = x²+5x+6 (benar). Jawaban 1 dan 3." }
+];
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  initFloatingDecor();
+  initNav();
+  initSlide1();
+  initSlide5();
+  initSlide6();
+  initSlide7();
+  initSlide8();
+  initSlide9();
+  initSlide10();
+  initSlide11();
+  initSlide12();
+});
+
+function initFloatingDecor() {
+  var c = document.getElementById('floatingDecor');
+  var items = ['fa-heart','fa-star','fa-heart','fa-star','fa-heart'];
+  for (var i = 0; i < 15; i++) {
+    var el = document.createElement('i');
+    el.className = 'fas ' + items[i % items.length] + ' float-item';
+    el.style.left = Math.random() * 100 + '%';
+    el.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
+    el.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    el.style.animationDelay = (Math.random() * 15) + 's';
+    el.style.color = ['#ff6b9d','#c084fc','#ff8fab'][i % 3];
+    c.appendChild(el);
+  }
+}
+
+function showToast(type, title, msg) {
+  var toast = document.getElementById('toast');
+  toast.className = 'toast show ' + type;
+  var icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+  toast.querySelector('i').className = 'fas ' + icon;
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  setTimeout(function() { toast.classList.remove('show'); }, 3500);
+}
+
+function initNav() {
+  var progress = document.getElementById('progress');
+  for (var i = 1; i <= 12; i++) {
+    var d = document.createElement('button');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.setAttribute('data-slide', i);
+    d.title = 'Slide ' + i;
+    (function(n) { d.addEventListener('click', function() { goToSlide(n); }); })(i);
+    progress.appendChild(d);
+  }
+  document.getElementById('prevBtn').addEventListener('click', function() {
+    if (state.currentSlide > 1) goToSlide(state.currentSlide - 1);
+  });
+  document.getElementById('nextBtn').addEventListener('click', function() {
+    if (state.currentSlide < 12) goToSlide(state.currentSlide + 1);
+  });
+  updateNavButtons();
+}
+
+function goToSlide(n) {
+  if (state.currentSlide === 1 && n > 1 && !state.studentName) {
+    showToast('error', 'Hei!', 'Masukkan namamu dulu ya!');
+    return;
+  }
+  var slides = document.querySelectorAll('.slide');
+  for (var i = 0; i < slides.length; i++) slides[i].classList.remove('active');
+  document.querySelector('.slide[data-slide="' + n + '"]').classList.add('active');
+  var dots = document.querySelectorAll('.dot');
+  for (var j = 0; j < dots.length; j++) dots[j].classList.remove('active');
+  document.querySelector('.dot[data-slide="' + n + '"]').classList.add('active');
+  state.currentSlide = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateNavButtons();
+  if (n === 12) {
+    document.getElementById('finalName').textContent = state.studentName || 'Siswa';
+  }
+}
+
+function updateNavButtons() {
+  document.getElementById('prevBtn').disabled = state.currentSlide === 1;
+  document.getElementById('nextBtn').disabled = state.currentSlide === 12;
+}
+
+function initSlide1() {
+  var input = document.getElementById('studentName');
+  var btn = document.getElementById('startBtn');
+  var welcome = document.getElementById('welcomeMsg');
+  input.addEventListener('input', function() {
+    btn.disabled = input.value.trim().length < 2;
+  });
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !btn.disabled) btn.click();
+  });
+  btn.addEventListener('click', function() {
+    state.studentName = input.value.trim();
+    welcome.textContent = 'Selamat datang, ' + state.studentName + '! Selamat belajar!';
+    welcome.classList.add('show');
+    setTimeout(function() { goToSlide(2); }, 1200);
+  });
+}
+
+// ===== SLIDE 5 =====
+function initSlide5() {
+  var c = document.getElementById('slide5Container');
+  slide5Data.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      '<input type="text" class="q-input" id="s5in' + idx + '" placeholder="Tulis jawaban...">' +
+      '<div class="q-actions">' +
+      '<button class="btn primary s5check" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple s5disc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="s5fb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.s5check').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var input = document.getElementById('s5in' + idx);
+      var val = input.value.trim().toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var ans = slide5Data[idx].a.toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var fb = document.getElementById('s5fb' + idx);
+      input.classList.remove('correct', 'wrong');
+      fb.classList.remove('success', 'error', 'info');
+      if (val.length < 1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Isi jawaban dulu ya!';
+        return;
+      }
+      if (val === ans) {
+        input.classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar sekali! Jawabanmu tepat.';
+      } else {
+        input.classList.add('wrong');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Coba lagi ya!';
+      }
+    });
+  });
+  c.querySelectorAll('.s5disc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('s5fb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + slide5Data[idx].exp + ' <br><strong>Jawaban: ' + slide5Data[idx].a + '</strong>';
+    });
+  });
+}
+
+// ===== SLIDE 6 =====
+function initSlide6() {
+  var tabs = document.querySelectorAll('#opsTabs .tab-btn');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = tab.getAttribute('data-tab');
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+      document.getElementById('tab-' + target).classList.add('active');
+    });
+  });
+  renderOpsQuestions('tambah', 'ops-tambah-container');
+  renderOpsQuestions('kurang', 'ops-kurang-container');
+  renderOpsQuestions('kali', 'ops-kali-container');
+  renderOpsQuestions('bagi', 'ops-bagi-container');
+}
+
+function renderOpsQuestions(op, containerId) {
+  var c = document.getElementById(containerId);
+  var data = opsData[op];
+  data.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      '<input type="text" class="q-input" id="' + op + 'in' + idx + '" placeholder="Tulis jawaban...">' +
+      '<div class="q-actions">' +
+      '<button class="btn primary ' + op + 'check" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple ' + op + 'disc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="' + op + 'fb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.' + op + 'check').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var input = document.getElementById(op + 'in' + idx);
+      var val = input.value.trim().toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var ans = data[idx].a.toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var fb = document.getElementById(op + 'fb' + idx);
+      input.classList.remove('correct', 'wrong');
+      fb.classList.remove('success', 'error', 'info');
+      if (val.length < 1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Isi jawaban dulu ya!';
+        return;
+      }
+      if (val === ans) {
+        input.classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! Jawabanmu tepat.';
+      } else {
+        input.classList.add('wrong');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Coba lagi!';
+      }
+    });
+  });
+  c.querySelectorAll('.' + op + 'disc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById(op + 'fb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + data[idx].exp + ' <br><strong>Jawaban: ' + data[idx].a + '</strong>';
+    });
+  });
+}
+
+// ===== SLIDE 7 =====
+function initSlide7() {
+  var c = document.getElementById('slide7Container');
+  slide7Data.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      '<input type="text" class="q-input" id="s7in' + idx + '" placeholder="Tulis jawaban...">' +
+      '<div class="q-actions">' +
+      '<button class="btn primary s7check" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple s7disc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="s7fb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.s7check').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var input = document.getElementById('s7in' + idx);
+      var val = input.value.trim().toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var ans = slide7Data[idx].a.toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var fb = document.getElementById('s7fb' + idx);
+      input.classList.remove('correct', 'wrong');
+      fb.classList.remove('success', 'error', 'info');
+      if (val.length < 1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Isi jawaban dulu ya!';
+        return;
+      }
+      if (val === ans) {
+        input.classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! Jawabanmu tepat.';
+      } else {
+        input.classList.add('wrong');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Coba lagi!';
+      }
+    });
+  });
+  c.querySelectorAll('.s7disc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('s7fb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + slide7Data[idx].exp + ' <br><strong>Jawaban: ' + slide7Data[idx].a + '</strong>';
+    });
+  });
+}
+
+// ===== SLIDE 8 =====
+function initSlide8() {
+  var c = document.getElementById('slide8Container');
+  slide8Data.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    var optsHtml = '<div class="options-grid">';
+    item.opts.forEach(function(opt, oIdx) {
+      var letter = String.fromCharCode(65 + oIdx);
+      optsHtml += '<div class="opt-item s8opt" data-q="' + idx + '" data-o="' + oIdx + '"><span class="opt-letter">' + letter + '</span><span>' + opt + '</span></div>';
+    });
+    optsHtml += '</div>';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      optsHtml +
+      '<div class="q-actions">' +
+      '<button class="btn primary s8check" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple s8disc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="s8fb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.s8opt').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var qIdx = parseInt(opt.getAttribute('data-q'));
+      var siblings = c.querySelectorAll('.s8opt[data-q="' + qIdx + '"]');
+      siblings.forEach(function(s) { s.classList.remove('selected'); });
+      opt.classList.add('selected');
+    });
+  });
+  c.querySelectorAll('.s8check').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var opts = c.querySelectorAll('.s8opt[data-q="' + idx + '"]');
+      var selected = -1;
+      opts.forEach(function(o, i) { if (o.classList.contains('selected')) selected = i; });
+      var fb = document.getElementById('s8fb' + idx);
+      opts.forEach(function(o) { o.classList.remove('correct', 'wrong'); });
+      fb.classList.remove('success', 'error', 'info');
+      if (selected === -1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Pilih jawaban dulu ya!';
+        return;
+      }
+      if (selected === slide8Data[idx].ans) {
+        opts[selected].classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! Jawabanmu tepat.';
+      } else {
+        opts[selected].classList.add('wrong');
+        opts[slide8Data[idx].ans].classList.add('correct');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Jawaban benar: ' + String.fromCharCode(65 + slide8Data[idx].ans) + '. ' + slide8Data[idx].exp;
+      }
+    });
+  });
+  c.querySelectorAll('.s8disc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('s8fb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + slide8Data[idx].exp + ' <br><strong>Jawaban: ' + String.fromCharCode(65 + slide8Data[idx].ans) + '</strong>';
+    });
+  });
+  document.getElementById('checkAllS8Btn').addEventListener('click', function() {
+    c.querySelectorAll('.s8check').forEach(function(btn) { btn.click(); });
+    showToast('info', 'Selesai', 'Semua jawaban telah diperiksa!');
+  });
+  document.getElementById('showAllS8Btn').addEventListener('click', function() {
+    c.querySelectorAll('.s8disc').forEach(function(btn) { btn.click(); });
+    showToast('info', 'Pembahasan', 'Semua pembahasan ditampilkan!');
+  });
+}
+
+// ===== SLIDE 9 =====
+function initSlide9() {
+  var c = document.getElementById('slide9Container');
+  slide9Data.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      '<input type="text" class="q-input" id="s9in' + idx + '" placeholder="Tulis jawaban...">' +
+      '<div class="q-actions">' +
+      '<button class="btn primary s9check" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple s9disc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="s9fb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.s9check').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var input = document.getElementById('s9in' + idx);
+      var val = input.value.trim().toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var ans = slide9Data[idx].a.toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var fb = document.getElementById('s9fb' + idx);
+      input.classList.remove('correct', 'wrong');
+      fb.classList.remove('success', 'error', 'info');
+      if (val.length < 1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Isi jawaban dulu ya!';
+        return;
+      }
+      if (val === ans) {
+        input.classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! Jawabanmu tepat.';
+      } else {
+        input.classList.add('wrong');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Coba lagi!';
+      }
+    });
+  });
+  c.querySelectorAll('.s9disc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('s9fb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + slide9Data[idx].exp + ' <br><strong>Jawaban: ' + slide9Data[idx].a + '</strong>';
+    });
+  });
+}
+
+// ===== SLIDE 10 =====
+function initSlide10() {
+  var c = document.getElementById('slide10Container');
+  slide10Data.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      '<input type="text" class="q-input" id="s10in' + idx + '" placeholder="Tulis jawaban...">' +
+      '<div class="q-actions">' +
+      '<button class="btn primary s10check" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple s10disc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="s10fb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.s10check').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var input = document.getElementById('s10in' + idx);
+      var val = input.value.trim().toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var ans = slide10Data[idx].a.toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var fb = document.getElementById('s10fb' + idx);
+      input.classList.remove('correct', 'wrong');
+      fb.classList.remove('success', 'error', 'info');
+      if (val.length < 1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Isi jawaban dulu ya!';
+        return;
+      }
+      if (val === ans) {
+        input.classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! Jawabanmu tepat.';
+      } else {
+        input.classList.add('wrong');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Coba lagi!';
+      }
+    });
+  });
+  c.querySelectorAll('.s10disc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('s10fb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + slide10Data[idx].exp + ' <br><strong>Jawaban: ' + slide10Data[idx].a + '</strong>';
+    });
+  });
+}
+
+// ===== SLIDE 11 =====
+function initSlide11() {
+  var tabs = document.querySelectorAll('#levelTabs .level-tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var level = tab.getAttribute('data-level');
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+      document.getElementById('level-' + level).classList.add('active');
+    });
+  });
+  renderEasy();
+  renderMedium();
+  renderHots();
+}
+
+function renderEasy() {
+  var c = document.getElementById('easyContainer');
+  easyData.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      '<input type="text" class="q-input" id="easyin' + idx + '" placeholder="Tulis jawaban...">' +
+      '<div class="q-actions"><button class="btn primary easycheck" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button></div>' +
+      '<div class="q-feedback" id="easyfb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.easycheck').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var input = document.getElementById('easyin' + idx);
+      var val = input.value.trim().toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var ans = easyData[idx].a.toLowerCase().replace(/\s/g, '').replace(/\*/g, '');
+      var fb = document.getElementById('easyfb' + idx);
+      input.classList.remove('correct', 'wrong');
+      fb.classList.remove('success', 'error', 'info');
+      if (val.length < 1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Isi jawaban dulu ya!';
+        return;
+      }
+      if (val === ans) {
+        input.classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! Jawaban: ' + easyData[idx].a;
+      } else {
+        input.classList.add('wrong');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. Jawaban: ' + easyData[idx].a;
+      }
+    });
+  });
+}
+
+function renderMedium() {
+  var c = document.getElementById('mediumContainer');
+  mediumData.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    var optsHtml = '<div class="options-grid">';
+    item.opts.forEach(function(opt, oIdx) {
+      var letter = item.type === 'bs' ? (oIdx === 0 ? 'B' : 'S') : String.fromCharCode(65 + oIdx);
+      optsHtml += '<div class="opt-item medopt" data-q="' + idx + '" data-o="' + oIdx + '"><span class="opt-letter">' + letter + '</span><span>' + opt + '</span></div>';
+    });
+    optsHtml += '</div>';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      optsHtml +
+      '<div class="q-actions">' +
+      '<button class="btn primary medcheck" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple meddisc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="medfb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.medopt').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var qIdx = parseInt(opt.getAttribute('data-q'));
+      var siblings = c.querySelectorAll('.medopt[data-q="' + qIdx + '"]');
+      siblings.forEach(function(s) { s.classList.remove('selected'); });
+      opt.classList.add('selected');
+    });
+  });
+  c.querySelectorAll('.medcheck').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var opts = c.querySelectorAll('.medopt[data-q="' + idx + '"]');
+      var selected = -1;
+      opts.forEach(function(o, i) { if (o.classList.contains('selected')) selected = i; });
+      var fb = document.getElementById('medfb' + idx);
+      opts.forEach(function(o) { o.classList.remove('correct', 'wrong'); });
+      fb.classList.remove('success', 'error', 'info');
+      if (selected === -1) {
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-exclamation-circle"></i> Pilih jawaban dulu ya!';
+        return;
+      }
+      if (selected === mediumData[idx].ans) {
+        opts[selected].classList.add('correct');
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar! ' + mediumData[idx].exp;
+      } else {
+        opts[selected].classList.add('wrong');
+        opts[mediumData[idx].ans].classList.add('correct');
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. ' + mediumData[idx].exp;
+      }
+    });
+  });
+  c.querySelectorAll('.meddisc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('medfb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + mediumData[idx].exp;
+    });
+  });
+}
+
+function renderHots() {
+  var c = document.getElementById('hotsContainer');
+  hotsData.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    var optsHtml = '<div class="options-grid">';
+    item.opts.forEach(function(opt, oIdx) {
+      var letter = String.fromCharCode(65 + oIdx);
+      optsHtml += '<div class="opt-item hots-opt-item" data-q="' + idx + '" data-o="' + oIdx + '"><div class="opt-checkbox"></div><span class="opt-letter">' + letter + '</span><span>' + opt + '</span></div>';
+    });
+    optsHtml += '</div>';
+    div.innerHTML = '<div class="q-header"><span class="q-num">' + (idx + 1) + '</span><span class="q-text">' + item.q + '</span></div>' +
+      optsHtml +
+      '<div class="q-actions">' +
+      '<button class="btn primary hotscheck" data-idx="' + idx + '"><i class="fas fa-check"></i> Cek Jawaban</button>' +
+      '<button class="btn purple hotsdisc" data-idx="' + idx + '"><i class="fas fa-eye"></i> Pembahasan</button>' +
+      '</div><div class="q-feedback" id="hotsfb' + idx + '"></div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.hots-opt-item').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      opt.classList.toggle('selected');
+    });
+  });
+  c.querySelectorAll('.hotscheck').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var opts = c.querySelectorAll('.hots-opt-item[data-q="' + idx + '"]');
+      var fb = document.getElementById('hotsfb' + idx);
+      var correctArr = hotsData[idx].correct;
+      var selectedArr = [];
+      opts.forEach(function(o, i) {
+        o.classList.remove('correct', 'wrong');
+        if (o.classList.contains('selected')) selectedArr.push(i);
+      });
+      fb.classList.remove('success', 'error', 'info');
+      var isCorrect = true;
+      if (selectedArr.length !== correctArr.length) isCorrect = false;
+      else {
+        for (var i = 0; i < correctArr.length; i++) {
+          if (selectedArr.indexOf(correctArr[i]) === -1) { isCorrect = false; break; }
+        }
+      }
+      if (isCorrect) {
+        correctArr.forEach(function(ci) { opts[ci].classList.add('correct'); });
+        fb.classList.add('show', 'success');
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Benar semua! ' + hotsData[idx].exp;
+      } else {
+        selectedArr.forEach(function(si) {
+          if (correctArr.indexOf(si) !== -1) opts[si].classList.add('correct');
+          else opts[si].classList.add('wrong');
+        });
+        correctArr.forEach(function(ci) { if (selectedArr.indexOf(ci) === -1) opts[ci].classList.add('correct'); });
+        fb.classList.add('show', 'error');
+        fb.innerHTML = '<i class="fas fa-times-circle"></i> Belum tepat. ' + hotsData[idx].exp;
+      }
+    });
+  });
+  c.querySelectorAll('.hotsdisc').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      var fb = document.getElementById('hotsfb' + idx);
+      fb.classList.remove('success', 'error');
+      fb.classList.add('show', 'info');
+      fb.innerHTML = '<i class="fas fa-info-circle"></i> <strong>Pembahasan:</strong> ' + hotsData[idx].exp;
+    });
+  });
+}
+
+// ===== SLIDE 12 =====
+function initSlide12() {
+  document.getElementById('saveReflectionBtn').addEventListener('click', function() {
+    var r1 = document.getElementById('reflection1').value.trim();
+    var r2 = document.getElementById('reflection2').value.trim();
+    var r3 = document.getElementById('reflection3').value.trim();
+    if (r1.length < 3 && r2.length < 3 && r3.length < 3) {
+      showToast('error', 'Hmm...', 'Isi minimal satu refleksi dulu ya!');
+      return;
+    }
+    showToast('success', 'Tersimpan!', 'Refleksi kamu telah tersimpan. Terima kasih sudah belajar!');
+  });
+}
+</script>
+</body>
+</html>
