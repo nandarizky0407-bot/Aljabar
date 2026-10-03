@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ular Tangga Aljabar — Kuadrat, Faktorisasi, Identitas & SPLDV</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7eeda; --ink:#3d2c1e; --wood:#7a4a22; --wood2:#5b3a1a;
+  --cream:#fffaf0; --cream2:#f4e8cd;
+  --green:#2f9e44; --greenD:#256b33; --red:#d9480f;
+  --p1:#e8590c; --p2:#0ca678; --gold:#e8b30f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh;background-color:var(--paper);
+  background-image:radial-gradient(rgba(122,74,34,.10) 1.2px, transparent 1.3px);background-size:26px 26px}
+header{text-align:center;padding:18px 12px 4px}
+h1{font-family:'Baloo 2',cursive;font-size:clamp(26px,5vw,44px);color:var(--wood2);line-height:1.05}
+h1 .a{color:#c92a2a}h1 .b{color:var(--greenD)}h1 .c{color:#1971c2}
+.tagline{font-weight:700;color:#8a6a3f;margin-top:2px;font-size:clamp(12px,2vw,16px)}
+.stage{display:flex;gap:22px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding:14px 16px 40px;max-width:1120px;margin:0 auto}
+.boardWrap{width:min(94vw,620px)}
+.board{position:relative;aspect-ratio:1;border:10px solid var(--wood);border-radius:16px;overflow:hidden;background:var(--cream);
+  box-shadow:0 12px 26px rgba(91,58,26,.28), inset 0 0 0 3px rgba(255,255,255,.35)}
+.grid{position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(10,1fr)}
+.cell{position:relative;background:var(--cream);border:.5px solid rgba(122,74,34,.16);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1px;overflow:hidden;text-align:center}
+.cell.alt{background:var(--cream2)}
+.cell.p1{background:#eef7e2}.cell.p1.alt{background:#e4f0d3}
+.cell.p2{background:#fdeed9}.cell.p2.alt{background:#f8e6c6}
+.cell .num{position:absolute;top:1px;left:3px;font-family:'Baloo 2';font-weight:800;font-size:clamp(7px,1.6vw,12px);color:#9a6a33}
+.cell .q{font-size:clamp(6px,1.3vw,10.5px);line-height:1.08;font-weight:800;color:#5a4527;margin-top:9px;word-break:break-word}
+.cell.lad{background:linear-gradient(180deg,#e6f6dd,#d0efc0)}.cell.lad .q{color:var(--greenD)}
+.cell.snk{background:linear-gradient(180deg,#ffe8e0,#ffd4c8)}.cell.snk .q{color:var(--redD)}
+.cell.start{background:#ffedb0}
+.cell.finish{background:radial-gradient(circle at 50% 42%,#ffe9a0,#ffd43b)}
+.cell .mini{width:36%;max-width:24px;aspect-ratio:1;margin-top:7px}
+.cell.occ0{box-shadow:inset 0 0 0 3px rgba(232,89,12,.65)}
+.cell.occ1{box-shadow:inset 0 0 0 3px rgba(12,166,120,.65)}
+#overlay{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+.rail{stroke:#8a5a2b;stroke-width:7;stroke-linecap:round}
+.rung{stroke:#c98d4f;stroke-width:5;stroke-linecap:round}
+.pawn{position:absolute;z-index:10;width:6.2%;aspect-ratio:1;border-radius:50%;border:2.5px solid #fff;
+  box-shadow:0 3px 7px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-family:'Baloo 2';font-weight:800;font-size:clamp(10px,2.4vw,17px);
+  transition:left .3s ease, top .3s ease}
+.pawn.x0{background:radial-gradient(circle at 32% 28%,#ffa94d,var(--p1) 55%,#a83c04)}
+.pawn.x1{background:radial-gradient(circle at 32% 28%,#4fd8b0,var(--p2) 55%,#057a5b)}
+.pawn.noTrans{transition:none}
+.legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12.5px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fffdf6;border:1.5px solid #e5d5b0;border-radius:999px;padding:3px 10px;font-weight:700}
+.chip i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.panel{width:min(94vw,340px);display:flex;flex-direction:column;gap:12px}
+.card{background:#fffdf6;border:2px solid #e5d5b0;border-radius:14px;padding:14px;box-shadow:0 4px 10px rgba(91,58,26,.08)}
+.cardTitle{font-family:'Baloo 2';font-weight:800;font-size:15px;color:#8a6a3f;margin-bottom:6px}
+.who{font-family:'Baloo 2';font-weight:800;font-size:20px}
+.diceRow{display:flex;align-items:center;gap:16px;margin-top:10px}
+.dice{width:64px;height:64px;flex:none;background:#fff;border:2px solid #d9c79b;border-radius:12px;
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;gap:2px;box-shadow:0 4px 0 #d9c79b}
+.dice.rolling{animation:droll .12s linear infinite}
+@keyframes droll{50%{transform:rotate(7deg) scale(1.05)}}
+.pip{width:9px;height:9px;border-radius:50%;background:#3d2c1e;place-self:center;visibility:hidden}
+.pip.on{visibility:visible}
+.diceSide{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.hintKbd{font-size:11.5px;color:#a08755;font-weight:700}
+.diceVal{font-size:13px;font-weight:800;color:#8a6a3f}
+#msg{min-height:46px;font-weight:700;color:#5b4632;background:#fbf3df;border:1.5px dashed #dcc794;border-radius:10px;padding:8px 10px;margin-top:12px;font-size:14px}
+.playerCard{display:flex;align-items:center;gap:11px;transition:transform .15s}
+.playerCard.active{outline:3px solid #f1d38a;transform:translateY(-1px)}
+.pdot{width:18px;height:18px;border-radius:50%;flex:none;box-shadow:inset -2px -3px 4px rgba(0,0,0,.25)}
+.pname{font-family:'Baloo 2';font-weight:800;font-size:17px}
+.pstat{font-size:13px;color:#6b5335;font-weight:700}
+.st{width:13px;height:13px;vertical-align:-2px}
+.logBox{max-height:150px;overflow:auto;font-size:12.5px;display:flex;flex-direction:column;gap:4px}
+.logBox div{background:#faf4e4;border-radius:8px;padding:4px 8px;border-left:4px solid #e3d2a8}
+.logBox div.lp0{border-left-color:var(--p1)}
+.logBox div.lp1{border-left-color:var(--p2)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Baloo 2';font-weight:700;border:none;border-radius:12px;padding:11px 20px;font-size:16px;cursor:pointer;
+  background:var(--red);color:#fff;box-shadow:0 4px 0 #a63c05;transition:transform .08s, box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #a63c05}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn.green{background:var(--green);box-shadow:0 4px 0 #1b6e2c}
+.btn.green:active{box-shadow:0 1px 0 #1b6e2c}
+.btn.ghost{background:#fff;color:#6b4f23;border:2px solid #d9c79b;box-shadow:0 3px 0 #d9c79b}
+.btn.small{padding:7px 12px;font-size:13px}
+.ovl{position:fixed;inset:0;background:rgba(59,42,22,.55);backdrop-filter:blur(2px);
+  display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.ovl.top{z-index:60}
+.hidden{display:none!important}
+.sheet{background:#fffdf6;border-radius:18px;padding:22px;max-width:540px;width:100%;max-height:92vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);border:3px solid var(--wood)}
+.sheet h2{font-family:'Baloo 2';color:var(--wood2);font-size:24px;margin-bottom:6px}
+.nameRow{display:flex;align-items:center;gap:10px;margin:10px 0}
+.nameRow label{font-weight:800;width:118px;font-size:14px;display:flex;align-items:center;gap:7px}
+.nameRow .pdot{width:14px;height:14px}
+input[type=text]{padding:10px 12px;border:2px solid #d9c79b;border-radius:10px;font:inherit;font-weight:700;background:#fff}
+input[type=text]:focus{outline:none;border-color:var(--green)}
+.rules{background:#f6efdb;border-radius:12px;padding:12px 14px;font-size:13.5px;margin:12px 0}
+.rules ol{margin-left:18px}
+.rules li{margin:5px 0}
+.tips{margin-top:8px;background:#fdf6d8;border:1.5px dashed #dcb95c;border-radius:8px;padding:8px 10px;font-size:12.5px}
+.center{text-align:center}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:'Baloo 2';font-weight:800;font-size:12.5px;padding:4px 12px;border-radius:999px}
+.badge svg{width:14px;height:14px}
+.badge.p1{background:#d7efc0;color:#256b33}
+.badge.p2{background:#fbdca8;color:#8a5a10}
+.badge.hots{background:#ffe9ae;color:#8a6400}
+#qText{font-size:16.5px;font-weight:700;margin:12px 0 4px;line-height:1.6}
+.ansRow{display:flex;gap:8px;align-items:center;margin-top:9px}
+.fieldLab{font-family:'Baloo 2';font-weight:800;min-width:118px;color:#6b4f23;font-size:15px}
+.ansInput{flex:1;min-width:0}
+.chipBtn{border:1.5px solid #d9c79b;background:#fff;border-radius:8px;padding:2px 9px;margin:0 2px;font-weight:800;font-family:'Baloo 2';cursor:pointer;color:#6b4f23;font-size:14px}
+.chipBtn:active{transform:translateY(1px)}
+.kbdHint{font-size:11.5px;color:#a08755;font-weight:700;margin-top:9px;text-align:center;line-height:2}
+.qFeedback{margin-top:12px;font-weight:800;display:none;gap:8px;align-items:flex-start;font-size:15px;line-height:1.4}
+.qFeedback.show{display:flex}
+.qFeedback.good{color:#2b8a3e}
+.qFeedback.bad{color:#c92a2a}
+.fi{width:20px;height:20px;flex:none;margin-top:1px}
+.explain{margin-top:10px;background:#f6efdb;border-left:4px solid #b08d3e;padding:9px 11px;font-size:13.5px;border-radius:0 8px 8px 0;line-height:1.55;display:none}
+.explain.show{display:block}
+.qactions{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.shake{animation:shake .28s 2}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+details{margin:4px 0;border:1.5px solid #efe3c4;border-radius:10px;padding:4px 12px;background:#fdf9ef}
+summary{font-family:'Baloo 2';color:var(--wood2);font-size:15px;padding:7px 0;cursor:pointer;list-style-position:inside}
+.kitem{font-size:13px;line-height:1.55;padding:8px 0;border-bottom:1px solid #efe3c4}
+.kitem i{color:#7a6134}
+.wrow{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;background:#faf4e4;border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px}
+.winTag{background:var(--gold);color:#5b3a1a;font-family:'Baloo 2';font-weight:800;padding:2px 10px;border-radius:999px;font-size:12px}
+.bigTrophy{width:84px;height:84px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.25))}
+.confettiLayer{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confettiLayer i{position:absolute;top:-8%;display:block;animation:cfall linear infinite}
+@keyframes cfall{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(112vh) rotate(760deg)}}
+footer{text-align:center;font-size:12.5px;color:#a08755;padding:0 12px 26px;font-weight:700}
+@media (max-width:600px){
+  .cell .q{display:none}
+  .cell.spec .q{display:block;font-size:6.5px}
+  .fieldLab{min-width:88px;font-size:13.5px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="a">ULAR</span> <span class="b">TANGGA</span> <span class="c">ALJABAR</span></h1>
+  <div class="tagline">Kuadrat, Faktorisasi, Identitas &amp; SPLDV &bull; Grade 8 (Cambridge) &bull; Soal Isian</div>
+</header>
+
+<main class="stage">
+  <section class="boardWrap">
+    <div class="board" id="board">
+      <div class="grid" id="grid"></div>
+      <svg id="overlay" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="legend">
+      <span class="chip"><i style="background:#d9ecbf"></i>Kotak 2&ndash;50 &bull; SEDANG</span>
+      <span class="chip"><i style="background:#f5ddb2"></i>Kotak 51&ndash;99 &bull; SULIT</span>
+      <span class="chip"><i style="background:#bde3ac"></i>Tangga = HOTS</span>
+      <span class="chip"><i style="background:#ffc4b0"></i>Ular = HOTS</span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="card">
+      <div class="who">Giliran: <span id="turnName">&ndash;</span></div>
+      <div class="diceRow">
+        <div class="dice" id="dice"></div>
+        <div class="diceSide">
+          <button class="btn green" id="btnRoll" disabled>Lempar Dadu</button>
+          <div class="diceVal">Dadu: <b id="diceVal">&ndash;</b></div>
+          <div class="hintKbd">atau tekan tombol Spasi</div>
+        </div>
+      </div>
+      <div id="msg">Isi nama pemain untuk memulai petualangan!</div>
+    </div>
+    <div class="card playerCard" id="pc0"></div>
+    <div class="card playerCard" id="pc1"></div>
+    <div class="card">
+      <div class="cardTitle">Catatan Permainan</div>
+      <div class="logBox" id="log"></div>
+    </div>
+    <div class="tools">
+      <button class="btn ghost small" id="btnKey">Kunci Jawaban (Tutor)</button>
+      <button class="btn ghost small" id="btnSound">Suara: ON</button>
+      <button class="btn ghost small" id="btnHow">Cara Bermain</button>
+    </div>
+  </aside>
+</main>
+
+<footer>Dibuat untuk belajar Aljabar (kuadrat, faktorisasi, identitas &amp; SPLDV) sambil bermain bersama tutor.</footer>
+
+<!-- ============ SETUP ============ -->
+<div class="ovl" id="setupOvl">
+  <div class="sheet">
+    <h2 class="center">Selamat Datang, Petualang Aljabar!</h2>
+    <p class="center" style="font-weight:700;color:#8a6a3f">Masukkan nama 2 pemain untuk memulai.</p>
+    <div class="nameRow">
+      <label><span class="pdot" style="background:var(--p1)"></span>Pemain 1:</label>
+      <input type="text" id="inName1" maxlength="14" placeholder="Nama pemain pertama" autocomplete="off">
+    </div>
+    <div class="nameRow">
+      <label><span class="pdot" style="background:var(--p2)"></span>Pemain 2:</label>
+      <input type="text" id="inName2" maxlength="14" placeholder="Nama pemain kedua" autocomplete="off">
+    </div>
+    <div class="rules" id="setupRules"></div>
+    <div class="center"><button class="btn green" id="btnStart" style="font-size:19px;padding:13px 34px">Mulai Bermain!</button></div>
+  </div>
+</div>
+
+<!-- ============ MODAL SOAL ============ -->
+<div class="ovl top hidden" id="qOvl">
+  <div class="sheet">
+    <span class="badge p1" id="qBadge">SOAL</span>
+    <h2 id="qTitle" style="margin-top:8px">Kotak</h2>
+    <p id="qText"></p>
+    <div id="ansWrap"></div>
+    <div class="kbdHint">
+      Masukkan cepat:
+      <button type="button" class="chipBtn" data-t="x">x</button>
+      <button type="button" class="chipBtn" data-t="y">y</button>
+      <button type="button" class="chipBtn" data-t="&#178;">&sup2;</button>
+      <button type="button" class="chipBtn" data-t="&#179;">&sup3;</button>
+      <button type="button" class="chipBtn" data-t="/">/</button>
+      <button type="button" class="chipBtn" data-t="(">(</button>
+      <button type="button" class="chipBtn" data-t=")">)</button>
+      <button type="button" class="chipBtn" data-t="-">&minus;</button>
+      &nbsp;|&nbsp; Enter = Periksa &bull; format: <b>3x^2+4x+1</b> atau <b>3x&#178;+4x+1</b>
+    </div>
+    <div class="qFeedback" id="qFeedback"></div>
+    <div class="explain" id="qExplain"></div>
+    <div class="qactions">
+      <button class="btn ghost small" id="btnSkip">Lewati (putusan tutor)</button>
+      <button class="btn green hidden" id="btnNext">Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ KUNCI JAWABAN ============ -->
+<div class="ovl top hidden" id="keyOvl">
+  <div class="sheet">
+    <h2>Kunci Jawaban &amp; Pembahasan <span style="font-size:13px;color:#a08755">(khusus tutor)</span></h2>
+    <div id="keyBody"></div>
+    <div class="center" style="margin-top:14px"><button class="btn" id="btnKeyClose">Tutup</button></div>
+  </div>
+</div>
+
+<!-- ============ CARA BERMAIN ============ -->
+<div class="ovl top hidden" id="howOvl">
+  <div class="sheet">
+    <h2>Cara Bermain</h2>
+    <div id="howBody"></div>
+    <div class="center" style="margin-top:14px"><button class="btn" id="btnHowClose">Tutup</button></div>
+  </div>
+</div>
+
+<!-- ============ PEMENANG ============ -->
+<div class="ovl hidden" id="winOvl">
+  <div class="confettiLayer" id="confetti"></div>
+  <div class="sheet center">
+    <svg class="bigTrophy" viewBox="0 0 24 24" fill="#e8b30f"><path d="M7 2h10v2h4v3a5 5 0 0 1-5 5h-.4a5.5 5.5 0 0 1-2.6 2.5V17h3v3H8v-3h3v-2.5A5.5 5.5 0 0 1 8.4 12H8a5 5 0 0 1-5-5V4h4V2zm-2 4v1a3 3 0 0 0 3 3V6H5zm14 0h-3v4a3 3 0 0 0 3-3V6z"/></svg>
+    <h2 style="font-size:30px">SELAMAT, <span id="winName"></span>!</h2>
+    <p style="font-weight:700;color:#8a6a3f;margin-bottom:10px">Kamu mencapai kotak 100 dan menjadi pemenangnya!</p>
+    <div id="winStats"></div>
+    <div class="center" style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn green" id="btnAgain">Main Lagi</button>
+      <button class="btn ghost" id="btnNew">Ganti Pemain</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ================= DATA PAPAN ================= */
+const LADDERS = {3:24, 9:31, 21:42, 36:55, 43:77, 62:81, 71:92, 80:99};
+const SNAKES  = {98:79, 97:64, 93:46, 89:53, 87:57, 74:39, 66:44, 33:13, 17:5};
+const PCOL = ['#e8590c','#0ca678'];
+const SNAKE_COLORS = [
+  {b:'#2f9e44',d:'#1b6e2c'},{b:'#e8590c',d:'#a83e07'},{b:'#1098ad',d:'#0b6f80'},
+  {b:'#d6336c',d:'#96204a'},{b:'#74b816',d:'#4f7d0e'}
+];
+const XY=[{label:'x ='},{label:'y ='}];
+const P3=(a,b,c)=>[a+b+c,a+c+b,b+a+c,b+c+a,c+a+b,c+b+a];
+
+/* ============ BANK SOAL ALJABAR (isian) ============
+   part: 1 = SEDANG (Bagian A, soal 1-40) -> kotak 2-50
+         2 = SULIT  (Bagian B, soal 41-70) -> kotak 51-99
+         3 = HOTS   (Bagian C, soal 71-100) -> kotak tangga & kepala ular
+   mode: poly=bentuk aljabar (dicek setara), str=faktor (varian diterima),
+         num=satu angka, num2=x&y berurutan, pair=dua angka bebas urutan */
+const QUESTIONS=[
+{n:1,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (x + 2)\u00B2",ans:"x^2+4x+4",ex:"(x + 2)\u00B2 = x\u00B2 + 2(x)(2) + 2\u00B2 = x\u00B2 + 4x + 4."},
+{n:2,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (y + 5)\u00B2",ans:"y^2+10y+25",ex:"(y + 5)\u00B2 = y\u00B2 + 10y + 25."},
+{n:3,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (a \u2212 4)\u00B2",ans:"a^2-8a+16",ex:"(a \u2212 4)\u00B2 = a\u00B2 \u2212 8a + 16."},
+{n:4,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (b \u2212 7)\u00B2",ans:"b^2-14b+49",ex:"(b \u2212 7)\u00B2 = b\u00B2 \u2212 14b + 49."},
+{n:5,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (2x + 1)\u00B2",ans:"4x^2+4x+1",ex:"(2x + 1)\u00B2 = 4x\u00B2 + 4x + 1."},
+{n:6,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (3y \u2212 2)\u00B2",ans:"9y^2-12y+4",ex:"(3y \u2212 2)\u00B2 = 9y\u00B2 \u2212 12y + 4."},
+{n:7,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (x + y)\u00B2",ans:"x^2+2xy+y^2",ex:"(x + y)\u00B2 = x\u00B2 + 2xy + y\u00B2."},
+{n:8,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (m \u2212 n)\u00B2",ans:"m^2-2mn+n^2",ex:"(m \u2212 n)\u00B2 = m\u00B2 \u2212 2mn + n\u00B2."},
+{n:9,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (4a + 3)\u00B2",ans:"16a^2+24a+9",ex:"(4a + 3)\u00B2 = 16a\u00B2 + 24a + 9."},
+{n:10,part:1,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk kuadrat berikut: (5p \u2212 4)\u00B2",ans:"25p^2-40p+16",ex:"(5p \u2212 4)\u00B2 = 25p\u00B2 \u2212 40p + 16."},
+{n:11,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: x\u00B2 \u2212 9",accept:["(x-3)(x+3)","(x+3)(x-3)"],ex:"Selisih kuadrat: x\u00B2 \u2212 9 = (x \u2212 3)(x + 3)."},
+{n:12,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: y\u00B2 \u2212 25",accept:["(y-5)(y+5)","(y+5)(y-5)"],ex:"Selisih kuadrat: y\u00B2 \u2212 25 = (y \u2212 5)(y + 5)."},
+{n:13,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 4a\u00B2 \u2212 1",accept:["(2a-1)(2a+1)","(2a+1)(2a-1)"],ex:"Selisih kuadrat: 4a\u00B2 \u2212 1 = (2a \u2212 1)(2a + 1)."},
+{n:14,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 9b\u00B2 \u2212 16",accept:["(3b-4)(3b+4)","(3b+4)(3b-4)"],ex:"Selisih kuadrat: 9b\u00B2 \u2212 16 = (3b \u2212 4)(3b + 4)."},
+{n:15,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: x\u00B2 + 6x + 9",accept:["(x+3)^2","(x+3)(x+3)"],ex:"Kuadrat sempurna: x\u00B2 + 6x + 9 = (x + 3)\u00B2."},
+{n:16,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: y\u00B2 \u2212 10y + 25",accept:["(y-5)^2","(y-5)(y-5)"],ex:"Kuadrat sempurna: y\u00B2 \u2212 10y + 25 = (y \u2212 5)\u00B2."},
+{n:17,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: a\u00B2 + 4a + 4",accept:["(a+2)^2","(a+2)(a+2)"],ex:"Kuadrat sempurna: a\u00B2 + 4a + 4 = (a + 2)\u00B2."},
+{n:18,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: b\u00B2 \u2212 14b + 49",accept:["(b-7)^2","(b-7)(b-7)"],ex:"Kuadrat sempurna: b\u00B2 \u2212 14b + 49 = (b \u2212 7)\u00B2."},
+{n:19,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: x\u00B2 + 8x + 16",accept:["(x+4)^2","(x+4)(x+4)"],ex:"Kuadrat sempurna: x\u00B2 + 8x + 16 = (x + 4)\u00B2."},
+{n:20,part:1,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: m\u00B2 \u2212 2m + 1",accept:["(m-1)^2","(m-1)(m-1)"],ex:"Kuadrat sempurna: m\u00B2 \u2212 2m + 1 = (m \u2212 1)\u00B2."},
+{n:21,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 101\u00B2",ans:10201,ex:"(100 + 1)\u00B2 = 10000 + 200 + 1 = 10201."},
+{n:22,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 103\u00B2",ans:10609,ex:"(100 + 3)\u00B2 = 10000 + 600 + 9 = 10609."},
+{n:23,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 105\u00B2",ans:11025,ex:"(100 + 5)\u00B2 = 10000 + 1000 + 25 = 11025."},
+{n:24,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 99\u00B2",ans:9801,ex:"(100 \u2212 1)\u00B2 = 10000 \u2212 200 + 1 = 9801."},
+{n:25,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 98\u00B2",ans:9604,ex:"(100 \u2212 2)\u00B2 = 10000 \u2212 400 + 4 = 9604."},
+{n:26,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 95\u00B2",ans:9025,ex:"(100 \u2212 5)\u00B2 = 10000 \u2212 1000 + 25 = 9025."},
+{n:27,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 51\u00B2 \u2212 49\u00B2",ans:200,ex:"(51 \u2212 49)(51 + 49) = 2 \u00D7 100 = 200."},
+{n:28,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 12\u00B2 \u2212 8\u00B2",ans:80,ex:"(12 \u2212 8)(12 + 8) = 4 \u00D7 20 = 80."},
+{n:29,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 25\u00B2 \u2212 15\u00B2",ans:400,ex:"(25 \u2212 15)(25 + 15) = 10 \u00D7 40 = 400."},
+{n:30,part:1,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 102 \u00D7 98",ans:9996,ex:"(100 + 2)(100 \u2212 2) = 10000 \u2212 4 = 9996."},
+{n:31,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: x + y = 10 dan x \u2212 y = 2",ans:[6,4],ex:"Eliminasi: 2x = 12 \u21D2 x = 6. Substitusi: y = 4."},
+{n:32,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: x + y = 7 dan x \u2212 y = 3",ans:[5,2],ex:"Eliminasi: 2x = 10 \u21D2 x = 5, y = 2."},
+{n:33,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: 2x + y = 8 dan x \u2212 y = 1",ans:[3,2],ex:"x \u2212 y = 1 \u21D2 x = y + 1. Substitusi: 3y = 6 \u21D2 y = 2, x = 3."},
+{n:34,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: x + 2y = 7 dan 2x \u2212 y = 4",ans:[3,2],ex:"Pers. 2 \u00D7 2: 4x \u2212 2y = 8. Jumlahkan: 5x = 15 \u21D2 x = 3, y = 2."},
+{n:35,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: 3x + y = 11 dan x + y = 5",ans:[3,2],ex:"Kurangkan: 2x = 6 \u21D2 x = 3, y = 2."},
+{n:36,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: 2x + 3y = 12 dan 2x + y = 8",ans:[3,2],ex:"Kurangkan: 2y = 4 \u21D2 y = 2, x = 3."},
+{n:37,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: x \u2212 2y = 4 dan 3x + 2y = 12",ans:[4,0],ex:"Jumlahkan: 4x = 16 \u21D2 x = 4, y = 0."},
+{n:38,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: 4x \u2212 y = 7 dan x + y = 8",ans:[3,5],ex:"Jumlahkan: 5x = 15 \u21D2 x = 3, y = 5."},
+{n:39,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: 3x \u2212 2y = 5 dan x + 2y = 7",ans:[3,2],ex:"Jumlahkan: 4x = 12 \u21D2 x = 3, y = 2."},
+{n:40,part:1,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan SPLDV berikut: 5x + y = 13 dan 2x \u2212 y = 1",ans:[2,3],ex:"Jumlahkan: 7x = 14 \u21D2 x = 2, y = 3."},
+{n:41,part:2,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk berikut: (2x + 5y)\u00B2",ans:"4x^2+20xy+25y^2",ex:"(2x + 5y)\u00B2 = 4x\u00B2 + 20xy + 25y\u00B2."},
+{n:42,part:2,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk berikut: (3a \u2212 4b)\u00B2",ans:"9a^2-24ab+16b^2",ex:"(3a \u2212 4b)\u00B2 = 9a\u00B2 \u2212 24ab + 16b\u00B2."},
+{n:43,part:2,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk berikut: (0,5x + 4)\u00B2",ans:"0.25x^2+4x+16",ex:"(0,5x + 4)\u00B2 = 0,25x\u00B2 + 4x + 16."},
+{n:44,part:2,t:"Kuadrat",mode:"str",q:"Jabarkan bentuk berikut: (x \u2212 1/x)\u00B2",accept:["x^2-2+1/x^2","x^2+1/x^2-2","-2+x^2+1/x^2","x^2-2+x^-2"],ex:"x\u00B2 \u2212 2(x)(1/x) + 1/x\u00B2 = x\u00B2 \u2212 2 + 1/x\u00B2."},
+{n:45,part:2,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk berikut: (2m + 0,5)\u00B2",ans:"4m^2+2m+0.25",ex:"(2m + 0,5)\u00B2 = 4m\u00B2 + 2m + 0,25."},
+{n:46,part:2,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk berikut: (\u22123x \u2212 2y)\u00B2",ans:"9x^2+12xy+4y^2",ex:"(\u22123x \u2212 2y)\u00B2 = 9x\u00B2 + 12xy + 4y\u00B2."},
+{n:47,part:2,t:"Kuadrat",mode:"poly",q:"Jabarkan bentuk berikut: (4x\u00B2 \u2212 3y)\u00B2",ans:"16x^4-24x^2y+9y^2",ex:"(4x\u00B2 \u2212 3y)\u00B2 = 16x\u2074 \u2212 24x\u00B2y + 9y\u00B2."},
+{n:48,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 25x\u00B2 \u2212 36y\u00B2",accept:["(5x-6y)(5x+6y)","(5x+6y)(5x-6y)"],ex:"Selisih kuadrat: (5x \u2212 6y)(5x + 6y)."},
+{n:49,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 16a\u2074 \u2212 81",accept:P3("(2a-3)","(2a+3)","(4a^2+9)"),ex:"16a\u2074 \u2212 81 = (4a\u00B2 \u2212 9)(4a\u00B2 + 9) = (2a \u2212 3)(2a + 3)(4a\u00B2 + 9)."},
+{n:50,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 2x\u00B2 \u2212 18",accept:["2(x-3)(x+3)","2(x+3)(x-3)"],ex:"2x\u00B2 \u2212 18 = 2(x\u00B2 \u2212 9) = 2(x \u2212 3)(x + 3)."},
+{n:51,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 3y\u00B2 + 24y + 48",accept:["3(y+4)^2","3(y+4)(y+4)"],ex:"3y\u00B2 + 24y + 48 = 3(y\u00B2 + 8y + 16) = 3(y + 4)\u00B2."},
+{n:52,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 4x\u00B2 \u2212 12xy + 9y\u00B2",accept:["(2x-3y)^2","(2x-3y)(2x-3y)"],ex:"Kuadrat sempurna: (2x \u2212 3y)\u00B2."},
+{n:53,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: x\u00B3 \u2212 x",accept:["x(x-1)(x+1)","x(x+1)(x-1)"],ex:"x\u00B3 \u2212 x = x(x\u00B2 \u2212 1) = x(x \u2212 1)(x + 1)."},
+{n:54,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 9m\u00B2 \u2212 30mn + 25n\u00B2",accept:["(3m-5n)^2","(3m-5n)(3m-5n)"],ex:"Kuadrat sempurna: (3m \u2212 5n)\u00B2."},
+{n:55,part:2,t:"Faktor",mode:"str",q:"Faktorkan sepenuhnya: 5a\u00B2 \u2212 20b\u00B2",accept:["5(a-2b)(a+2b)","5(a+2b)(a-2b)"],ex:"5a\u00B2 \u2212 20b\u00B2 = 5(a\u00B2 \u2212 4b\u00B2) = 5(a \u2212 2b)(a + 2b)."},
+{n:56,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 1004\u00B2",ans:1008016,ex:"(1000 + 4)\u00B2 = 1000000 + 8000 + 16 = 1008016."},
+{n:57,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 997\u00B2",ans:994009,ex:"(1000 \u2212 3)\u00B2 = 1000000 \u2212 6000 + 9 = 994009."},
+{n:58,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 8,5\u00B2 \u2212 1,5\u00B2",ans:70,ex:"(8,5 \u2212 1,5)(8,5 + 1,5) = 7 \u00D7 10 = 70."},
+{n:59,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 10,2 \u00D7 9,8",ans:99.96,ex:"(10 + 0,2)(10 \u2212 0,2) = 100 \u2212 0,04 = 99,96."},
+{n:60,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 105\u00B2 \u2212 95\u00B2",ans:2000,ex:"(105 \u2212 95)(105 + 95) = 10 \u00D7 200 = 2000."},
+{n:61,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 55\u00B2 \u2212 45\u00B2",ans:1000,ex:"(55 \u2212 45)(55 + 45) = 10 \u00D7 100 = 1000."},
+{n:62,part:2,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: (65\u00B2 \u2212 35\u00B2) \u00F7 30",ans:100,ex:"(65 \u2212 35)(65 + 35) / 30 = 30 \u00D7 100 / 30 = 100."},
+{n:63,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: 3x \u2212 4y = 10 dan 5x + 2y = 21",ans:[4,0.5],ex:"Pers. 2 \u00D7 2: 10x + 4y = 42. Tambah pers. 1: 13x = 52 \u21D2 x = 4, y = 0,5."},
+{n:64,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: 4x + 3y = \u22122 dan 2x \u2212 5y = 12",ans:[1,-2],ex:"Pers. 1 \u00D7 5, pers. 2 \u00D7 3, jumlahkan: 26x = 26 \u21D2 x = 1, y = \u22122."},
+{n:65,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: 2x \u2212 7y = 3 dan 5x + 3y = \u221213",ans:[-2,-1],ex:"Pers. 1 \u00D7 3, pers. 2 \u00D7 7, eliminasi y: x = \u22122, y = \u22121."},
+{n:66,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: x/2 + y = 5 dan x \u2212 y/3 = 3",ans:[4,3],ex:"Hilangkan pecahan (\u00D76): 3x + 6y = 30 dan 6x \u2212 2y = 18 \u21D2 x = 4, y = 3."},
+{n:67,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: x/2 + y/3 = 4 dan x/3 + y/2 = 3,5",ans:[6,3],ex:"Hilangkan pecahan (\u00D76): 3x + 2y = 24 dan 2x + 3y = 21 \u21D2 x = 6, y = 3."},
+{n:68,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: 0,2x + 0,3y = 1,2 dan 0,5x \u2212 0,2y = 1,1",ans:[3,2],ex:"Kali 10: 2x + 3y = 12 dan 5x \u2212 2y = 11 \u21D2 x = 3, y = 2."},
+{n:69,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: 3(x \u2212 1) + 2(y \u2212 1) = 7 dan 2(x + 1) \u2212 (y + 2) = 1",ans:[2,3],ex:"Jabarkan: 3x + 2y = 12 dan 2x \u2212 y = 1 \u21D2 x = 2, y = 3."},
+{n:70,part:2,t:"SPLDV",mode:"num2",fields:XY,q:"Selesaikan persamaan simultan: 4x = 3y + 1 dan 5y = 2x + 3",ans:[1,1],ex:"Susun: 4x \u2212 3y = 1 dan \u22122x + 5y = 3. Pers. 2 \u00D7 2 lalu jumlahkan: x = 1, y = 1."},
+{n:71,part:3,t:"HOTS",mode:"num",q:"Jika x + 1/x = 5, tentukan nilai dari x\u00B2 + 1/x\u00B2.",ans:23,ex:"x\u00B2 + 1/x\u00B2 = (x + 1/x)\u00B2 \u2212 2 = 5\u00B2 \u2212 2 = 23."},
+{n:72,part:3,t:"HOTS",mode:"num",q:"Jika a \u2212 b = 4 dan ab = 12, tentukan nilai tepat dari a\u00B2 + b\u00B2.",ans:40,ex:"(a \u2212 b)\u00B2 = a\u00B2 \u2212 2ab + b\u00B2 \u21D2 16 = a\u00B2 + b\u00B2 \u2212 24 \u21D2 a\u00B2 + b\u00B2 = 40."},
+{n:73,part:3,t:"HOTS",mode:"num",q:"Jika p + q = 8 dan p\u00B2 + q\u00B2 = 34, tentukan nilai pq.",ans:15,ex:"(p + q)\u00B2 = p\u00B2 + q\u00B2 + 2pq \u21D2 64 = 34 + 2pq \u21D2 2pq = 30 \u21D2 pq = 15."},
+{n:74,part:3,t:"HOTS",mode:"poly",q:"Tentukan luas persegi dengan panjang sisi (3x \u2212 5) cm, dalam bentuk jabaran.",ans:"9x^2-30x+25",ex:"Luas = (3x \u2212 5)\u00B2 = 9x\u00B2 \u2212 30x + 25."},
+{n:75,part:3,t:"HOTS",mode:"poly",q:"Jabarkan dan sederhanakan sepenuhnya: (2x + 3)\u00B2 \u2212 (2x \u2212 3)\u00B2.",ans:"24x",ex:"Gunakan a\u00B2 \u2212 b\u00B2 = (a \u2212 b)(a + b): (6)(4x) = 24x."},
+{n:76,part:3,t:"HOTS",mode:"num",q:"Jika m\u00B2 + n\u00B2 = 45 dan mn = 18, tentukan nilai (m + n)\u00B2.",ans:81,ex:"(m + n)\u00B2 = m\u00B2 + n\u00B2 + 2mn = 45 + 2(18) = 45 + 36 = 81."},
+{n:77,part:3,t:"HOTS",mode:"num",q:"Tentukan nilai tepat dari: 2025\u00B2 \u2212 2 \u00D7 2025 \u00D7 2024 + 2024\u00B2.",ans:1,ex:"Bentuk (a \u2212 b)\u00B2: (2025 \u2212 2024)\u00B2 = 1\u00B2 = 1."},
+{n:78,part:3,t:"HOTS",mode:"str",q:"Faktorkan sepenuhnya: (x + 2)\u00B2 \u2212 (x \u2212 4)\u00B2.",accept:["12(x-1)","12x-12","-12+12x"],ex:"Selisih kuadrat: ((x+2) \u2212 (x\u22124))((x+2) + (x\u22124)) = (6)(2x \u2212 2) = 12(x \u2212 1)."},
+{n:79,part:3,t:"HOTS",mode:"str",q:"Faktorkan sepenuhnya: x\u2074 \u2212 16y\u2074.",accept:P3("(x-2y)","(x+2y)","(x^2+4y^2)"),ex:"(x\u00B2 \u2212 4y\u00B2)(x\u00B2 + 4y\u00B2) = (x \u2212 2y)(x + 2y)(x\u00B2 + 4y\u00B2)."},
+{n:80,part:3,t:"HOTS",mode:"str",q:"Faktorkan sepenuhnya: x\u00B2 \u2212 2xy + y\u00B2 \u2212 9.",accept:["(x-y-3)(x-y+3)","(x-y+3)(x-y-3)"],ex:"Kelompokkan: (x \u2212 y)\u00B2 \u2212 3\u00B2 = (x \u2212 y \u2212 3)(x \u2212 y + 3)."},
+{n:81,part:3,t:"HOTS",mode:"str",q:"Faktorkan sepenuhnya: 4x\u00B2 \u2212 y\u00B2 + 6y \u2212 9.",accept:["(2x-y+3)(2x+y-3)","(2x+y-3)(2x-y+3)"],ex:"Kelompokkan: 4x\u00B2 \u2212 (y\u00B2 \u2212 6y + 9) = (2x)\u00B2 \u2212 (y \u2212 3)\u00B2 = (2x \u2212 y + 3)(2x + y \u2212 3)."},
+{n:82,part:3,t:"HOTS",mode:"poly",fields:[{label:"Lebar ="}],q:"Luas persegi panjang dinyatakan dengan (x\u00B2 + 8x + 15). Jika panjangnya (x + 5), berapa lebarnya?",ans:"x+3",ex:"x\u00B2 + 8x + 15 = (x + 5)(x + 3). Karena panjang x + 5, lebar = x + 3."},
+{n:83,part:3,t:"HOTS",mode:"num",q:"Faktorkan \u03C0R\u00B2 \u2212 \u03C0r\u00B2, lalu gunakan untuk mencari luas tepat jika R = 14, r = 7, dan \u03C0 = 22/7.",ans:462,ex:"\u03C0(R\u00B2 \u2212 r\u00B2) = \u03C0(R \u2212 r)(R + r) = (22/7)(7)(21) = 462."},
+{n:84,part:3,t:"HOTS",mode:"num",fields:[{label:"x + y ="}],q:"Diketahui x\u00B2 \u2212 y\u00B2 = 51 dan x \u2212 y = 3. Tentukan nilai x + y.",ans:17,ex:"x\u00B2 \u2212 y\u00B2 = (x \u2212 y)(x + y) \u21D2 51 = 3(x + y) \u21D2 x + y = 17."},
+{n:85,part:3,t:"HOTS",mode:"pair",fields:[{label:"Bilangan 1 ="},{label:"Bilangan 2 ="}],q:"Tentukan dua bilangan positif yang jumlahnya 15 dan selisih kuadratnya 75.",ans:[10,5],ex:"x + y = 15 dan x\u00B2 \u2212 y\u00B2 = 75 \u21D2 x \u2212 y = 5. Jumlahkan: 2x = 20 \u21D2 x = 10, y = 5."},
+{n:86,part:3,t:"HOTS",mode:"num",q:"Hitung tanpa kalkulator: (2026\u00B2 \u2212 2024\u00B2) \u00F7 4.",ans:2025,ex:"(2026 \u2212 2024)(2026 + 2024)/4 = 2 \u00D7 4050 / 4 = 2025."},
+{n:87,part:3,t:"HOTS",mode:"num",q:"Hitung: 12345\u00B2 \u2212 12344 \u00D7 12346. (Petunjuk: misalkan x = 12345.)",ans:1,ex:"x\u00B2 \u2212 (x \u2212 1)(x + 1) = x\u00B2 \u2212 (x\u00B2 \u2212 1) = 1."},
+{n:88,part:3,t:"HOTS",mode:"num",q:"Hitung 99,9\u00B2 menggunakan identitas kuadrat.",ans:9980.01,ex:"(100 \u2212 0,1)\u00B2 = 10000 \u2212 20 + 0,01 = 9980,01."},
+{n:89,part:3,t:"HOTS",mode:"num",q:"Jika x = 10,5 dan y = 9,5, hitung x\u00B2 \u2212 2xy + y\u00B2.",ans:1,ex:"Bentuk (x \u2212 y)\u00B2: (10,5 \u2212 9,5)\u00B2 = 1\u00B2 = 1."},
+{n:90,part:3,t:"HOTS",mode:"str",q:"Sederhanakan pecahan aljabar: (x\u00B2 \u2212 9) / (x\u00B2 + 6x + 9).",accept:["(x-3)/(x+3)"],ex:"Faktor atas dan bawah: (x \u2212 3)(x + 3) / (x + 3)\u00B2 = (x \u2212 3)/(x + 3)."},
+{n:91,part:3,t:"HOTS",mode:"num",q:"Hitung: (87\u00B2 \u2212 13\u00B2) \u00F7 (87 \u2212 13).",ans:100,ex:"(87 \u2212 13)(87 + 13) / (87 \u2212 13) = 87 + 13 = 100."},
+{n:92,part:3,t:"HOTS",mode:"num",q:"Hitung: 1001\u00B2 \u2212 999\u00B2.",ans:4000,ex:"(1001 \u2212 999)(1001 + 999) = 2 \u00D7 2000 = 4000."},
+{n:93,part:3,t:"HOTS",mode:"pair",fields:[{label:"Bilangan 1 ="},{label:"Bilangan 2 ="}],q:"Jumlah dua bilangan adalah 45 dan selisihnya 11. Tentukan kedua bilangan itu.",ans:[28,17],ex:"x + y = 45, x \u2212 y = 11. Tambahkan: 2x = 56 \u21D2 x = 28, y = 17."},
+{n:94,part:3,t:"HOTS",mode:"num",fields:[{label:"Harga apel ($) ="}],q:"3 apel dan 2 pisang harganya $8. 5 apel dan 1 pisang harganya $11. Berapa harga satu apel?",ans:2,ex:"3a + 2b = 8 dan 5a + b = 11. Pers. 2 \u00D7 2: 10a + 2b = 22. Kurangkan: 7a = 14 \u21D2 a = 2."},
+{n:95,part:3,t:"HOTS",mode:"num2",fields:XY,q:"Selesaikan untuk x dan y: 2/x + 3/y = 8 dan 3/x \u2212 1/y = 1.",ans:[1,0.5],ex:"Misal p = 1/x, q = 1/y: 2p + 3q = 8, 3p \u2212 q = 1. Pers. 2 \u00D7 3: 9p \u2212 3q = 3. Jumlahkan: 11p = 11 \u21D2 p = 1 \u21D2 x = 1, q = 2 \u21D2 y = 0,5."},
+{n:96,part:3,t:"HOTS",mode:"pair",fields:[{label:"Usia ayah ="},{label:"Usia anak ="}],q:"Dalam 5 tahun, usia ayah akan dua kali usia anaknya. 5 tahun lalu, usianya tiga kali usia anaknya. Berapa usia mereka sekarang (tahun)?",ans:[35,15],ex:"B + 5 = 2(A + 5) \u21D2 B \u2212 2A = 5. B \u2212 5 = 3(A \u2212 5) \u21D2 B \u2212 3A = \u221210. Kurangkan: A = 15, B = 35."},
+{n:97,part:3,t:"HOTS",mode:"num",fields:[{label:"Bilangan ="}],q:"Sebuah bilangan dua digit adalah 4 kali jumlah digit-digitnya. Jika 18 ditambahkan ke bilangan itu, digitnya tertukar. Tentukan bilangan itu.",ans:24,ex:"10a + b = 4(a + b) \u21D2 2a = b. 10a + b + 18 = 10b + a \u21D2 b \u2212 a = 2. Karena 2a = b: a = 2, b = 4. Angka: 24."},
+{n:98,part:3,t:"HOTS",mode:"num",fields:[{label:"Kecepatan (km/jam) ="}],q:"Perahu menempuh 24 km melawan arus dalam 4 jam, dan kembali 24 km searah arus dalam 2 jam. Berapa kecepatan perahu di air tenang?",ans:9,ex:"Hulu: v \u2212 c = 24/4 = 6. Hilir: v + c = 24/2 = 12. Jumlahkan: 2v = 18 \u21D2 v = 9 km/jam."},
+{n:99,part:3,t:"HOTS",mode:"num2",fields:XY,q:"Selesaikan untuk x dan y dengan sifat pangkat dan SPLDV: 2^(x+y) = 16 dan 3^(x\u2212y) = 9.",ans:[3,1],ex:"2^(x+y) = 2\u2074 \u21D2 x + y = 4. 3^(x\u2212y) = 3\u00B2 \u21D2 x \u2212 y = 2. Jumlahkan: 2x = 6 \u21D2 x = 3, y = 1."},
+{n:100,part:3,t:"HOTS",mode:"num",fields:[{label:"Luas (cm\u00B2) ="}],q:"Keliling persegi panjang adalah 40 cm. Panjangnya 4 cm lebih dari lebarnya. Berapa luas persegi panjang itu?",ans:96,ex:"2(p + l) = 40 \u21D2 p + l = 20. Diketahui p = l + 4 \u21D2 2l + 4 = 20 \u21D2 l = 8, p = 12. Luas = 96 cm\u00B2."}
+];
+
+/* Soal pengisi bergaya identik (papan punya lebih banyak kotak daripada bank soal) */
+const EXTRA_MEDIUM=[
+ {n:"A+",part:1,extra:true,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 96\u00B2",ans:9216,ex:"(100 \u2212 4)\u00B2 = 10000 \u2212 800 + 16 = 9216."},
+ {n:"A+",part:1,extra:true,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 94\u00B2",ans:8836,ex:"(100 \u2212 6)\u00B2 = 10000 \u2212 1200 + 36 = 8836."},
+ {n:"A+",part:1,extra:true,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 46\u00B2 \u2212 34\u00B2",ans:960,ex:"(46 \u2212 34)(46 + 34) = 12 \u00D7 80 = 960."},
+ {n:"A+",part:1,extra:true,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 13\u00B2 \u2212 7\u00B2",ans:120,ex:"(13 \u2212 7)(13 + 7) = 6 \u00D7 20 = 120."},
+ {n:"A+",part:1,extra:true,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 87\u00B2 \u2212 83\u00B2",ans:680,ex:"(87 \u2212 83)(87 + 83) = 4 \u00D7 170 = 680."},
+ {n:"A+",part:1,extra:true,t:"Hitung",mode:"num",q:"Hitung tanpa kalkulator menggunakan identitas: 104 \u00D7 96",ans:9984,ex:"(100 + 4)(100 \u2212 4) = 10000 \u2212 16 = 9984."}
+];
+const EXTRA_HARD=[
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 1006\u00B2",ans:1008016,ex:"(1000 + 6)\u00B2 = 1000000 + 12000 + 36 = 1008036? Tidak \u2014 hitung: 1000\u00B2 + 2(1000)(6) + 36 = 1000000 + 12000 + 36 = 1012036."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 996\u00B2",ans:992016,ex:"(1000 \u2212 4)\u00B2 = 1000000 \u2212 8000 + 16 = 992016."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 74\u00B2 \u2212 26\u00B2",ans:4800,ex:"(74 \u2212 26)(74 + 26) = 48 \u00D7 100 = 4800."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 46\u00B2 \u2212 36\u00B2",ans:820,ex:"(46 \u2212 36)(46 + 36) = 10 \u00D7 82 = 820."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 71\u00B2 \u2212 51\u00B2",ans:2440,ex:"(71 \u2212 51)(71 + 51) = 20 \u00D7 122 = 2440."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 88\u00B2 \u2212 12\u00B2",ans:7600,ex:"(88 \u2212 12)(88 + 12) = 76 \u00D7 100 = 7600."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: (92\u00B2 \u2212 8\u00B2) \u00F7 100",ans:84,ex:"(92 \u2212 8)(92 + 8) / 100 = 84 \u00D7 100 / 100 = 84."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: (75\u00B2 \u2212 25\u00B2) \u00F7 50",ans:100,ex:"(75 \u2212 25)(75 + 25) / 50 = 50 \u00D7 100 / 50 = 100."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 204 \u00D7 196",ans:39996,ex:"(200 + 4)(200 \u2212 4) = 40000 \u2212 16 = 39996."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 108\u00B2 \u2212 92\u00B2",ans:3200,ex:"(108 \u2212 92)(108 + 92) = 16 \u00D7 200 = 3200."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 5,4\u00B2 \u2212 4,6\u00B2",ans:8,ex:"(5,4 \u2212 4,6)(5,4 + 4,6) = 0,8 \u00D7 10 = 8."},
+ {n:"B+",part:2,extra:true,t:"Hitung",mode:"num",q:"Hitung menggunakan identitas: 103 \u00D7 97",ans:9991,ex:"(100 + 3)(100 \u2212 3) = 10000 \u2212 9 = 9991."}
+];
+/* perbaiki teks pembahasan soal tambahan pertama */
+EXTRA_HARD[0].ex="(1000 + 6)\u00B2 = 1000000 + 12000 + 36 = 1012036.";
+
+/* Ikon SVG */
+const LAD_MINI=`<svg class="mini" viewBox="0 0 24 24" fill="none" stroke="#2f7d3b" stroke-width="2.6" stroke-linecap="round"><path d="M8 3v18M16 3v18M8 8h8M8 13h8M8 18h8"/></svg>`;
+const SNK_MINI=`<svg class="mini" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="3" stroke-linecap="round"><path d="M19 4c-9 0-9 6 0 6c9 0 9 7 0 7H5"/><circle cx="19.5" cy="4" r="2.4" fill="#c0392b" stroke="none"/></svg>`;
+const TROPHY_MINI=`<svg class="mini" viewBox="0 0 24 24" fill="#d4a017"><path d="M7 2h10v2h4v3a5 5 0 0 1-5 5h-.4a5.5 5.5 0 0 1-2.6 2.5V17h3v3H8v-3h3v-2.5A5.5 5.5 0 0 1 8.4 12H8a5 5 0 0 1-5-5V4h4V2zm-2 4v1a3 3 0 0 0 3 3V6H5zm14 0h-3v4a3 3 0 0 0 3-3V6z"/></svg>`;
+const STAR=`<svg class="st" viewBox="0 0 24 24" fill="#e8b30f"><path d="M12 2l2.9 6.2 6.8.9-5 4.7 1.3 6.7L12 17.2 6 20.5l1.3-6.7-5-4.7 6.8-.9z"/></svg>`;
+const STAR_BADGE=`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.2 6.8.9-5 4.7 1.3 6.7L12 17.2 6 20.5l1.3-6.7-5-4.7 6.8-.9z"/></svg>`;
+const OK_ICON=`<svg class="fi" viewBox="0 0 24 24" fill="none" stroke="#2b8a3e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>`;
+const NO_ICON=`<svg class="fi" viewBox="0 0 24 24" fill="none" stroke="#c92a2a" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+
+const RULES_HTML=`<ol>
+<li>Masukkan nama 2 pemain, lalu tekan <b>Mulai Bermain</b>. Keduanya bergiliran melempar dadu; pion berjalan <b>satu kotak demi satu kotak</b>.</li>
+<li><b>Kotak biasa</b> berisi soal <b>isian</b>. Ketik jawabanmu \u2014 pion hanya boleh maju jika dijawab <b>benar</b>. Jika gagal (2 kesempatan), pion <b>tetap di tempat</b>.</li>
+<li><b>Zona kesulitan:</b> kotak 2&ndash;50 = <b>SEDANG</b> (Bagian A), kotak 51&ndash;99 = <b>SULIT</b> (Bagian B) \u2014 terlihat dari warna kotak.</li>
+<li><b>Kotak Tangga (hijau) &amp; Kepala Ular (merah):</b> berisi soal <b>HOTS</b> (Bagian C). Tangga: benar \u2192 <b>naik tangga</b>. Ular: salah \u2192 <b>turun ke ekor</b>; benar \u2192 aman.</li>
+<li><b>Format isian:</b> bentuk aljabar ketik mis. <b>3x^2+4x+1</b> atau <b>3x\u00B2+4x+1</b>; faktor ketik <b>(x-3)(x+3)</b>; soal SPLDV/cerita mengisi <b>dua kotak</b> (x &amp; y). Ada tombol bantu x, \u00B2, tanda kurung.</li>
+<li>Harus berhenti <b>tepat di kotak 100</b>. Jika angka dadu lebih, pion memantul mundur. Pemain pertama yang mencapai kotak 100 <b>menang</b>!</li>
+</ol>
+<div class="tips">Tips tutor: buka <b>Kunci Jawaban</b> untuk melihat seluruh soal per bagian (SEDANG / SULIT / HOTS, lengkap nomor soal di dokumen) beserta pembahasannya. Gunakan tombol <b>Lewati</b> pada kotak soal jika diperlukan.</div>`;
+
+/* ================= UTIL ================= */
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function svgEl(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+const show=el=>el.classList.remove('hidden');
+const hide=el=>el.classList.add('hidden');
+
+/* ================= PEMERIKSA JAWABAN ALJABAR ================= */
+function normAlg(s){
+  return String(s||'').toLowerCase().replace(/\s+/g,'')
+    .replace(/\u00B2/g,'^2').replace(/\u00B3/g,'^3').replace(/\u2074/g,'^4').replace(/\u2075/g,'^5')
+    .replace(/[\u00D7\u00B7]/g,'*').replace(/[\u2212\u2013\u2014]/g,'-')
+    .replace(/(\d),(\d)/g,'$1.$2');
+}
+function withImplicit(s){
+  let out='';
+  for(let i=0;i<s.length;i++){
+    const c=s[i];
+    if(i>0){
+      const p=s[i-1];
+      if(/[a-z0-9)]/.test(p)&&/[a-z(]/.test(c))out+='*';
+      else if(/[a-z)]/.test(p)&&/[0-9]/.test(c))out+='*';
+    }
+    out+=c;
+  }
+  return out;
+}
+function algAST(src){
+  const s=src;let pos=0;
+  function pExpr(){let n=pTerm();while(s[pos]==='+'||s[pos]==='-'){const op=s[pos++];n={op,args:[n,pTerm()]};}return n;}
+  function pTerm(){let n=pUnary();while(s[pos]==='*'||s[pos]==='/'){const op=s[pos++];n={op,args:[n,pUnary()]};}return n;}
+  function pUnary(){if(s[pos]==='-'){pos++;return{op:'neg',args:[pUnary()]};}if(s[pos]==='+'){pos++;return pUnary();}return pPow();}
+  function pPow(){const b=pAtom();if(s[pos]==='^'){pos++;return{op:'^',args:[b,pUnary()]};}return b;}
+  function pAtom(){
+    const c=s[pos];
+    if(c==='('){pos++;const v=pExpr();if(s[pos]!==')')throw 0;pos++;return v;}
+    if(c===undefined)throw 0;
+    if(/[0-9.]/.test(c)){let st=pos;while(pos<s.length&&/[0-9.]/.test(s[pos]))pos++;const v=parseFloat(s.slice(st,pos));if(isNaN(v))throw 0;return{op:'num',v};}
+    if(/[a-z]/.test(c)){pos++;return{op:'var',v:c};}
+    throw 0;
+  }
+  const ast=pExpr();
+  if(pos!==s.length)throw 0;
+  return ast;
+}
+function evalAST(n,v){
+  switch(n.op){
+    case 'num':return n.v;
+    case 'var':return v[n.v]||0;
+    case 'neg':return -evalAST(n.args[0],v);
+    case '+':return evalAST(n.args[0],v)+evalAST(n.args[1],v);
+    case '-':return evalAST(n.args[0],v)-evalAST(n.args[1],v);
+    case '*':return evalAST(n.args[0],v)*evalAST(n.args[1],v);
+    case '/':return evalAST(n.args[0],v)/evalAST(n.args[1],v);
+    case '^':return Math.pow(evalAST(n.args[0],v),evalAST(n.args[1],v));
+  }
+}
+function collectVars(n,set){if(n.op==='var')set.add(n.v);if(n.args)n.args.forEach(a=>collectVars(a,set));}
+function polyEquals(user,ans){
+  const u=withImplicit(normAlg(user)),a=withImplicit(normAlg(ans));
+  if(!u||!a)return false;
+  let ua,aa;
+  try{ua=algAST(u);aa=algAST(a);}catch(e){return false;}
+  const names=new Set();collectVars(ua,names);collectVars(aa,names);
+  const nm=[...names];
+  const samples=[[2,3],[1.5,2.5],[0.5,1.5],[3,1.5],[2.2,0.8],[1,1]];
+  for(const t of samples){
+    const o={};nm.forEach((x,i)=>o[x]=t[i%t.length]);
+    let x,y;
+    try{x=evalAST(ua,o);y=evalAST(aa,o);}catch(e){return false;}
+    if(!isFinite(x)||!isFinite(y))return false;
+    if(Math.abs(x-y)>1e-6*Math.max(1,Math.abs(y)))return false;
+  }
+  return true;
+}
+function parseNum(s){
+  const m=String(s||'').replace(/,/g,'.').replace(/\u2212/g,'-').replace(/\s/g,'').match(/-?\d+(\.\d+)?/);
+  return m?parseFloat(m[0]):null;
+}
+function near(a,b){return Math.abs(a-b)<=1e-6*Math.max(1,Math.abs(b));}
+function pretty(v){
+  if(typeof v==='number')return String(v).replace('.',',');
+  return String(v).replace(/\^2/g,'\u00B2').replace(/\^3/g,'\u00B3').replace(/\^4/g,'\u2074').replace(/\^5/g,'\u2075').replace(/\*/g,'');
+}
+function answerText(q){
+  if(q.mode==='str')return pretty(q.accept[0]);
+  if(Array.isArray(q.ans))return q.fields.map((f,i)=>`${f.label} ${pretty(q.ans[i])}`).join('; ');
+  return pretty(q.ans);
+}
+function checkAnswers(vals){
+  const q=qCtx.q;
+  if(q.mode==='poly')return polyEquals(vals[0],q.ans);
+  if(q.mode==='str'){
+    const u=normAlg(vals[0]);
+    if(!u)return false;
+    if(q.accept.map(normAlg).includes(u))return true;
+    if(/\(/.test(q.accept[0])&&!/\(/.test(u))return false; // soal faktor harus bentuk faktor
+    return q.accept.some(a=>polyEquals(vals[0],a));
+  }
+  if(q.mode==='num'){const v=parseNum(vals[0]);return v!==null&&near(v,q.ans);}
+  if(q.mode==='num2'){const a=parseNum(vals[0]),b=parseNum(vals[1]);return a!==null&&b!==null&&near(a,q.ans[0])&&near(b,q.ans[1]);}
+  if(q.mode==='pair'){const a=parseNum(vals[0]),b=parseNum(vals[1]);
+    if(a===null||b===null)return false;
+    return (near(a,q.ans[0])&&near(b,q.ans[1]))||(near(a,q.ans[1])&&near(b,q.ans[0]));}
+  return false;
+}
+
+/* ================= SUARA ================= */
+const sfx=(()=>{let ctx=null,muted=false;
+  function ac(){if(!ctx){try{ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+    if(ctx&&ctx.state==='suspended')ctx.resume();return ctx;}
+  function t(f,dur,type='sine',vol=.12,when=0,glide){const c=ac();if(!c||muted)return;
+    const o=c.createOscillator(),g=c.createGain(),t0=c.currentTime+when;
+    o.type=type;o.frequency.setValueAtTime(f,t0);
+    if(glide)o.frequency.exponentialRampToValueAtTime(glide,t0+dur);
+    g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol,t0+.015);
+    g.gain.exponentialRampToValueAtTime(.001,t0+dur);
+    o.connect(g).connect(c.destination);o.start(t0);o.stop(t0+dur+.05);}
+  return{
+    toggle(){muted=!muted;return muted;},
+    dice(){for(let i=0;i<6;i++)t(300+Math.random()*500,.05,'square',.05,i*.07);},
+    step(){t(620,.06,'triangle',.09);},
+    good(){t(523,.12,'triangle',.14);t(659,.12,'triangle',.14,.1);t(784,.22,'triangle',.14,.2);},
+    bad(){t(220,.32,'sawtooth',.1,0,130);},
+    climb(){t(300,.55,'sine',.12,0,900);t(400,.5,'sine',.07,.06,1200);},
+    slide(){t(720,.75,'sine',.12,0,130);},
+    win(){[523,659,784,1047,784,1319].forEach((f,i)=>t(f,.2,'triangle',.14,i*.13));}
+  };})();
+
+/* ================= DOM & STATE ================= */
+const board=$('#board'),grid=$('#grid'),overlay=$('#overlay');
+const turnName=$('#turnName'),btnRoll=$('#btnRoll'),msgEl=$('#msg'),logEl=$('#log');
+const diceEl=$('#dice'),diceVal=$('#diceVal');
+const pcs=[$('#pc0'),$('#pc1')];
+const setupOvl=$('#setupOvl'),qOvl=$('#qOvl'),winOvl=$('#winOvl'),keyOvl=$('#keyOvl'),howOvl=$('#howOvl');
+const qBadge=$('#qBadge'),qTitle=$('#qTitle'),qText=$('#qText'),ansWrap=$('#ansWrap');
+const btnCheck=typeof $!=='undefined'?null:null; // dibuat dinamis di bawah
+const btnSkip=$('#btnSkip'),btnNext=$('#btnNext');
+const qFeedback=$('#qFeedback'),qExplain=$('#qExplain');
+
+let players=[],pawnEls=[],current=0,busy=false,started=false,lastWinner=-1;
+let qMap={},hotsReserve=[],snakePaths={},cellEls={},qCtx=null,ansInputs=[],lastInput=null;
+
+/* ================= PAPAN ================= */
+function cellCenter(n){const r=Math.floor((n-1)/10),c=(n-1)%10,col=r%2?9-c:c;
+  return{x:col*100+50,y:(9-r)*100+50};}
+function zoneOf(n){return n<=50?'p1':'p2';}
+
+function buildCells(){
+  grid.innerHTML='';cellEls={};
+  const ladS=new Set(Object.keys(LADDERS).map(Number));
+  const snkH=new Set(Object.keys(SNAKES).map(Number));
+  for(let vr=0;vr<10;vr++){const r=9-vr;
+    for(let c=0;c<10;c++){
+      const n=r%2===0?r*10+c+1:r*10+(10-c);
+      const d=document.createElement('div');
+      d.className='cell'+(((r+c)%2)?' alt':'');
+      let inner=`<span class="num">${n}</span>`;
+      if(n===100){d.classList.add('finish','spec');inner+=TROPHY_MINI+`<span class="q">FINIS</span>`;}
+      else if(n===1){d.classList.add('start','spec');inner+=`<span class="q">MULAI</span>`;}
+      else if(ladS.has(n)){d.classList.add('lad','spec');inner+=LAD_MINI+`<span class="q">Tangga HOTS<br>ke ${LADDERS[n]}</span>`;}
+      else if(snkH.has(n)){d.classList.add('snk','spec');inner+=SNK_MINI+`<span class="q">Ular HOTS<br>ke ${SNAKES[n]}</span>`;}
+      else{d.classList.add(zoneOf(n));inner+=`<span class="q">${esc(qMap[n].t)}</span>`;}
+      d.innerHTML=inner;grid.appendChild(d);cellEls[n]=d;
+    }}
+}
+function drawLadder(g,a,b){
+  const A=cellCenter(a),B=cellCenter(b);
+  const dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),px=-dy/L,py=dx/L,R=11;
+  svgEl('line',{x1:A.x+px*R,y1:A.y+py*R,x2:B.x+px*R,y2:B.y+py*R,class:'rail'},g);
+  svgEl('line',{x1:A.x-px*R,y1:A.y-py*R,x2:B.x-px*R,y2:B.y-py*R,class:'rail'},g);
+  const n=Math.max(3,Math.floor(L/34));
+  for(let i=1;i<=n;i++){const t=i/(n+1),cx=A.x+dx*t,cy=A.y+dy*t;
+    svgEl('line',{x1:cx+px*R,y1:cy+py*R,x2:cx-px*R,y2:cy-py*R,class:'rung'},g);}
+}
+function smoothPath(p){let d=`M ${p[0].x} ${p[0].y}`;
+  for(let i=1;i<p.length-1;i++){const mx=(p[i].x+p[i+1].x)/2,my=(p[i].y+p[i+1].y)/2;
+    d+=` Q ${p[i].x} ${p[i].y} ${mx} ${my}`;}
+  d+=` L ${p[p.length-1].x} ${p[p.length-1].y}`;return d;}
+function drawSnake(g,head,tail,ci){
+  const H=cellCenter(head),T=cellCenter(tail);
+  const dx=T.x-H.x,dy=T.y-H.y,L=Math.hypot(dx,dy);
+  const ux=dx/L,uy=dy/L,px=-uy,py=ux;
+  const waves=Math.max(1,Math.round(L/220)),amp=Math.min(34,L*.12);
+  const segs=Math.max(8,Math.round(L/60)),pts=[];
+  for(let i=0;i<=segs;i++){const t=i/segs,env=Math.sin(t*Math.PI);
+    const off=amp*Math.sin(t*Math.PI*2*waves)*env;
+    pts.push({x:H.x+dx*t+px*off,y:H.y+dy*t+py*off});}
+  const d=smoothPath(pts),col=SNAKE_COLORS[ci%SNAKE_COLORS.length];
+  svgEl('path',{d,fill:'none',stroke:col.d,'stroke-width':16.5,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  const body=svgEl('path',{d,fill:'none',stroke:col.b,'stroke-width':13,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  svgEl('path',{d,fill:'none',stroke:'rgba(255,255,255,.5)','stroke-width':4.5,'stroke-dasharray':'1 21','stroke-linecap':'round'},g);
+  const fx=-ux,fy=-uy,ang=Math.atan2(fy,fx)*180/Math.PI;
+  const cx0=H.x+fx*8,cy0=H.y+fy*8;
+  svgEl('ellipse',{cx:cx0,cy:cy0,rx:16.5,ry:12.5,fill:col.b,stroke:col.d,'stroke-width':2.5,transform:`rotate(${ang} ${cx0} ${cy0})`},g);
+  [1,-1].forEach(s=>{const ex=cx0+px*6.5*s+fx*4,ey=cy0+py*6.5*s+fy*4;
+    svgEl('circle',{cx:ex,cy:ey,r:4,fill:'#fff'},g);
+    svgEl('circle',{cx:ex+fx*1.6,cy:ey+fy*1.6,r:1.9,fill:'#26201a'},g);});
+  const mx=cx0+fx*16,my=cy0+fy*16,tx=cx0+fx*27,ty=cy0+fy*27;
+  svgEl('path',{d:`M ${mx} ${my} L ${tx} ${ty} M ${tx} ${ty} L ${tx+px*5} ${ty+py*5} M ${tx} ${ty} L ${tx-px*5} ${ty-py*5}`,
+    stroke:'#d6336c','stroke-width':2.4,fill:'none','stroke-linecap':'round'},g);
+  svgEl('circle',{cx:T.x,cy:T.y,r:5.5,fill:col.b,stroke:col.d,'stroke-width':2},g);
+  snakePaths[head]=body;
+}
+function drawOverlay(){
+  overlay.innerHTML='';snakePaths={};
+  const gl=svgEl('g',{},overlay),gs=svgEl('g',{},overlay);
+  for(const a in LADDERS)drawLadder(gl,+a,LADDERS[a]);
+  let ci=0;for(const h in SNAKES)drawSnake(gs,+h,SNAKES[h],ci++);
+}
+
+/* ============ PENEMPATAN SOAL ============ */
+function buildQuestionMap(){
+  qMap={};
+  const med=shuffle(QUESTIONS.filter(q=>q.part===1).map(q=>({...q})));
+  const hard=shuffle(QUESTIONS.filter(q=>q.part===2).map(q=>({...q})));
+  const hots=shuffle(QUESTIONS.filter(q=>q.part===3).map(q=>({...q})));
+  const exMed=shuffle(EXTRA_MEDIUM.map(q=>({...q})));
+  const exHard=shuffle(EXTRA_HARD.map(q=>({...q})));
+  const specials=shuffle([...Object.keys(LADDERS).map(Number),...Object.keys(SNAKES).map(Number)]);
+  specials.forEach(b=>{qMap[b]=hots.pop();});
+  hotsReserve=hots;
+  const zM=[],zH=[];
+  for(let n=2;n<=99;n++){if(qMap[n])continue;(n<=50?zM:zH).push(n);}
+  zM.forEach(b=>{qMap[b]=med.pop()||exMed.pop();});
+  zH.forEach(b=>{qMap[b]=hard.pop()||exHard.pop();});
+}
+
+/* ================= UI DASAR ================= */
+function setMsg(t){msgEl.textContent=t;}
+function log(t,pi){const d=document.createElement('div');d.textContent=t;if(pi===0)d.className='lp0';if(pi===1)d.className='lp1';
+  logEl.prepend(d);while(logEl.children.length>40)logEl.lastChild.remove();}
+function clearLog(){logEl.innerHTML='';}
+function setFace(f){const F={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+  pipEls.forEach((p,i)=>p.classList.toggle('on',F[f].includes(i)));}
+const pipEls=[];for(let i=0;i<9;i++){const p=document.createElement('span');p.className='pip';diceEl.appendChild(p);pipEls.push(p);}
+
+function updateHUD(){
+  if(!players.length)return;
+  turnName.textContent=players[current].name;
+  turnName.style.color=PCOL[current];
+  players.forEach((p,i)=>{
+    pcs[i].classList.toggle('active',i===current);
+    pcs[i].innerHTML=`<span class="pdot" style="background:${PCOL[i]}"></span>
+      <div><div class="pname">${esc(p.name)}</div>
+      <div class="pstat">Kotak: <b>${p.pos}</b> &nbsp;\u2022&nbsp; Bintang: <b>${p.stars}</b> ${STAR} &nbsp;\u2022&nbsp; Benar: <b>${p.correct}</b> soal</div></div>`;
+  });
+  btnRoll.disabled=busy||!started;
+}
+function setPawnXY(i,x,y){const e=pawnEls[i];e.style.left=(x/10)+'%';e.style.top=(y/10)+'%';e.style.transform='translate(-50%,-52%)';}
+function refreshPawns(){
+  document.querySelectorAll('.cell.occ0,.cell.occ1').forEach(c=>c.classList.remove('occ0','occ1'));
+  players.forEach((p,i)=>{
+    const c=cellCenter(p.pos);let ox=0,oy=0;
+    if(players[1-i].pos===p.pos){ox=i?15:-15;oy=i?-11:11;}
+    const e=pawnEls[i];
+    e.style.left=(c.x/10)+'%';e.style.top=(c.y/10)+'%';
+    e.style.transform=`translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`;
+    if(cellEls[p.pos])cellEls[p.pos].classList.add('occ'+i);
+  });
+}
+
+/* ================= ALUR PERMAINAN ================= */
+async function walkSteps(steps){
+  const p=players[current];
+  for(const s of steps){p.pos=s;refreshPawns();sfx.step();await wait(330);}
+}
+async function doRoll(){
+  if(busy||!started)return;
+  busy=true;updateHUD();
+  sfx.dice();
+  const v=ri(1,6);
+  diceEl.classList.add('rolling');
+  for(let i=0;i<9;i++){setFace(ri(1,6));await wait(75);}
+  diceEl.classList.remove('rolling');setFace(v);diceVal.textContent=v;
+  const p=players[current];
+  let cur=p.pos,dir=1;const steps=[];
+  for(let i=0;i<v;i++){if(cur===100)dir=-1;cur+=dir;steps.push(cur);}
+  const dest=steps[steps.length-1];
+  const isL=LADDERS[dest]!==undefined,isS=SNAKES[dest]!==undefined;
+  if(isL||isS){
+    setMsg(`${p.name} melempar angka ${v}. Bergerak satu kotak demi satu kotak...`);
+    log(`${p.name} melempar dadu: ${v}`,current);
+    await wait(300);
+    await walkSteps(steps);
+    setMsg(`${p.name} berhenti di kotak ${p.pos}. Jawab soal HOTS-nya!`);
+    await wait(250);
+    openQuestion(dest,null);
+  }else if(dest===100){
+    setMsg(`${p.name} melempar angka ${v} dan melangkah menuju kotak 100...`);
+    log(`${p.name} melempar dadu: ${v}`,current);
+    await wait(300);
+    await walkSteps(steps);
+    await wait(350);
+    return doWin();
+  }else{
+    setMsg(`${p.name} melempar angka ${v}. Jawab soal kotak ${dest} dengan benar agar pion boleh maju!`);
+    log(`${p.name} melempar dadu: ${v} (tujuan: kotak ${dest})`,current);
+    await wait(600);
+    openQuestion(dest,{steps,dest});
+  }
+}
+function openQuestion(sq,moveCtx){
+  const isL=LADDERS[sq]!==undefined,isS=SNAKES[sq]!==undefined;
+  const q=qMap[sq];
+  qCtx={sq,kind:isL?'ladder':isS?'snake':'normal',q,attempts:0,correct:false,done:false,moveCtx:moveCtx||null};
+  if(isL){qBadge.className='badge hots';qBadge.innerHTML=STAR_BADGE+` HOTS \u2022 SOAL #${q.n} \u2022 KOTAK TANGGA`;}
+  else if(isS){qBadge.className='badge hots';qBadge.innerHTML=STAR_BADGE+` HOTS \u2022 SOAL #${q.n} \u2022 KEPALA ULAR`;}
+  else{qBadge.className='badge '+(q.part===1?'p1':'p2');
+    qBadge.textContent=(q.part===1?'SEDANG \u2022 ':'SULIT \u2022 ')+(q.extra?'SOAL TAMBAHAN':'SOAL #'+q.n);}
+  qTitle.textContent='Kotak '+sq+
+    (isL?` \u2014 Tangga menuju ${LADDERS[sq]} (HOTS)`
+    :isS?` \u2014 Ular menuju ${SNAKES[sq]} (HOTS)`
+    :qCtx.moveCtx?` \u2014 jawab benar agar pion boleh maju ke sini!`:'');
+  qText.innerHTML=esc(q.q).replace(/\^(\d)/g,'<sup>$1</sup>');
+  renderAnswerFields(q);
+  qFeedback.className='qFeedback';qFeedback.innerHTML='';
+  qExplain.className='explain';qExplain.innerHTML='';
+  btnNext.classList.add('hidden');btnSkip.classList.remove('hidden');
+  show(qOvl);
+  setTimeout(()=>{if(ansInputs[0])ansInputs[0].focus();},60);
+}
+function renderAnswerFields(q){
+  ansWrap.innerHTML='';ansInputs=[];lastInput=null;
+  const fields=q.fields||[{label:'Jawaban:'}];
+  fields.forEach(f=>{
+    const row=document.createElement('div');row.className='ansRow';
+    const lab=document.createElement('span');lab.className='fieldLab';lab.textContent=f.label;
+    const inp=document.createElement('input');inp.type='text';inp.className='ansInput';inp.autocomplete='off';
+    inp.placeholder=q.mode==='poly'||q.mode==='str'?'mis. 3x^2+4x+1 / (x-3)(x+3)':'mis. 12 atau 0,5';
+    inp.addEventListener('focus',()=>{lastInput=inp;});
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();
+        if(!$('#btnCheck').disabled)$('#btnCheck').click();
+        else if(!btnNext.classList.contains('hidden'))btnNext.click();}
+    });
+    row.appendChild(lab);row.appendChild(inp);ansWrap.appendChild(row);ansInputs.push(inp);
+  });
+  const chk=document.createElement('button');
+  chk.className='btn green';chk.id='btnCheck';chk.textContent='Periksa';
+  chk.style.marginTop='12px';
+  chk.addEventListener('click',doCheck);
+  ansWrap.appendChild(chk);
+}
+function doCheck(){
+  if(!qCtx||qCtx.done)return;
+  const ok=checkAnswers(ansInputs.map(i=>i.value));
+  if(ok){
+    sfx.good();
+    const feed=(qCtx.kind==='normal'&&qCtx.moveCtx)?'Benar! Pionmu boleh maju!':'Benar! Kerja bagus!';
+    finishQuestion(true,feed);
+  }else{
+    qCtx.attempts++;sfx.bad();
+    if(qCtx.kind!=='normal'||qCtx.attempts>=2){
+      const feed=`Pion gagal maju. Jawaban yang benar: <b>${esc(answerText(qCtx.q))}</b>`;
+      finishQuestion(false,feed);
+    }else{
+      qFeedback.className='qFeedback show bad';
+      qFeedback.innerHTML=NO_ICON+'<span>Belum tepat \u2014 coba sekali lagi!</span>';
+      ansWrap.classList.add('shake');setTimeout(()=>ansWrap.classList.remove('shake'),600);
+      if(ansInputs[0])ansInputs[0].focus(),ansInputs[0].select();
+    }
+  }
+}
+function finishQuestion(ok,feedText){
+  qCtx.done=true;qCtx.correct=ok;
+  ansInputs.forEach(i=>i.disabled=true);
+  const chk=$('#btnCheck');if(chk)chk.disabled=true;
+  qFeedback.className='qFeedback show '+(ok?'good':'bad');
+  qFeedback.innerHTML=(ok?OK_ICON:NO_ICON)+`<span>${feedText}</span>`;
+  qExplain.innerHTML=`<b>Pembahasan:</b> ${esc(qCtx.q.ex)}`;qExplain.classList.add('show');
+  btnSkip.classList.add('hidden');
+  btnNext.classList.remove('hidden');
+}
+btnSkip.addEventListener('click',()=>{
+  if(!qCtx||qCtx.done)return;
+  const feed=`Soal dilewati tutor. Jawaban: <b>${esc(answerText(qCtx.q))}</b>`;
+  finishQuestion(false,feed);
+});
+btnNext.addEventListener('click',()=>{
+  if(!qCtx)return;hide(qOvl);
+  const ctx=qCtx;qCtx=null;resolveTurn(ctx);
+});
+
+async function resolveTurn(ctx){
+  const p=players[current],sq=ctx.sq;
+  if(ctx.kind==='ladder'){
+    if(ctx.correct){
+      p.correct++;p.stars+=2;updateHUD();
+      log(`${p.name} menjawab HOTS dengan benar! Naik tangga...`,current);
+      await climbAnim(sq,LADDERS[sq]);
+      p.pos=LADDERS[sq];refreshPawns();sfx.step();
+      log(`${p.name} NAIK TANGGA dari ${sq} ke kotak ${p.pos}!`,current);
+    }else log(`${p.name} belum berhasil menjawab, peluang naik tangga lepas. Tetap di kotak ${sq}.`,current);
+  }else if(ctx.kind==='snake'){
+    if(ctx.correct){p.correct++;p.stars+=2;log(`${p.name} menjawab HOTS dengan benar! Aman dari ular, tidak turun.`,current);}
+    else{
+      log(`${p.name} gagal menjawab... Aduh, ada ular!`,current);
+      await slideAnim(sq);
+      p.pos=SNAKES[sq];refreshPawns();
+      log(`${p.name} TURUN dari kotak ${sq} ke kotak ${p.pos}.`,current);
+    }
+  }else{
+    if(ctx.correct&&ctx.moveCtx){
+      p.correct++;p.stars++;updateHUD();
+      log(`${p.name} menjawab benar! Pion berjalan maju...`,current);
+      await wait(250);
+      await walkSteps(ctx.moveCtx.steps);
+      log(`${p.name} berhasil maju ke kotak ${p.pos}. +1 bintang.`,current);
+    }else{
+      log(`${p.name} gagal menjawab \u2014 pion gagal maju, tetap di kotak ${p.pos}.`,current);
+    }
+  }
+  updateHUD();
+  if(p.pos===100)return doWin();
+  current=1-current;busy=false;updateHUD();
+  setMsg(`Giliran ${players[current].name} \u2014 lempar dadunya!`);
+}
+function climbAnim(a,b){
+  const A=cellCenter(a),B=cellCenter(b),el=pawnEls[current];
+  el.classList.add('noTrans');sfx.climb();
+  const dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),px=-dy/L,py=dx/L;
+  const dur=980,t0=performance.now();
+  return new Promise(res=>{(function f(now){
+    const t=Math.min(1,(now-t0)/dur);
+    const bob=Math.sin(t*Math.PI*7)*7;
+    setPawnXY(current,A.x+dx*t+px*bob,A.y+dy*t+py*bob);
+    if(t<1)requestAnimationFrame(f);else{el.classList.remove('noTrans');res();}
+  })(t0);});
+}
+function slideAnim(head){
+  const path=snakePaths[head],el=pawnEls[current];
+  el.classList.add('noTrans');sfx.slide();
+  const len=path.getTotalLength(),dur=Math.min(1600,600+len*1.1),t0=performance.now();
+  return new Promise(res=>{(function f(now){
+    const t=Math.min(1,(now-t0)/dur),e=t*t;
+    const pt=path.getPointAtLength(e*len);
+    setPawnXY(current,pt.x,pt.y);
+    if(t<1)requestAnimationFrame(f);else{el.classList.remove('noTrans');res();}
+  })(t0);});
+}
+
+/* ================= MENANG ================= */
+function doWin(){
+  busy=true;lastWinner=current;updateHUD();
+  const p=players[current];
+  sfx.win();
+  log(`${p.name} mencapai kotak 100 \u2014 PEMENANGNYA!`,current);
+  setMsg(`Permainan selesai. ${p.name} menang!`);
+  $('#winName').textContent=p.name;
+  $('#winStats').innerHTML=players.map((pl,i)=>
+    `<div class="wrow"><span class="pdot" style="background:${PCOL[i]}"></span><b>${esc(pl.name)}</b>
+     <span>\u2022 Kotak akhir: <b>${pl.pos}</b></span><span>\u2022 Bintang: <b>${pl.stars}</b></span>
+     <span>\u2022 Benar: <b>${pl.correct}</b> soal</span>${i===current?'<span class="winTag">JUARA</span>':''}</div>`).join('');
+  spawnConfetti();show(winOvl);
+}
+function spawnConfetti(){
+  const box=$('#confetti');box.innerHTML='';
+  const cols=['#e8590c','#0ca678','#ffd43b','#d6336c','#1098ad','#2f9e44'];
+  for(let i=0;i<90;i++){const s=document.createElement('i');
+    s.style.left=Math.random()*100+'%';
+    s.style.background=pick(cols);
+    s.style.width=(7+Math.random()*7)+'px';s.style.height=(10+Math.random()*8)+'px';
+    s.style.borderRadius=Math.random()<.4?'50%':'2px';
+    s.style.animationDuration=(2.6+Math.random()*2.6)+'s';
+    s.style.animationDelay=(Math.random()*1.6)+'s';
+    box.appendChild(s);}
+}
+
+/* ================= KUNCI TUTOR ================= */
+function buildKey(){
+  let h='';
+  const zones=[
+    {p:1,name:'Kotak 2\u201350 \u2022 SEDANG \u2014 Bagian A'},
+    {p:2,name:'Kotak 51\u201399 \u2022 SULIT \u2014 Bagian B'}
+  ];
+  zones.forEach(z=>{
+    const items=Object.keys(qMap).map(Number).filter(b=>qMap[b].part===z.p).sort((a,b)=>a-b);
+    h+=`<details${z.p===1?' open':''}><summary>${z.name} (${items.length} kotak)</summary>`;
+    items.forEach(b=>{const q=qMap[b];
+      h+=`<div class="kitem"><b>Kotak ${b}</b>${q.extra?' <i>(soal tambahan)</i>':` \u2014 Soal #${q.n}`}: ${esc(q.q)}<br><b>Jawaban: ${esc(answerText(q))}</b> <i>${esc(q.ex)}</i></div>`;});
+    h+='</details>';
+  });
+  const hItems=Object.keys(qMap).map(Number).filter(b=>qMap[b].part===3).sort((a,b)=>a-b);
+  h+=`<details open><summary>Kotak Tangga &amp; Kepala Ular \u2022 HOTS \u2014 Bagian C (${hItems.length} kotak)</summary>`;
+  hItems.forEach(b=>{const q=qMap[b];
+    h+=`<div class="kitem"><b>Kotak ${b}</b> \u2014 Soal #${q.n}: ${esc(q.q)}<br><b>Jawaban: ${esc(answerText(q))}</b> <i>${esc(q.ex)}</i></div>`;});
+  h+='</details>';
+  if(hotsReserve.length){
+    h+=`<details><summary>HOTS cadangan ronde ini (${hotsReserve.length} soal)</summary>`;
+    hotsReserve.forEach(q=>{h+=`<div class="kitem"><b>Soal #${q.n}</b>: ${esc(q.q)}<br><b>Jawaban: ${esc(answerText(q))}</b> <i>${esc(q.ex)}</i></div>`;});
+    h+='</details>';
+  }
+  $('#keyBody').innerHTML=h;
+}
+
+/* ================= MULAI / ULANG ================= */
+function startGame(){
+  const n1=($('#inName1').value||'').trim()||'Pemain 1';
+  const n2=($('#inName2').value||'').trim()||'Pemain 2';
+  players=[{name:n1.slice(0,14),pos:1,stars:0,correct:0},{name:n2.slice(0,14),pos:1,stars:0,correct:0}];
+  current=0;busy=false;started=true;lastWinner=-1;
+  pawnEls.forEach(e=>e.remove());pawnEls=[];
+  players.forEach((p,i)=>{const e=document.createElement('div');
+    e.className='pawn x'+i;e.textContent=p.name[0].toUpperCase();
+    board.appendChild(e);pawnEls.push(e);});
+  buildQuestionMap();buildCells();drawOverlay();buildKey();
+  pawnEls.forEach(e=>e.classList.add('noTrans'));
+  refreshPawns();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>pawnEls.forEach(e=>e.classList.remove('noTrans'))));
+  updateHUD();hide(setupOvl);clearLog();
+  log(`Permainan dimulai! Semua pion berdiri di kotak 1. Semangat!`);
+  setMsg(`Giliran ${players[0].name} \u2014 lempar dadunya!`);
+}
+function resetGame(){
+  players.forEach(p=>{p.pos=1;p.stars=0;p.correct=0;});
+  current=lastWinner===1?0:1;
+  buildQuestionMap();buildCells();drawOverlay();buildKey();
+  pawnEls.forEach(e=>e.classList.add('noTrans'));
+  refreshPawns();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>pawnEls.forEach(e=>e.classList.remove('noTrans'))));
+  busy=false;started=true;clearLog();updateHUD();
+  setMsg(`Ronde baru! Giliran ${players[current].name} \u2014 lempar dadunya!`);
+  log(`Ronde baru dimulai. ${players[current].name} jalan pertama.`);
+}
+
+/* ================= EVENT ================= */
+ $('#btnStart').addEventListener('click',startGame);
+[ $('#inName1'), $('#inName2') ].forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter')startGame();}));
+btnRoll.addEventListener('click',doRoll);
+ $('#btnAgain').addEventListener('click',()=>{hide(winOvl);resetGame();});
+ $('#btnNew').addEventListener('click',()=>{hide(winOvl);started=false;busy=false;show(setupOvl);});
+ $('#btnKey').addEventListener('click',()=>show(keyOvl));
+ $('#btnKeyClose').addEventListener('click',()=>hide(keyOvl));
+ $('#btnHow').addEventListener('click',()=>show(howOvl));
+ $('#btnHowClose').addEventListener('click',()=>hide(howOvl));
+ $('#btnSound').addEventListener('click',e=>{e.target.textContent='Suara: '+(sfx.toggle()?'OFF':'ON');});
+document.querySelectorAll('.chipBtn').forEach(b=>b.addEventListener('click',()=>{
+  const t=b.dataset.t;
+  const target=lastInput&&ansInputs.includes(lastInput)?lastInput:ansInputs[0];
+  if(!target||target.disabled)return;
+  const st=target.selectionStart??target.value.length,en=target.selectionEnd??st;
+  target.value=target.value.slice(0,st)+t+target.value.slice(en);
+  target.focus();
+  const np=st+t.length;
+  target.setSelectionRange(np,np);
+}));
+window.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&started&&!busy&&!anyOvl()){e.preventDefault();doRoll();}
+});
+function anyOvl(){return[setupOvl,qOvl,winOvl,keyOvl,howOvl].some(o=>!o.classList.contains('hidden'));}
+
+/* ================= INISIALISASI ================= */
+ $('#setupRules').innerHTML=RULES_HTML;
+ $('#howBody').innerHTML='<div class="rules">'+RULES_HTML+'</div>';
+buildQuestionMap();buildCells();drawOverlay();setFace(5);diceVal.textContent='\u2013';
+</script>
+</body>
+</html>
