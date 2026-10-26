@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Presentasi interaktif Aljabar untuk Matematika Kelas 7 SMP - Kurikulum Merdeka Fase D">
+<title>Aljabar Seru! — Matematika Kelas 7 SMP (Kurikulum Merdeka)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & TOKENS ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg1:#FFF7EC; --bg2:#EFEFFF;
+  --ink:#2B2D42; --muted:#6B7280;
+  --p:#5B5FE9; --p2:#8A4FFF;
+  --coral:#FF6B6B; --teal:#00B894; --amber:#F59E0B; --sky:#0EA5E9; --pink:#EC4899; --violet:#8E44AD;
+  --card:#FFFFFF; --line:#E9E4F5;
+  --ok:#16A34A; --okbg:#EAF9F0; --no:#DC2626; --nobg:#FDECEC;
+  --shadow:0 10px 30px rgba(91,95,233,.13);
+  --topH:64px; --navH:88px;
+  --fh:'Baloo 2','Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fb:'Nunito','Segoe UI',system-ui,sans-serif;
+  --r:20px;
+}
+html,body{height:100%}
+body{
+  font-family:var(--fb); color:var(--ink); font-size:17px; line-height:1.55;
+  background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+  overflow:hidden;
+}
+b,strong{font-weight:800}
+button{font-family:inherit;cursor:pointer}
+input,textarea{font-family:inherit}
+img{max-width:100%}
+
+/* ============ BACKGROUND DECOR ============ */
+#bgfx{position:fixed;inset:0;z-index:0;pointer-events:none}
+#bgfx span{
+  position:absolute;font-family:var(--fh);font-weight:800;font-size:4.6rem;color:var(--p);
+  opacity:.055;animation:floaty 9s ease-in-out infinite alternate;
+}
+#bgfx span:nth-child(2n){animation-duration:13s;color:var(--coral)}
+#bgfx span:nth-child(3n){animation-duration:11s;color:var(--teal)}
+@keyframes floaty{from{transform:translateY(-16px) rotate(-7deg)}to{transform:translateY(16px) rotate(8deg)}}
+
+/* ============ TOPBAR ============ */
+#topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topH);z-index:10;
+  display:flex;align-items:center;gap:14px;padding:0 20px;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:var(--fh);font-weight:800;font-size:1.25rem;
+  background:linear-gradient(90deg,var(--p),var(--coral));
+  -webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+#whoNames{flex:1;text-align:center;font-weight:700;color:var(--muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.counter{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--p);
+  background:#EEECFF;padding:6px 14px;border-radius:999px;white-space:nowrap}
+#btnReset{border:none;background:#FFF1F1;width:38px;height:38px;border-radius:12px;font-size:1.05rem;
+  transition:.2s}
+#btnReset:hover{background:#FFE1E1;transform:rotate(-30deg) scale(1.08)}
+
+/* ============ DECK & SLIDES ============ */
+#deck{position:fixed;top:var(--topH);bottom:var(--navH);left:0;right:0;z-index:1}
+.slide{position:absolute;inset:0;display:none;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.slide.active{display:block;animation:slidein .45s ease}
+@keyframes slidein{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
+.wrap{max-width:1160px;margin:0 auto;padding:26px 34px 56px}
+.wrap.cover{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+
+/* ============ TYPO ============ */
+h1{font-family:var(--fh);font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.05;letter-spacing:.5px}
+h2{font-family:var(--fh);font-size:clamp(1.6rem,3.2vw,2.3rem);line-height:1.15;margin:4px 0 2px}
+h3{font-family:var(--fh);font-size:1.18rem;margin-bottom:8px}
+.grad{background:linear-gradient(90deg,var(--p),var(--coral) 60%,var(--amber));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);margin-bottom:14px}
+.mini{font-size:.92rem;color:var(--muted)}
+.center{text-align:center}
+.mt{margin-top:22px}
+.hl-p{color:var(--p)} .hl-t{color:var(--teal)} .hl-c{color:var(--coral)} .hl-a{color:var(--amber)}
+
+/* ============ GENERIC COMPONENTS ============ */
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:20px 22px;border:1px solid #F1EEFA}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.col{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hidden{display:none!important}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;border-radius:16px;padding:13px 26px;font-weight:800;font-size:1.02rem;
+  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
+  box-shadow:0 8px 20px rgba(91,95,233,.35);transition:.2s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(91,95,233,.42)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.big{padding:16px 38px;font-size:1.18rem;border-radius:20px}
+.btn.small{padding:8px 16px;font-size:.92rem;border-radius:12px;box-shadow:0 4px 12px rgba(91,95,233,.25)}
+.btn.coral{background:linear-gradient(135deg,var(--coral),#ff8f6b);box-shadow:0 8px 20px rgba(255,107,107,.35)}
+.btn.teal{background:linear-gradient(135deg,var(--teal),#37d0a8);box-shadow:0 8px 20px rgba(0,184,148,.35)}
+.btn.ghost{background:#fff;color:var(--p);box-shadow:inset 0 0 0 2px #D9D6F6}
+.btn.ghost:hover{background:#F4F2FF}
+
+.pill{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:6px 16px;font-weight:700;font-size:.9rem;color:var(--p);box-shadow:0 3px 10px rgba(91,95,233,.08)}
+.kbd{display:inline-block;background:#fff;border:1px solid #D5D1EC;border-bottom-width:3px;
+  border-radius:8px;padding:1px 9px;font-weight:800;font-size:.85em}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 18px;
+  font-weight:800;font-size:.88rem;color:#fff;letter-spacing:.3px}
+.chip-m1{background:linear-gradient(135deg,#6C5CE7,#8A4FFF)}
+.chip-m2{background:linear-gradient(135deg,#00B894,#55E6C1)}
+.chip-m3{background:linear-gradient(135deg,#FF6B6B,#FF9F7F)}
+.chip-m4{background:linear-gradient(135deg,#F59E0B,#FBBF24)}
+.chip-t{background:linear-gradient(135deg,#0EA5E9,#38BDF8)}
+.chip-g{background:linear-gradient(135deg,#8E44AD,#C368E0)}
+.chip-e{background:linear-gradient(135deg,#0984E3,#74B9FF)}
+.slide-head{margin-bottom:18px}
+.slide-head .chip{margin-bottom:8px}
+
+.note{border-left:5px solid var(--p);background:#F3F1FF;border-radius:14px;padding:13px 18px;font-size:.97rem}
+.note.cp{border-left-color:var(--sky);background:#EAF7FF}
+.card.warn{border-left:6px solid var(--amber);background:#FFF9EC}
+.card.warn p{margin-bottom:6px}
+.exline{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.exline span{border-radius:10px;padding:5px 13px;font-weight:800;font-size:.95rem}
+.exline .yes{background:var(--okbg);color:var(--ok)}
+.exline .no{background:var(--nobg);color:var(--no)}
+.fbtext{font-weight:700;font-size:.95rem;color:var(--p)}
+.resultline{background:var(--okbg);border-radius:12px;padding:10px 16px;font-weight:800;color:var(--ok);font-size:1.08rem}
+
+/* ============ COVER ============ */
+.cover-emoji{font-size:2.6rem;letter-spacing:12px;animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.tagline{max-width:640px;color:var(--muted);font-weight:600}
+.badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.namegrid{display:flex;gap:20px;margin:12px 0 4px;flex-wrap:wrap;justify-content:center}
+.namecard{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:18px 22px;width:250px;
+  border:2px solid #EDEAFF;transition:.25s}
+.namecard:focus-within{border-color:var(--p);transform:translateY(-4px)}
+.namecard .avatar{font-size:2.3rem}
+.namecard label{display:block;font-weight:800;color:var(--p);margin:4px 0 8px;font-size:.95rem;letter-spacing:.4px}
+.namecard input{width:100%;border:2px solid var(--line);border-radius:12px;padding:11px 14px;
+  font-size:1.05rem;font-weight:700;outline:none;transition:.2s;background:#FBFAFF}
+.namecard input:focus{border-color:var(--p);background:#fff}
+.hint{color:var(--muted);font-size:.92rem}
+
+/* ============ APERSEPSI FLIP CARDS ============ */
+.flip{perspective:1100px;height:215px;cursor:pointer}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .65s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:20px;text-align:center;box-shadow:var(--shadow)}
+.face.front{background:linear-gradient(150deg,#fff,#F6F4FF);border:2px solid #EDEAFF}
+.face.front .fq{font-size:1.02rem;font-weight:700;margin-top:10px}
+.face.front .fe{font-size:2.2rem}
+.face.back{transform:rotateY(180deg);background:linear-gradient(150deg,var(--p),var(--p2));color:#fff;font-weight:600}
+.face.back .bt{font-size:1.7rem;margin-bottom:8px}
+.fliphint{margin-top:14px;text-align:center;color:var(--muted);font-weight:600}
+
+/* ============ DAILY LIFE CARDS ============ */
+.dlcard{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px;
+  border-top:6px solid var(--p);transition:.25s;position:relative}
+.dlcard:nth-child(2){border-top-color:var(--teal)}
+.dlcard:nth-child(3){border-top-color:var(--coral)}
+.dlcard:nth-child(4){border-top-color:var(--amber)}
+.dlcard:nth-child(5){border-top-color:var(--sky)}
+.dlcard:nth-child(6){border-top-color:var(--pink)}
+.dlcard:hover{transform:translateY(-6px) rotate(-.5deg);box-shadow:0 16px 34px rgba(43,45,66,.14)}
+.dlcard .de{font-size:1.9rem}
+.dlcard dt{font-weight:800;margin:6px 0 3px}
+.dlcard dd{font-size:.94rem;color:var(--muted);min-height:44px}
+.dlcard .expr{display:inline-block;margin-top:10px;background:linear-gradient(135deg,#EEECFF,#FDEEE8);
+  color:var(--p);font-weight:900;border-radius:10px;padding:6px 14px;font-size:1.05rem}
+
+/* ============ TUJUAN / JOURNEY ============ */
+.obj-card{display:flex;gap:14px;align-items:flex-start}
+.obj-n{flex:0 0 44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--fh);font-weight:800;font-size:1.25rem;color:#fff}
+.obj-card:nth-child(1) .obj-n{background:linear-gradient(135deg,#6C5CE7,#8A4FFF)}
+.obj-card:nth-child(2) .obj-n{background:linear-gradient(135deg,#00B894,#55E6C1)}
+.obj-card:nth-child(3) .obj-n{background:linear-gradient(135deg,#FF6B6B,#FF9F7F)}
+.obj-card:nth-child(4) .obj-n{background:linear-gradient(135deg,#F59E0B,#FBBF24)}
+.obj-card p{font-size:.95rem;color:var(--muted);margin-top:3px}
+.journey{margin-top:4px}
+.steps{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.stp{flex:1;min-width:86px;text-align:center;background:#F6F5FF;border-radius:12px;padding:9px 4px;
+  font-family:var(--fh);font-weight:800;font-size:1.05rem;color:var(--p)}
+.stp i{display:block;font-style:normal;font-family:var(--fb);font-weight:700;font-size:.72rem;color:var(--muted)}
+
+/* ============ M1 CHECK GRID ============ */
+.checkgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.ck{background:#FBFAFF;border:2px solid var(--line);border-radius:14px;padding:16px 6px;
+  font-weight:800;font-size:1.08rem;color:var(--ink);transition:.2s;user-select:none}
+.ck:hover{border-color:var(--p);transform:translateY(-2px)}
+.ck.sel{border-color:var(--p);background:#EEECFF;box-shadow:inset 0 0 0 2px var(--p)}
+.ck.done{pointer-events:none}
+.ck.good{border-color:var(--ok);background:var(--okbg);color:var(--ok)}
+.ck.bad{border-color:var(--no);background:var(--nobg);color:var(--no)}
+
+/* ============ M2 ANATOMY ============ */
+.defcard{text-align:center;padding:16px 12px}
+.defcard .de{font-size:1.7rem}
+.defcard b{display:block;margin:6px 0 4px;font-size:1.02rem}
+.defcard p{font-size:.87rem;color:var(--muted)}
+.defcard .exx{display:inline-block;margin-top:8px;font-weight:800;font-size:.9rem;border-radius:8px;padding:3px 10px}
+.defcard.dv{border-top:5px solid var(--sky)}   .defcard.dv .exx{background:#E5F6FE;color:#0369A1}
+.defcard.dk{border-top:5px solid var(--violet)}.defcard.dk .exx{background:#F4E8FC;color:#7D3CA8}
+.defcard.dc{border-top:5px solid var(--amber)} .defcard.dc .exx{background:#FEF3DF;color:#B45309}
+.defcard.ds{border-top:5px solid var(--teal)}  .defcard.ds .exx{background:#E5F8F2;color:#047857}
+.expr{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  font-family:var(--fh);font-size:1.9rem;font-weight:800;margin:14px 0}
+.op{color:var(--muted)}
+.tok{background:linear-gradient(135deg,#EEECFF,#FDEEE8);border:2px solid #D9D6F6;border-radius:14px;
+  padding:10px 20px;font-family:var(--fh);font-size:1.6rem;font-weight:800;color:var(--p);transition:.2s;user-select:none}
+.tok:hover{transform:translateY(-3px) scale(1.04);border-color:var(--p)}
+.tok.sel{border-color:var(--p);box-shadow:inset 0 0 0 2px var(--p),0 6px 16px rgba(91,95,233,.3)}
+.tok.merged{background:linear-gradient(135deg,var(--teal),#55E6C1);color:#fff;border-color:var(--teal)}
+.tok.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+.infobox{background:#F6F5FF;border-radius:14px;padding:14px 18px;font-weight:600;min-height:74px;
+  display:flex;align-items:center;animation:pop .3s ease}
+@keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:scale(1);opacity:1}}
+
+/* ============ M3 KEYWORDS + STEPPER ============ */
+.kwcard{border-radius:16px;padding:14px;color:#fff;box-shadow:var(--shadow)}
+.kwcard .kwo{font-size:1.6rem;font-family:var(--fh);font-weight:800}
+.kwcard .kww{font-size:.86rem;opacity:.95;margin:4px 0;font-weight:600}
+.kwcard .kwe{background:rgba(255,255,255,.22);border-radius:9px;padding:5px 10px;font-size:.85rem;font-weight:700}
+.kw.kp{background:linear-gradient(135deg,#00B894,#55E6C1)}
+.kw.km{background:linear-gradient(135deg,#FF6B6B,#FF9F7F)}
+.kw.kx{background:linear-gradient(135deg,#5B5FE9,#8A4FFF)}
+.kw.kd{background:linear-gradient(135deg,#F59E0B,#FBBF24)}
+.stepper .stepq{background:#FFF6E8;border-radius:12px;padding:12px 16px;font-weight:700;margin-bottom:12px}
+.stepshow{background:#F6F5FF;border-radius:14px;padding:16px 18px;min-height:96px;font-weight:600;
+  display:flex;align-items:center;font-size:1.02rem;animation:pop .3s ease}
+.stepper .row{margin-top:12px;justify-content:center}
+
+/* ============ QUIZ ENGINE ============ */
+.quiz{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:22px 26px;border:1px solid #F1EEFA}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--muted);margin-bottom:8px}
+.qscore{color:var(--teal)}
+.qbar{height:10px;background:#EEECF8;border-radius:99px;overflow:hidden;margin-bottom:18px}
+.qbar i{display:block;height:100%;width:0;border-radius:99px;transition:width .4s;
+  background:linear-gradient(90deg,var(--p),var(--coral))}
+.qcard{animation:pop .35s ease}
+.qtext{font-size:1.28rem;font-weight:800;margin-bottom:18px;line-height:1.5}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;background:#FBFAFF;border:2px solid var(--line);
+  border-radius:15px;padding:13px 16px;font-size:1.02rem;font-weight:700;transition:.18s;color:var(--ink);user-select:none}
+.opt:hover:not(:disabled){border-color:var(--p);background:#F3F1FF;transform:translateY(-2px)}
+.opt:disabled{cursor:default}
+.ltr{flex:0 0 34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  background:#E9E6FB;color:var(--p);font-family:var(--fh);font-weight:800}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.correct .ltr{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--no);background:var(--nobg)}
+.opt.wrong .ltr{background:var(--no);color:#fff}
+.opt.dim{opacity:.5}
+.fb{margin-top:16px;border-radius:14px;padding:13px 17px;font-weight:600;animation:pop .3s ease}
+.fb-ok{background:var(--okbg);border-left:5px solid var(--ok)}
+.fb-no{background:var(--nobg);border-left:5px solid var(--no)}
+.qnext{margin-top:16px;text-align:right}
+.qsummary{text-align:center;padding:26px 10px;animation:pop .35s ease}
+.qsummary .big{font-family:var(--fh);font-size:3.2rem;font-weight:800;
+  background:linear-gradient(90deg,var(--p),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+.qsummary .stars{font-size:2.1rem;margin:4px 0 8px}
+.qsummary p{font-weight:700;color:var(--muted);margin-bottom:16px}
+.qsummary .row{justify-content:center}
+
+/* ============ GAME ============ */
+.gameintro ul{margin:10px 0 18px 22px;display:flex;flex-direction:column;gap:8px}
+.bridge{display:flex;align-items:center;gap:10px;margin:6px 0 16px}
+.bend{text-align:center;font-size:1.9rem;line-height:1}
+.bend i{display:block;font-style:normal;font-size:.72rem;font-weight:800;color:var(--muted);margin-top:2px}
+.planks{flex:1;display:flex;gap:6px}
+.slot{flex:1;height:26px;border-radius:8px;border:2px dashed #CFCBE8;background:#FAF9FF;transition:.3s}
+.slot.filled{border:none;background:linear-gradient(180deg,#B8814E,#8E5A2B);box-shadow:inset 0 2px 0 #D9A26B;animation:pop .4s ease}
+.roundcard{animation:pop .35s ease}
+.roundhead{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.rbadge{background:linear-gradient(135deg,#8E44AD,#C368E0);color:#fff;border-radius:999px;
+  padding:6px 16px;font-weight:800;font-size:.9rem;white-space:nowrap}
+.rtitle{font-family:var(--fh);font-size:1.25rem}
+.clues{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.clue{background:#FBFAFF;border:2px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.cluehead{font-weight:800;color:var(--p);margin-bottom:8px}
+.cluebody{background:#fff;border-radius:12px;padding:12px;font-weight:700;min-height:66px;
+  display:flex;align-items:center;justify-content:center;animation:pop .3s ease;margin-bottom:10px}
+.clue.got .cluetoggle{opacity:.55}
+.discuss{background:#FFF3E0;border-left:5px solid var(--amber);border-radius:12px;padding:10px 15px;
+  font-weight:700;margin-bottom:14px}
+.gresult{text-align:center;padding:20px 8px}
+.gresult .gi{font-size:3.4rem}
+.gresult h3{font-size:1.6rem;margin:6px 0}
+
+/* ============ EXIT TICKET ============ */
+.xtabs{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.xtab{border:2px solid var(--line);background:#fff;border-radius:14px;padding:11px 22px;
+  font-weight:800;font-size:1rem;color:var(--muted);transition:.2s}
+.xtab.active{border-color:var(--p);background:#EEECFF;color:var(--p);box-shadow:0 6px 16px rgba(91,95,233,.2)}
+.xtab.finished{border-color:var(--teal);color:var(--teal)}
+.xcard{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px 20px;margin-bottom:14px;border-left:6px solid #0984E3}
+.xcard .xq{font-weight:800;margin-bottom:10px;font-size:1.05rem}
+.xcard .xno{display:inline-flex;width:28px;height:28px;border-radius:9px;background:#0984E3;color:#fff;
+  align-items:center;justify-content:center;font-weight:800;margin-right:8px;font-size:.9rem}
+.optrow{display:flex;flex-wrap:wrap;gap:9px}
+.optrow .opt{padding:9px 15px;font-size:.95rem;border-radius:12px}
+.optrow .ltr{flex:0 0 26px;height:26px;font-size:.85rem;border-radius:8px}
+.xfb{margin-top:9px;font-size:.9rem;font-weight:700;border-radius:10px;padding:8px 13px}
+.xfb.ok{background:var(--okbg);color:var(--ok)}
+.xfb.no{background:var(--nobg);color:var(--no)}
+.xstatus{margin-top:8px;background:#F0F9FF;border-left:5px solid #0984E3;border-radius:12px;padding:12px 16px;font-weight:700}
+.xdone{background:linear-gradient(135deg,var(--teal),#55E6C1);color:#fff;border-radius:16px;padding:16px 20px;font-weight:800;text-align:center;animation:pop .4s ease;margin-top:10px}
+
+/* ============ DASHBOARD ============ */
+.dashgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.drow{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:0 4px 14px rgba(43,45,66,.06)}
+.dlabel{flex:0 0 205px;font-weight:800;font-size:.92rem}
+.dtrack{flex:1;height:14px;background:#EEECF8;border-radius:99px;overflow:hidden}
+.dtrack i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal),#55E6C1);transition:width .8s}
+.dval{flex:0 0 58px;text-align:right;font-weight:900;color:var(--p)}
+.totalbig{margin-top:14px;text-align:center;background:linear-gradient(135deg,#EEECFF,#FDEEE8);border-radius:16px;padding:14px;font-family:var(--fh);font-size:1.35rem;font-weight:800;color:var(--p)}
+
+/* ============ REFLEKSI ============ */
+.rq{margin-bottom:16px}
+.rq .rqt{font-weight:800;margin-bottom:9px}
+.rbtns{display:flex;gap:10px;flex-wrap:wrap}
+.rb{border:2px solid var(--line);background:#fff;border-radius:13px;padding:10px 17px;font-weight:700;transition:.2s;color:var(--ink)}
+.rb:hover{border-color:var(--p)}
+.rb.sel{border-color:var(--p);background:#EEECFF;color:var(--p);box-shadow:inset 0 0 0 2px var(--p)}
+.rb .re{font-size:1.4rem;display:block}
+textarea#reflmsg{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 15px;font-size:1rem;
+  outline:none;resize:vertical;min-height:84px;background:#FBFAFF;font-weight:600}
+textarea#reflmsg:focus{border-color:var(--p)}
+.refldone{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;border-radius:18px;padding:20px;text-align:center;font-weight:800;animation:pop .4s ease}
+
+/* ============ THANKS ============ */
+.thanks h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+.thanks .tq{font-style:italic;color:var(--muted);font-weight:700;max-width:560px}
+.statchips{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* ============ NAVBAR ============ */
+#navbar{
+  position:fixed;bottom:0;left:0;right:0;height:var(--navH);z-index:10;
+  display:flex;align-items:center;gap:18px;padding:0 24px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-top:1px solid var(--line);
+}
+.navbtn{border:none;border-radius:16px;padding:13px 24px;font-weight:800;font-size:1rem;transition:.2s;white-space:nowrap}
+#btnPrev{background:#F1EFFB;color:var(--p)}
+#btnNext{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 8px 18px rgba(91,95,233,.35)}
+.navbtn:hover:not(:disabled){transform:translateY(-2px)}
+.navbtn:disabled{opacity:.35;cursor:default;box-shadow:none}
+#progressWrap{flex:1;height:12px;background:#EEECF8;border-radius:99px;overflow:hidden}
+#progressBar{height:100%;width:0;border-radius:99px;transition:width .4s;
+  background:linear-gradient(90deg,var(--p),var(--coral),var(--amber))}
+
+/* ============ TOAST & CONFETTI ============ */
+#toast{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-16px);z-index:120;
+  background:var(--ink);color:#fff;border-radius:14px;padding:12px 22px;font-weight:800;
+  opacity:0;pointer-events:none;transition:.3s;max-width:88vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#confetti{position:fixed;inset:0;z-index:110;pointer-events:none}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+  .grid4{grid-template-columns:1fr 1fr}
+  .grid3{grid-template-columns:1fr}
+  .dashgrid{grid-template-columns:1fr}
+  .dlabel{flex-basis:150px;font-size:.82rem}
+  .clues{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  body{font-size:15.5px}
+  .wrap{padding:20px 16px 46px}
+  .grid2{grid-template-columns:1fr}
+  .opts{grid-template-columns:1fr}
+  .checkgrid{grid-template-columns:1fr 1fr}
+  #whoNames{display:none}
+  .navbtn{padding:11px 16px;font-size:.9rem}
+  .dlabel{flex-basis:100%}
+  .drow{flex-wrap:wrap}
+  .namecard{width:100%}
+  .expr{font-size:1.4rem}
+  .tok{font-size:1.15rem;padding:8px 14px}
+}
+</style>
+</head>
+<body>
+
+<div id="bgfx" aria-hidden="true">
+  <span style="top:10%;left:5%">＋</span>
+  <span style="top:68%;left:11%">×</span>
+  <span style="top:16%;right:7%">÷</span>
+  <span style="top:62%;right:12%">−</span>
+  <span style="top:42%;left:46%">π</span>
+  <span style="top:84%;right:38%">½</span>
+  <span style="top:6%;left:38%">x²</span>
+</div>
+
+<header id="topbar">
+  <div class="brand">➗ Aljabar Seru!</div>
+  <div id="whoNames">Siswa 1 &amp; Siswa 2</div>
+  <div class="counter">Slide <span id="slideNow">1</span>/<span id="slideTotal">17</span></div>
+  <button id="btnReset" title="Mulai Ulang dari Awal">🔄</button>
+</header>
+
+<main id="deck">
+
+<!-- ================= SLIDE 1 : COVER ================= -->
+<section class="slide active" data-title="Cover">
+  <div class="wrap cover">
+    <div class="cover-emoji">➗ 🧮 ✖️ ➕</div>
+    <h1>ALJABAR <span class="grad">SERU!</span></h1>
+    <p class="tagline">Menjelajah Bentuk Aljabar lewat Presentasi Interaktif, 80 Latihan Soal, dan Game Kerja Sama Dua Petualang 🌟</p>
+    <div class="badges">
+      <span class="pill">📘 Matematika • Kelas 7 SMP</span>
+      <span class="pill">🇮🇩 Kurikulum Merdeka • Fase D</span>
+      <span class="pill">⏱️ 2 × 40 menit</span>
+    </div>
+    <div class="namegrid">
+      <div class="namecard">
+        <div class="avatar">👦</div>
+        <label for="in1">NAMA SISWA 1</label>
+        <input id="in1" maxlength="24" placeholder="Tulis nama di sini..." autocomplete="off">
+      </div>
+      <div class="namecard">
+        <div class="avatar">👧</div>
+        <label for="in2">NAMA SISWA 2</label>
+        <input id="in2" maxlength="24" placeholder="Tulis nama di sini..." autocomplete="off">
+      </div>
+    </div>
+    <button class="btn big" id="btnStart">🚀 Mulai Belajar</button>
+    <button class="btn ghost big hidden" id="btnResume">📂 Lanjutkan Sesi Sebelumnya</button>
+    <p class="hint">💡 Gunakan tombol <span class="kbd">←</span> <span class="kbd">→</span> pada keyboard atau tombol navigasi di bawah untuk berpindah slide.</p>
+  </div>
+</section>
+
+<!-- ================= SLIDE 2 : APERSEPSI ================= -->
+<section class="slide" data-title="Apersepsi">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-t">🔥 Pemanasan Otak</span>
+      <h2>Apersepsi: Coba Pikirkan Ini!</h2>
+      <p class="sub">Halo <b class="nm1">Siswa 1</b> dan <b class="nm2">Siswa 2</b>! Sebelum masuk materi, diskusikan 3 teka-teki berikut dengan pasanganmu (3 menit). Klik kartu untuk melihat petunjuk!</p>
+    </div>
+    <div class="grid3">
+      <div class="flip" tabindex="0">
+        <div class="flip-in">
+          <div class="face front">
+            <div class="fe">🍎</div>
+            <div class="fq">Ibu membeli 3 kg gula seharga Rp14.000/kg. Bagaimana menuliskan total harganya jika banyaknya gula <b>berubah-ubah</b>, katakanlah <i>x</i> kg?</div>
+          </div>
+          <div class="face back">
+            <div class="bt">💭</div>
+            <div>Total harga = 14.000 × x. Karena kita belum tahu nilai x, kita tulis singkat: <b>14.000x</b>. Huruf menggantikan bilangan yang belum pasti!</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip" tabindex="0">
+        <div class="flip-in">
+          <div class="face front">
+            <div class="fe">➕</div>
+            <div class="fq">Berapa hasil 5 + 5 + 5 + … yang diulang <b>100 kali</b>? Adakah cara menulisnya dengan <b>singkat</b> jika pengulangannya n kali?</div>
+          </div>
+          <div class="face back">
+            <div class="bt">💭</div>
+            <div>100 × 5 = 500. Jika diulang n kali menjadi <b>5n</b>. Itulah kekuatan aljabar: menuliskan pola yang panjang dengan sangat singkat!</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip" tabindex="0">
+        <div class="flip-in">
+          <div class="face front">
+            <div class="fe">🎂</div>
+            <div class="fq">"Dua kali umurmu dikurangi 3" — kalimat kata-kata ini, kira-kira bagaimana bentuk <b>matematikanya</b>?</div>
+          </div>
+          <div class="face back">
+            <div class="bt">💭</div>
+            <div>Jika umurmu u, kalimat itu menjadi <b>2u − 3</b>. Kalimat sehari-hari bisa berubah menjadi bentuk matematika yang ringkas!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fliphint">👆 Klik kartu di atas untuk membalik dan melihat petunjuk jawaban</div>
+    <div class="note mt">🤔 <b>Pertanyaan jembatan:</b> Apa kesamaan dari ketiga teka-teki tadi? Betul — ketiganya memakai <b>huruf untuk mewakili bilangan yang belum diketahui</b>. Itulah <b>aljabar</b>, materi yang akan kita kuasai hari ini!</div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 3 : KEHIDUPAN SEHARI-HARI ================= -->
+<section class="slide" data-title="Aljabar di Kehidupan">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-t">🌍 Konteks Nyata</span>
+      <h2>Aljabar Ada di Sekitar Kita!</h2>
+      <p class="sub">Arahkan kursor ke setiap kartu. Setiap kejadian sehari-hari bisa ditulis ringkas dengan huruf sebagai variabel.</p>
+    </div>
+    <div class="grid3">
+      <dl class="dlcard">
+        <span class="de">🛒</span>
+        <dt>Belanja di Pasar</dt>
+        <dd>Harga 1 apel Rp2.000. Kamu membeli <b>a</b> apel.</dd>
+        <span class="expr">2.000a</span>
+      </dl>
+      <dl class="dlcard">
+        <span class="de">🐖</span>
+        <dt>Celengan</dt>
+        <dd>Isi awal celengan Rp10.000, lalu kamu menabung <b>s</b> rupiah.</dd>
+        <span class="expr">10.000 + s</span>
+      </dl>
+      <dl class="dlcard">
+        <span class="de">🚴</span>
+        <dt>Bersepeda</dt>
+        <dd>Kecepatan 12 km/jam selama <b>t</b> jam. Jarak tempuh?</dd>
+        <span class="expr">12t</span>
+      </dl>
+      <dl class="dlcard">
+        <span class="de">🧁</span>
+        <dt>Membuat Kue</dt>
+        <dd>Setiap kue butuh setengah kg tepung. Membuat <b>p</b> kue butuh?</dd>
+        <span class="expr">p ÷ 2</span>
+      </dl>
+      <dl class="dlcard">
+        <span class="de">🎬</span>
+        <dt>Harga Tiket Bioskop</dt>
+        <dd>Tiket anak <b>a</b> rupiah, tiket dewasa dua kalinya.</dd>
+        <span class="expr">a + 2a</span>
+      </dl>
+      <dl class="dlcard">
+        <span class="de">📶</span>
+        <dt>Beli Kuota</dt>
+        <dd>Harga Rp5.000 per GB. Membeli <b>x</b> GB.</dd>
+        <span class="expr">5.000x</span>
+      </dl>
+    </div>
+    <div class="note mt">✍️ Perhatikan pola pada semua kartu: <b>angka + huruf + operasi hitung</b>. Tulisan seperti <b>2.000a</b>, <b>10.000 + s</b>, dan <b>12t</b> inilah yang disebut <b>bentuk aljabar</b>. Dengan aljabar, kita bisa menghitung untuk SEMUA kemungkinan sekaligus, bukan hanya satu kejadian!</div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 4 : TUJUAN PEMBELAJARAN ================= -->
+<section class="slide" data-title="Tujuan Pembelajaran">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-t">🎯 Tujuan</span>
+      <h2>Tujuan Pembelajaran</h2>
+      <p class="sub">Setelah mengikuti pembelajaran hari ini, kalian diharapkan mampu:</p>
+    </div>
+    <div class="grid2">
+      <div class="card obj-card">
+        <div class="obj-n">1</div>
+        <div><b>Mengenali Bentuk Aljabar</b>
+        <p>Mengidentifikasi bentuk aljabar dan membedakannya dari bentuk aritmetika biasa dalam berbagai konteks.</p></div>
+      </div>
+      <div class="card obj-card">
+        <div class="obj-n">2</div>
+        <div><b>Mengenali Unsur-Unsurnya</b>
+        <p>Menentukan koefisien, variabel, konstanta, suku, dan membedakan suku sejenis pada suatu bentuk aljabar.</p></div>
+      </div>
+      <div class="card obj-card">
+        <div class="obj-n">3</div>
+        <div><b>Menerjemahkan Kalimat</b>
+        <p>Menyusun bentuk aljabar dari kalimat atau cerita kehidupan sehari-hari dengan kata kunci operasi hitung.</p></div>
+      </div>
+      <div class="card obj-card">
+        <div class="obj-n">4</div>
+        <div><b>Menghitung &amp; Bekerja Sama</b>
+        <p>Menjumlahkan dan mengurangkan bentuk aljabar (suku sejenis) serta menyelesaikan tantangan secara berpasangan.</p></div>
+      </div>
+    </div>
+    <div class="card journey">
+      <b>🗺️ Peta Perjalanan Hari Ini</b>
+      <div class="steps">
+        <span class="stp">1<i>Intro</i></span>
+        <span class="stp">2<i>Apersepsi</i></span>
+        <span class="stp">3<i>Materi 1</i></span>
+        <span class="stp">4<i>Materi 2</i></span>
+        <span class="stp">5<i>Materi 3</i></span>
+        <span class="stp">6<i>Materi 4</i></span>
+        <span class="stp">7<i>Game 🎮</i></span>
+        <span class="stp">8<i>Exit Ticket</i></span>
+        <span class="stp">9<i>Refleksi</i></span>
+      </div>
+    </div>
+    <div class="note cp mt">📖 <b>Capaian Pembelajaran — Fase D (Kurikulum Merdeka):</b> peserta didik dapat menggunakan generalisasi, pola, dan sifat-sifat operasi dalam bentuk aljabar sederhana melalui pengalaman nyata dan kontekstual.</div>
+    <div class="center mt"><button class="btn" onclick="nextSlide()">Mulai Materi Pertama →</button></div>
+  </div>
+</section>
+<!-- ================= SLIDE 5 : MATERI 1 KONSEP ================= -->
+<section class="slide" data-title="Materi 1 — Bentuk Aljabar">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m1">📚 Materi 1</span>
+      <h2>Apa Itu Bentuk Aljabar?</h2>
+    </div>
+    <div class="grid2">
+      <div class="col">
+        <div class="card">
+          <h3>📘 Definisi</h3>
+          <p style="margin-bottom:8px">Bentuk aljabar adalah bentuk matematika yang memuat <b class="hl-p">variabel</b> (huruf), <b>bilangan</b>, dan <b>operasi hitung</b> seperti penjumlahan, pengurangan, perkalian, atau pembagian.</p>
+          <div class="exline">
+            <span class="yes">✔ 2x + 5</span>
+            <span class="yes">✔ 3a − 2b</span>
+            <span class="no">✘ 7 + 8</span>
+            <span class="no">✘ 100</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>💡 Mengapa Perlu Huruf?</h3>
+          <p style="margin-bottom:8px">Umur kakak <b>selalu 4 tahun lebih tua</b> dari adik. Tahun ini, tahun depan, 10 tahun lagi — selalu begitu! Daripada menghitung ulang terus-menerus, kita tulis sekali saja:</p>
+          <p class="center" style="font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--p)">umur adik = a &nbsp;→&nbsp; umur kakak = <span class="hl-c">a + 4</span></p>
+          <p class="mini mt" style="margin-top:8px">Satu tulisan berlaku untuk <b>semua tahun</b>! Inilah kekuatan generalisasi dalam aljabar. ✨</p>
+        </div>
+        <div class="card warn">
+          <p>⚠️ <b>Hati-hati:</b> bentuk aljabar <b>tidak memuat tanda "="</b>. Contohnya <b>2x + 3 = 11</b> disebut <b>persamaan</b> — itu materi selanjutnya. Bentuk aljabar murni hanyalah "frasa matematika" seperti 2x + 3.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h3>🎮 Tantangan: Klik Semua Bentuk Aljabar!</h3>
+          <p class="mini">Klik semua kartu yang kalian yakini merupakan bentuk aljabar, lalu tekan <b>Periksa</b>. Kartu boleh diklik dua kali untuk membatalkan.</p>
+          <div class="checkgrid" id="m1grid">
+            <button class="ck" data-ok="1">3x + 1</button>
+            <button class="ck" data-ok="0">12 − 5</button>
+            <button class="ck" data-ok="1">2p</button>
+            <button class="ck" data-ok="0">45</button>
+            <button class="ck" data-ok="1">y + 9</button>
+            <button class="ck" data-ok="0">7 × 8</button>
+            <button class="ck" data-ok="1">a − b</button>
+            <button class="ck" data-ok="0">100 − 20</button>
+          </div>
+          <div class="row">
+            <button class="btn small" id="m1check">✔ Periksa</button>
+            <button class="btn ghost small" id="m1reset">↺ Ulangi</button>
+            <span id="m1fb" class="fbtext"></span>
+          </div>
+        </div>
+        <div class="note">🧠 <b>Ingat ciri utamanya:</b> ada <b>huruf (variabel)</b> → bentuk aljabar; hanya angka → bukan bentuk aljabar, melainkan aritmetika biasa.</div>
+      </div>
+    </div>
+    <div class="center mt"><button class="btn" onclick="nextSlide()">Lanjut ke 20 Latihan Soal →</button></div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 6 : MATERI 1 LATIHAN ================= -->
+<section class="slide" data-title="Latihan Materi 1">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m1">📚 Materi 1 • Latihan</span>
+      <h2>Latihan: Bentuk Aljabar</h2>
+      <p class="sub">20 soal pilihan ganda. Jawab satu per satu — setiap jawaban langsung diberi pembahasan. Semangat!</p>
+    </div>
+    <div class="quiz" data-quiz="m1">
+      <div class="quiz-top"><span id="cnt-m1">Soal 1 / 20</span><span class="qscore" id="scr-m1">Benar: 0</span></div>
+      <div class="qbar"><i id="bar-m1"></i></div>
+      <div class="quiz-body" id="body-m1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 7 : MATERI 2 KONSEP ================= -->
+<section class="slide" data-title="Materi 2 — Unsur Bentuk Aljabar">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m2">📚 Materi 2</span>
+      <h2>Koefisien, Variabel, Konstanta &amp; Suku</h2>
+    </div>
+    <div class="grid4">
+      <div class="card defcard dv">
+        <span class="de">🔵</span>
+        <b>Variabel</b>
+        <p>Huruf pengganti bilangan yang belum diketahui nilainya atau dapat berubah-ubah.</p>
+        <span class="exx">x pada 2x</span>
+      </div>
+      <div class="card defcard dk">
+        <span class="de">🟣</span>
+        <b>Koefisien</b>
+        <p>Bilangan yang menempel di depan variabel pada suatu suku.</p>
+        <span class="exx">2 pada 2x</span>
+      </div>
+      <div class="card defcard dc">
+        <span class="de">🟠</span>
+        <b>Konstanta</b>
+        <p>Suku berupa bilangan tetap yang tidak diikuti variabel.</p>
+        <span class="exx">5 pada 2x + 5</span>
+      </div>
+      <div class="card defcard ds">
+        <span class="de">🟢</span>
+        <b>Suku</b>
+        <p>Bagian-bagian bentuk aljabar yang dipisahkan tanda + atau −.</p>
+        <span class="exx">2x dan 5</span>
+      </div>
+    </div>
+    <div class="card mt">
+      <h3 class="center">🔍 Bedah Bentuk Aljabar — klik setiap bagiannya!</h3>
+      <div class="expr" id="m2expr">
+        <button class="tok" data-tok="t1">4a²</button>
+        <span class="op">+</span>
+        <button class="tok" data-tok="t2">3a</button>
+        <span class="op">−</span>
+        <button class="tok" data-tok="t3">7</button>
+      </div>
+      <div class="infobox" id="m2info">👆 Klik salah satu bagian bentuk aljabar di atas untuk mengenalnya lebih dekat!</div>
+    </div>
+    <div class="grid2 mt">
+      <div class="card">
+        <h3>🧩 Suku Sejenis</h3>
+        <p style="margin-bottom:6px">Suku sejenis memiliki <b class="hl-t">variabel dan pangkat yang sama</b>. Hanya suku sejenis yang dapat digabungkan!</p>
+        <div class="exline">
+          <span class="yes">✔ 6x² dan x²</span>
+          <span class="yes">✔ 4ab dan −ab</span>
+          <span class="no">✘ 6x² dan 6x</span>
+          <span class="no">✘ 3a dan 3b</span>
+        </div>
+      </div>
+      <div class="card warn">
+        <h3>🚨 Dua Jebakan Populer</h3>
+        <p>1️⃣ Koefisien bisa <b>negatif</b>: pada <b>−3y</b>, koefisiennya <b>−3</b>, bukan 3. Tanda ikut menempel!</p>
+        <p>2️⃣ Koefisien <b>x</b> pada <b>x + 6</b> adalah <b>1</b>, karena x = 1x.</p>
+      </div>
+    </div>
+    <div class="center mt"><button class="btn" onclick="nextSlide()">Lanjut ke 20 Latihan Soal →</button></div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 8 : MATERI 2 LATIHAN ================= -->
+<section class="slide" data-title="Latihan Materi 2">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m2">📚 Materi 2 • Latihan</span>
+      <h2>Latihan: Unsur-Unsur Bentuk Aljabar</h2>
+      <p class="sub">20 soal tentang koefisien, variabel, konstanta, suku, dan suku sejenis. Baca pertanyaannya pelan-pelan!</p>
+    </div>
+    <div class="quiz" data-quiz="m2">
+      <div class="quiz-top"><span id="cnt-m2">Soal 1 / 20</span><span class="qscore" id="scr-m2">Benar: 0</span></div>
+      <div class="qbar"><i id="bar-m2"></i></div>
+      <div class="quiz-body" id="body-m2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 9 : MATERI 3 KONSEP ================= -->
+<section class="slide" data-title="Materi 3 — Kalimat ke Aljabar">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m3">📚 Materi 3</span>
+      <h2>Dari Kalimat ke Bentuk Aljabar</h2>
+    </div>
+    <div class="grid2">
+      <div class="col">
+        <p class="mini" style="font-weight:700">Kata kunci dalam kalimat adalah "petunjuk operasi". Hafalkan empat kelompok kata ini! 👇</p>
+        <div class="grid2">
+          <div class="kwcard kw kp">
+            <div class="kwo">➕ JUMLAH</div>
+            <div class="kww">ditambah, lebih banyak, lebihnya, bertambah, total</div>
+            <div class="kwe">"x ditambah 3" → x + 3</div>
+          </div>
+          <div class="kwcard kw km">
+            <div class="kwo">➖ KURANG</div>
+            <div class="kww">dikurangi, kurangnya, selisih, berkurang</div>
+            <div class="kwe">"5 dikurangi x" → 5 − x</div>
+          </div>
+          <div class="kwcard kw kx">
+            <div class="kwo">✖️ KALI</div>
+            <div class="kww">kali, dari, setiap, dua kali lipat</div>
+            <div class="kwe">"3 kali k" → 3k</div>
+          </div>
+          <div class="kwcard kw kd">
+            <div class="kwo">➗ BAGI</div>
+            <div class="kww">dibagi, setengah, sepertiga, seperempat</div>
+            <div class="kwe">"setengah dari b" → b ÷ 2</div>
+          </div>
+        </div>
+        <div class="card warn">
+          <h3>🚨 Awas Jebakan Urutan!</h3>
+          <p>1️⃣ "5 dikurangi x" → <b>5 − x</b>, BUKAN x − 5. Urutan kata menentukan hasil!</p>
+          <p>2️⃣ "2 kali (u dikurangi 4)" → <b>2(u − 4)</b>, BUKAN 2u − 4. Tanda kurung berarti dikali keseluruhan!</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card stepper">
+          <h3>🪜 Langkah Demi Langkah</h3>
+          <div class="stepq">"Umur Pak Rio 5 tahun lebihnya dari 2 kali umur Rafi (r tahun)."</div>
+          <div class="stepshow" id="stepshow"></div>
+          <div class="row">
+            <button class="btn ghost small" id="stepPrev">◀ Sebelumnya</button>
+            <span id="stepIdx" class="mini" style="font-weight:800">Langkah 1 / 5</span>
+            <button class="btn small" id="stepNext">Berikutnya ▶</button>
+          </div>
+        </div>
+        <div class="note">🔑 <b>Kunci sukses:</b> tentukan dulu <b>variabelnya</b> (siapa yang belum diketahui), lalu susun operasinya <b>sesuai urutan kalimat</b>.</div>
+      </div>
+    </div>
+    <div class="center mt"><button class="btn" onclick="nextSlide()">Lanjut ke 20 Latihan Soal →</button></div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 10 : MATERI 3 LATIHAN ================= -->
+<section class="slide" data-title="Latihan Materi 3">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m3">📚 Materi 3 • Latihan</span>
+      <h2>Latihan: Kalimat → Bentuk Aljabar</h2>
+      <p class="sub">20 soal penerjemahan kalimat. Waspadai jebakan urutan dan tanda kurung!</p>
+    </div>
+    <div class="quiz" data-quiz="m3">
+      <div class="quiz-top"><span id="cnt-m3">Soal 1 / 20</span><span class="qscore" id="scr-m3">Benar: 0</span></div>
+      <div class="qbar"><i id="bar-m3"></i></div>
+      <div class="quiz-body" id="body-m3"></div>
+    </div>
+  </div>
+</section>
+<!-- ================= SLIDE 11 : MATERI 4 KONSEP ================= -->
+<section class="slide" data-title="Materi 4 — Penjumlahan & Pengurangan">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m4">📚 Materi 4</span>
+      <h2>Penjumlahan &amp; Pengurangan Bentuk Aljabar</h2>
+    </div>
+    <div class="grid2">
+      <div class="col">
+        <div class="card">
+          <h3>📜 Aturan Emas</h3>
+          <p>Hanya <b class="hl-t">suku sejenis</b> yang dapat dijumlahkan atau dikurangkan. Caranya: jumlahkan/kurangkan <b>koefisiennya</b>, variabel tetap mengikuti!</p>
+          <div class="exline">
+            <span class="yes">✔ 3a + 2a = 5a</span>
+            <span class="yes">✔ 7x − 3x = 4x</span>
+            <span class="no">✘ 5b + 2c ≠ 7bc</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🪜 Tiga Langkah Kerja</h3>
+          <p><b>1. Kelompokkan</b> suku-suku sejenis berdampingan.</p>
+          <p><b>2. Hitung</b> koefisiennya (tanda + / − ikut sukunya!).</p>
+          <p><b>3. Tuliskan</b> hasilnya berdampingan dengan rapi.</p>
+          <p class="mini mt" style="margin-top:8px">Contoh: <b>4p + 3 + 2p</b> → kelompokkan: (4p + 2p) + 3 → hasil: <b>6p + 3</b></p>
+        </div>
+        <div class="card warn">
+          <h3>🚨 Hati-hati Tanda Kurung!</h3>
+          <p>Saat tanda <b>−</b> berada di depan kurung, <b>semua tanda di dalamnya berubah</b>:</p>
+          <p class="center" style="font-family:var(--fh);font-size:1.15rem;font-weight:800;margin:6px 0">(7k + 4) − (3k + 1) = 7k + 4 <b class="hl-c">− 3k − 1</b> = <b class="hl-t">4k + 3</b></p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h3>🎮 Lab: Gabungkan Suku Sejenis!</h3>
+          <p class="mini">Klik <b>dua suku sejenis</b> satu per satu untuk menggabungkannya. Selesaikan sampai tidak ada yang bisa digabung lagi!</p>
+          <div class="expr" id="m4chips">
+            <button class="tok" data-t="v" data-v="5">5a</button>
+            <button class="tok" data-t="k" data-v="3">+3</button>
+            <button class="tok" data-t="v" data-v="2">+2a</button>
+            <button class="tok" data-t="k" data-v="-4">−4</button>
+          </div>
+          <div class="resultline hidden" id="m4res"></div>
+          <div class="fbtext mt" id="m4fb" style="margin-top:10px">👆 Mulai: klik suku pertama, lalu pasangannya.</div>
+        </div>
+        <div class="note">💡 <b>Trik membaca tanda:</b> tanda + / − milik suku yang ada <b>di belakangnya</b>. Pada <b>5a + 2a − 4</b>, sukunya adalah <b>5a, +2a, dan −4</b>.</div>
+      </div>
+    </div>
+    <div class="center mt"><button class="btn" onclick="nextSlide()">Lanjut ke 20 Latihan Soal →</button></div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 12 : MATERI 4 LATIHAN ================= -->
+<section class="slide" data-title="Latihan Materi 4">
+  <div class="wrap">
+    <div class="slide-head">
+      <span class="chip chip-m4">📚 Materi 4 • Latihan</span>
+      <h2>Latihan: Penjumlahan &amp; Pengurangan</h2>
+      <p class="sub">20 soal penyederhanaan. Ingat: gabungkan hanya suku sejenis, dan awas tanda kurung!</p>
+    </div>
+    <div class="quiz" data-quiz="m4">
+      <div class="quiz-top"><span id="cnt-m4">Soal 1 / 20</span><span class="qscore" id="scr-m4">Benar: 0</span></div>
+      <div class="qbar"><i id="bar-m4"></i></div>
+      <div class="quiz-body" id="body-m4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 13 : GAME KERJA SAMA ================= -->
+<section class="slide" data-title="Game Kerja Sama">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-g">🎮 Game Kerja Sama</span>
+      <h2>🏝️ Misi: Jembatan ke Pulau Aljabar</h2>
+    </div>
+    <div class="card gameintro" id="gameIntro">
+      <h3 class="center">Kedua petualang harus bergotong royong! 🤝</h3>
+      <ul>
+        <li>Setiap ronde ada <b>dua kartu clue</b> — satu milik <b class="nm1">Siswa 1</b>, satu milik <b class="nm2">Siswa 2</b>. Posisi kartu <b>bergantian setiap ronde</b>, jadi keduanya wajib berkontribusi!</li>
+        <li>Buka kartu clue masing-masing, lalu <b>diskusikan bersama</b>: kedua clue harus digabungkan untuk menjawab pertanyaan.</li>
+        <li>Sepakati satu jawaban bersama, lalu klik pilihannya. Jawaban benar = <b>1 papan jembatan</b> terpasang! 🪵</li>
+        <li>Kumpulkan minimal <b>6 dari 8 papan</b> agar jembatan selesai dan kalian bisa menyeberang ke Pulau Aljabar! 🌉</li>
+      </ul>
+      <div class="center"><button class="btn big" id="btnGameStart">🎮 Mulai Misi!</button></div>
+    </div>
+    <div id="gameBoard" class="hidden">
+      <div class="bridge">
+        <div class="bend">🏕️<i>TEPI PANTAI</i></div>
+        <div class="planks" id="planks"></div>
+        <div class="bend">🏝️<i>PULAU ALJABAR</i></div>
+      </div>
+      <div class="card roundcard" id="roundCard"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 14 : EXIT TICKET ================= -->
+<section class="slide" data-title="Exit Ticket">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-e">🎟️ Exit Ticket</span>
+      <h2>Buktikan Pemahamanmu!</h2>
+      <p class="sub">Kerjakan <b>3 soal secara mandiri dan jujur</b> — ini ukuran pemahamanmu hari ini. <b class="nm1">Siswa 1</b> dan <b class="nm2">Siswa 2</b> bergantian di tab masing-masing!</p>
+    </div>
+    <div class="xtabs">
+      <button class="xtab active" data-x="s1" id="xtab-s1">🎟️ Soal <span class="nm1">Siswa 1</span></button>
+      <button class="xtab" data-x="s2" id="xtab-s2">🎟️ Soal <span class="nm2">Siswa 2</span></button>
+    </div>
+    <div class="exit-body" id="xbody-s1"></div>
+    <div class="exit-body hidden" id="xbody-s2"></div>
+    <div class="xstatus" id="xstatus">Status: belum ada yang mengerjakan.</div>
+    <div id="xdone" class="xdone hidden"></div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 15 : KESIMPULAN ================= -->
+<section class="slide" data-title="Kesimpulan">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-t">🧠 Kesimpulan</span>
+      <h2>APA yang Kita Pelajari Hari Ini?</h2>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <h3>1️⃣ Bentuk Aljabar</h3>
+        <p style="font-size:.95rem">Memuat <b>variabel</b>, bilangan, dan operasi hitung — tanpa tanda "=". Contoh: <b>2x + 5</b>. Ia menuliskan pola secara umum.</p>
+      </div>
+      <div class="card">
+        <h3>2️⃣ Unsur-Unsurnya</h3>
+        <p style="font-size:.95rem"><b>Koefisien</b> (bilangan depan), <b>variabel</b> (huruf), <b>konstanta</b> (bilangan tetap), dan <b>suku</b> (dipisah + / −). Suku sejenis = variabel &amp; pangkat sama.</p>
+      </div>
+      <div class="card">
+        <h3>3️⃣ Kalimat → Aljabar</h3>
+        <p style="font-size:.95rem">Kenali kata kunci: jumlah (+), kurang (−), kali (×), bagi (÷). Perhatikan <b>urutan</b> dan tanda kurung!</p>
+      </div>
+      <div class="card">
+        <h3>4️⃣ Menjumlah &amp; Mengurang</h3>
+        <p style="font-size:.95rem">Gabungkan <b class="hl-t">hanya suku sejenis</b>. Contoh: 3a + 2a = 5a, tetapi 3a + 2b tetap seperti itu.</p>
+      </div>
+      <div class="card">
+        <h3>5️⃣ Kurung = Perhatian!</h3>
+        <p style="font-size:.95rem">Tanda − di depan kurung mengubah semua tanda di dalamnya: (7k + 4) − (3k + 1) = 7k + 4 − 3k − 1.</p>
+      </div>
+      <div class="card">
+        <h3>6️⃣ Gotong Royong</h3>
+        <p style="font-size:.95rem">Dengan membagi informasi dan berdiskusi (seperti di game jembatan), masalah yang sulit menjadi mudah! 🤝</p>
+      </div>
+    </div>
+    <div class="card mt">
+      <h3 class="center">📊 Hasil Belajar <b class="nm1">Siswa 1</b> &amp; <b class="nm2">Siswa 2</b> Hari Ini</h3>
+      <div class="dashgrid" id="dash"></div>
+      <div class="totalbig" id="dashtotal"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 16 : REFLEKSI ================= -->
+<section class="slide" data-title="Refleksi">
+  <div class="wrap">
+    <div class="slide-head center">
+      <span class="chip chip-t">🪞 Refleksi</span>
+      <h2>Cermin Diri: Bagaimana Perasaanmu?</h2>
+      <p class="sub">Isi refleksi berikut dengan jujur — tidak ada jawaban salah!</p>
+    </div>
+    <div class="grid2">
+      <div class="col">
+        <div class="card rq">
+          <div class="rqt">1. Bagaimana perasaanmu belajar aljabar hari ini?</div>
+          <div class="rbtns" id="r-mood">
+            <button class="rb" data-v="😃 Semangat!"><span class="re">😃</span>Semangat!</button>
+            <button class="rb" data-v="🙂 Cukup paham"><span class="re">🙂</span>Cukup paham</button>
+            <button class="rb" data-v="😟 Masih bingung"><span class="re">😟</span>Masih bingung</button>
+          </div>
+        </div>
+        <div class="card rq">
+          <div class="rqt">2. Bagian mana yang paling kamu sukai?</div>
+          <div class="rbtns" id="r-fav">
+            <button class="rb" data-v="Materi bentuk aljabar">Materi</button>
+            <button class="rb" data-v="Latihan soal">Latihan Soal</button>
+            <button class="rb" data-v="Game kerja sama">Game 🎮</button>
+            <button class="rb" data-v="Exit ticket">Exit Ticket</button>
+          </div>
+        </div>
+        <div class="card rq">
+          <div class="rqt">3. Apa rencanamu agar semakin paham?</div>
+          <div class="rbtns" id="r-act">
+            <button class="rb" data-v="Berlatih soal lagi">Berlatih Lagi</button>
+            <button class="rb" data-v="Bertanya pada guru">Tanya Guru</button>
+            <button class="rb" data-v="Belajar bersama teman">Belajar Bareng</button>
+            <button class="rb" data-v="Menonton video pembelajaran">Nonton Video</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="rqt">✍️ 4. Tulis pesan / hal yang ingin kamu tanyakan (opsional)</div>
+          <textarea id="reflmsg" placeholder="Contoh: Bu/Pak, saya masih bingung soal tanda negatif pada suku..."></textarea>
+        </div>
+        <div class="center"><button class="btn teal big" id="btnRefl">✨ Kirim Refleksi</button></div>
+        <div id="reflDone" class="hidden"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SLIDE 17 : THANK YOU ================= -->
+<section class="slide" data-title="Terima Kasih">
+  <div class="wrap cover thanks">
+    <div class="cover-emoji">🎉 🌟 🎊 🌟 🎉</div>
+    <h1>Terima Kasih,<br><span class="grad" id="tyName1">Siswa 1</span> &amp; <span class="grad" id="tyName2">Siswa 2</span>!</h1>
+    <h2 class="grad" style="font-size:1.8rem">Thank You for Today! 🙏</h2>
+    <p class="tagline">Kalian telah menyelesaikan petualangan Aljabar hari ini: mengenal bentuk aljabar, unsur-unsurnya, menerjemahkan kalimat, menghitung suku sejenis, dan bekerja sama menyeberangi Pulau Aljabar.</p>
+    <div class="statchips" id="tyStats"></div>
+    <div class="note cp" style="max-width:640px">💬 <i>"Matematika bukan tentang angka, melainkan tentang memahami pola dan berpikir logis. Aljabar adalah jembatan dari pertanyaan menuju jawaban."</i></div>
+    <button class="btn ghost" onclick="resetAll()">🔄 Mulai Sesi Baru</button>
+  </div>
+</section>
+
+</main>
+
+<footer id="navbar">
+  <button class="navbtn" id="btnPrev">◀ Sebelumnya</button>
+  <div id="progressWrap"><div id="progressBar"></div></div>
+  <button class="navbtn" id="btnNext">Berikutnya ▶</button>
+</footer>
+
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+
+<script>
+/* ================================================================
+   DATA — Bank Soal Aljabar Kelas 7 SMP (Kurikulum Merdeka, Fase D)
+   o = opsi, a = indeks jawaban benar, e = pembahasan
+   ================================================================ */
+const QUESTIONS = {
+m1: [
+{q:'Manakah yang merupakan <b>bentuk aljabar</b>?',o:['8 + 7','5x + 3','25 − 10','6 × 4'],a:1,e:'Bentuk aljabar memuat variabel (huruf). 5x + 3 memuat variabel x, sedangkan pilihan lain hanya memuat bilangan.'},
+{q:'Ciri utama sebuah bentuk aljabar adalah …',o:['selalu bertanda sama dengan (=)','memuat minimal satu variabel','hanya berisi angka','selalu memuat tanda kurung'],a:1,e:'Bentuk aljabar adalah bentuk matematika yang memuat variabel (huruf). Tanda "=", tanda kurung, dan angka saja bukan ciri wajibnya.'},
+{q:'Manakah yang <b>BUKAN</b> bentuk aljabar?',o:['2p − 1','3y','15 + 6','k + 4'],a:2,e:'15 + 6 hanya memuat bilangan tanpa variabel, sehingga termasuk aritmetika biasa, bukan bentuk aljabar.'},
+{q:'Harga 1 buku Rp5.000. Total harga untuk <b>n</b> buku ditulis …',o:['n + 5.000','5.000n','5.000 − n','n ÷ 5.000'],a:1,e:'Total harga = harga satuan × banyak barang = 5.000 × n. Dalam aljabar, tanda × tidak perlu ditulis: 5.000n.'},
+{q:'Huruf dalam bentuk aljabar (misalnya x) mewakili …',o:['bilangan yang nilainya belum diketahui atau dapat berubah','satuan panjang','tanda perkalian','jenis mata uang'],a:0,e:'Variabel adalah lambang (biasanya huruf) yang mewakili bilangan yang belum diketahui nilainya atau dapat berubah-ubah.'},
+{q:'Umur kakak 4 tahun lebih tua dari umur adik. Jika umur adik <b>a</b> tahun, umur kakak adalah …',o:['4a','a + 4','a − 4','4 − a'],a:1,e:"«4 tahun lebih tua» berarti umur adik ditambah 4, yaitu a + 4. Hati-hati, 4a berarti 4 kali umur adik!"},
+{q:'Bentuk aljabar yang selalu menyatakan <b>bilangan ganjil</b> adalah …',o:['2n','2n + 1','n + 2','n ÷ 2'],a:1,e:'2n selalu genap (habis dibagi 2). Ditambah 1 menjadi ganjil: untuk n = 1 → 3, n = 2 → 5, n = 3 → 7.'},
+{q:'Panjang meja 3 cm lebih dari 2 kali lebarnya. Jika lebar <b>l</b> cm, panjang meja adalah …',o:['2l + 3','2(l + 3)','3l + 2','l + 3'],a:0,e:'«2 kali lebar» = 2l, lalu «3 cm lebih dari» berarti ditambah 3, sehingga 2l + 3.'},
+{q:'Dita membeli x pulpen seharga Rp2.000 per buah dan 1 buku seharga Rp5.000. Total belanja Dita (dalam ribuan rupiah) adalah …',o:['2x + 5','2 + 5x','2x − 5','7x'],a:0,e:'x pulpen = 2.000x dan 1 buku = 5.000. Dalam ribuan rupiah: 2x + 5.'},
+{q:'Pasangan yang <b>keduanya</b> bentuk aljabar adalah …',o:['3a dan 12 − 4','2x + 1 dan 9','y − 2 dan 4p','5 dan m + 3'],a:2,e:'y − 2 dan 4p sama-sama memuat variabel. Pilihan lain memuat angka murni (12 − 4, 9, 5) sehingga bukan aljabar.'},
+{q:'Situasi yang paling tepat mewakili bentuk aljabar <b>x + 7</b> adalah …',o:['7 lebihnya dari suatu bilangan x','x lebihnya dari 7','7 kali bilangan x','x dibagi 7'],a:0,e:'x + 7 berarti bilangan x ditambah 7, yaitu «7 lebihnya dari x».'},
+{q:'Jika <b>t</b> menyatakan banyak tas, maka <b>3t</b> bermakna …',o:['3 tas saja','tiga kali banyak tas','t ditambah 3','t dikurangi 3'],a:1,e:'Penulisan tanpa tanda × berarti perkalian: 3t = 3 × t = tiga kali banyak tas.'},
+{q:'«Setengah dari uang Budi» dengan uang <b>u</b> rupiah ditulis …',o:['u + 2','2u','u ÷ 2','u − 2'],a:2,e:'Setengah berarti dibagi 2, jadi u ÷ 2. Hati-hati, 2u berarti dua kali uang Budi.'},
+{q:'Bentuk aljabar yang terdiri dari <b>satu suku</b> adalah …',o:['2a + 3b','5k','3m − n','x² + 1'],a:1,e:'5k hanya memiliki satu bagian (satu suku). Pilihan lain dipisah tanda + atau − sehingga memiliki dua suku.'},
+{q:'Harga tiket anak <b>a</b> rupiah dan tiket dewasa <b>2a</b> rupiah. Makna dari 2a adalah …',o:['dua kali harga tiket anak','harga anak ditambah dua','harga anak dikurangi dua','setengah harga anak'],a:0,e:'2a = 2 × a, artinya harga tiket dewasa dua kali harga tiket anak.'},
+{q:'Keliling persegi dengan panjang sisi <b>s</b> adalah <b>4s</b>. Ini berarti …',o:['sisi ditambah 4','empat kali panjang sisi','4 ditambah sisi','sisi dibagi 4'],a:1,e:'Keliling persegi = 4 × s karena keempat sisinya sama panjang.'},
+{q:'Pernyataan yang <b>benar</b> tentang bentuk aljabar <b>10 − y</b> adalah …',o:['memuat variabel y','hanya memuat angka','sama dengan 10y','bukan bentuk aljabar'],a:0,e:'10 − y memuat variabel y sehingga termasuk bentuk aljabar (terdiri dari dua suku).'},
+{q:'Umur ayah 3 kali umur Dina dikurangi 2. Jika umur Dina <b>x</b>, umur ayah adalah …',o:['3x − 2','3(x − 2)','2x − 3','3 + x − 2'],a:0,e:'«3 kali umur Dina» = 3x, lalu «dikurangi 2» → 3x − 2. Pilihan 3(x − 2) berarti 3 kali (x − 2), berbeda makna!'},
+{q:'Bentuk aljabar yang memuat <b>dua variabel</b> adalah …',o:['2x + 3','4a + b','5y − 2','7'],a:1,e:'4a + b memuat dua huruf berbeda, yaitu a dan b.'},
+{q:'Manfaat utama mempelajari bentuk aljabar adalah …',o:['membuat hitungan lebih rumit','menyatakan situasi yang belum diketahui nilainya secara umum','menggantikan semua bilangan','hanya untuk lomba olimpiade'],a:1,e:'Aljabar memungkinkan kita menuliskan aturan atau hubungan secara umum, meskipun nilai bilangannya belum diketahui.'}
+],
+m2: [
+{q:'Pada bentuk aljabar <b>5x + 3</b>, koefisiennya adalah …',o:['5','x','3','5x'],a:0,e:'Koefisien adalah bilangan yang menempel di depan variabel. Pada suku 5x, koefisiennya 5.'},
+{q:'Pada bentuk aljabar <b>5x + 3</b>, variabelnya adalah …',o:['5','x','3','5x'],a:1,e:'Variabel adalah huruf yang mewakili bilangan yang belum diketahui, yaitu x.'},
+{q:'Pada bentuk aljabar <b>5x + 3</b>, konstantanya adalah …',o:['5','x','3','5x'],a:2,e:'Konstanta adalah suku berupa bilangan tetap tanpa variabel, yaitu 3.'},
+{q:'Banyak <b>suku</b> pada bentuk aljabar 5x + 3 adalah …',o:['1','2','3','4'],a:1,e:'Suku dipisahkan tanda + atau −. Suku-sukunya adalah 5x dan 3, jadi ada 2 suku.'},
+{q:'Pada bentuk aljabar <b>7a² − 4a + 9</b>, koefisien dari a² adalah …',o:['7','−4','9','a'],a:0,e:'Pada suku 7a², bilangan yang menempel di depan a² adalah 7, jadi koefisiennya 7.'},
+{q:'Pada bentuk aljabar <b>7a² − 4a + 9</b>, konstantanya adalah …',o:['7','−4a','9','a²'],a:2,e:'9 tidak memuat variabel, sehingga 9 adalah konstanta.'},
+{q:'Banyak <b>suku</b> pada bentuk aljabar 7a² − 4a + 9 adalah …',o:['1','2','3','4'],a:2,e:'Suku-sukunya: 7a², −4a, dan 9 → ada 3 suku (trinom).'},
+{q:'Pada bentuk aljabar <b>−3y + 8</b>, koefisien dari y adalah …',o:['3','−3','8','y'],a:1,e:'Tanda − ikut suku di depannya! Koefisien y adalah −3, bukan 3. Ini jebakan yang sering muncul!'},
+{q:'Koefisien dari <b>x</b> pada bentuk aljabar x + 6 adalah …',o:['0','1','6','x'],a:1,e:'x sama dengan 1x, sehingga koefisiennya 1.'},
+{q:'Pasangan <b>suku sejenis</b> adalah …',o:['2a dan 3b','4x dan −x','5 dan 5y','2p² dan 2p'],a:1,e:'Suku sejenis memiliki variabel dan pangkat yang sama. 4x dan −x sama-sama memuat x (pangkat 1).'},
+{q:'Variabel pada bentuk aljabar <b>6m − 2n + 4</b> adalah …',o:['m saja','n saja','m dan n','tidak ada'],a:2,e:'Bentuk ini memuat dua huruf, yaitu m dan n, jadi variabelnya m dan n.'},
+{q:'Konstanta pada bentuk aljabar <b>2k − 11</b> adalah …',o:['2','k','11','−11'],a:3,e:'Suku −11 tidak memuat variabel → konstanta. Tanda − ikut menempel pada konstanta, sehingga nilainya −11.'},
+{q:'Suku-suku pada bentuk aljabar <b>3x + 2y</b> adalah …',o:['3x dan 2y','3 dan 2','x dan y','3, x, 2, dan y'],a:0,e:'Suku adalah bagian yang dipisahkan tanda + atau −, yaitu 3x dan 2y.'},
+{q:'Bentuk aljabar yang memiliki <b>dua suku</b> adalah …',o:['4ab','4a + b','4a × b','4 + a + b'],a:1,e:'4a + b dipisahkan tanda + sehingga memiliki dua suku. 4ab dan 4a × b hanyalah satu suku.'},
+{q:'Koefisien dari <b>b</b> pada bentuk aljabar 5a + b − 2 adalah …',o:['0','1','5','−2'],a:1,e:'b sama dengan 1b, sehingga koefisiennya 1.'},
+{q:'Pasangan <b>suku sejenis</b> adalah …',o:['3x² dan 3x','−2y dan 6y','7ab dan 7ac','9 dan p'],a:1,e:'−2y dan 6y sama-sama memuat variabel y dengan pangkat 1 → sejenis. 3x² dan 3x berbeda pangkat!'},
+{q:'Koefisien dari <b>x</b> (bukan x²) pada bentuk aljabar <b>2x² + x</b> adalah …',o:['2','1','0','x'],a:1,e:'x sama dengan 1x sehingga koefisiennya 1. Angka 2 adalah koefisien dari x², bukan dari x.'},
+{q:'Banyak <b>variabel</b> pada bentuk aljabar 3p + 2q − r adalah …',o:['1','2','3','4'],a:2,e:'Ada tiga huruf berbeda: p, q, dan r → 3 variabel.'},
+{q:'Suku-suku pada bentuk aljabar <b>8 − 3t</b> adalah …',o:['8 dan −3t','8 dan 3t','8 dan t','3 dan 8'],a:0,e:'Tanda − ikut suku di belakangnya, sehingga suku-sukunya 8 dan −3t.'},
+{q:'Manakah pernyataan yang <b>SALAH</b>?',o:['Konstanta tidak memuat variabel','Koefisien selalu positif','Variabel biasanya dilambangkan dengan huruf','Suku dipisahkan tanda + atau −'],a:1,e:'Pernyataan itu salah karena koefisien bisa negatif, contohnya −3 pada −3y.'}
+],
+m3: [
+{q:'«y ditambah 7» ditulis dalam bentuk aljabar sebagai …',o:['y + 7','7y','y − 7','7 − y'],a:0,e:'«Ditambah» berarti +, sehingga y + 7. Hati-hati, 7y berarti 7 × y!'},
+{q:'«5 dikurangi x» ditulis dalam bentuk aljabar sebagai …',o:['x − 5','5 − x','5x','5 + x'],a:1,e:'Bilangan yang disebut pertama ditulis lebih dulu: 5 − x. «x dikurangi 5» baru berarti x − 5.'},
+{q:'«x dikurangi 5» ditulis dalam bentuk aljabar sebagai …',o:['x − 5','5 − x','5x','x + 5'],a:0,e:'«x dikurangi 5» berarti x − 5. Bandingkan dengan soal sebelumnya — urutan kata sangat menentukan!'},
+{q:'«3 kali bilangan k» ditulis dalam bentuk aljabar sebagai …',o:['k + 3','3k','k ÷ 3','3 − k'],a:1,e:'«3 kali k» = 3 × k = 3k. Tanda × tidak perlu ditulis dalam aljabar.'},
+{q:'«Setengah dari b» ditulis dalam bentuk aljabar sebagai …',o:['b + 2','2b','b ÷ 2','b − 2'],a:2,e:'Setengah dari b berarti b dibagi 2, yaitu b ÷ 2 atau b/2.'},
+{q:'«Dua kali u dikurangi 4» ditulis sebagai …',o:['2(u − 4)','2u − 4','4u − 2','2u + 4'],a:1,e:'«Dua kali u» = 2u, lalu «dikurangi 4» → 2u − 4. 2(u − 4) berarti 2 kali SESELURUHNYA (u − 4) — maknanya berbeda!'},
+{q:'Harga segelas susu Rp2.000 lebihnya dari harga segelas jus (j rupiah). Harga segelas susu adalah …',o:['j + 2.000','j − 2.000','2.000j','2.000 ÷ j'],a:0,e:'«2.000 lebihnya dari j» berarti j ditambah 2.000 → j + 2.000.'},
+{q:'«Bilangan n dikali 5, lalu ditambah 3» ditulis sebagai …',o:['3n + 5','5(n + 3)','5n + 3','5n − 3'],a:2,e:'«n dikali 5» = 5n, lalu ditambah 3 → 5n + 3.'},
+{q:'Umur Ibu 6 tahun lebihnya dari 3 kali umur Ani (a tahun). Umur Ibu adalah …',o:['3a + 6','3(a + 6)','6a + 3','3a − 6'],a:0,e:'«3 kali umur Ani» = 3a, «6 tahun lebihnya» berarti ditambah 6 → 3a + 6.'},
+{q:'Banyak ayam dalam kandang 10 kurangnya dari 2 kali p. Bentuk aljabarnya adalah …',o:['2p − 10','10 − 2p','2(p − 10)','2p + 10'],a:0,e:'«10 kurangnya dari 2p» berarti 2p dikurangi 10 → 2p − 10. Urutannya: 2p dulu, baru dikurangi!'},
+{q:'«x dibagi 4» ditulis dalam bentuk aljabar sebagai …',o:['4x','x ÷ 4','x − 4','4 − x'],a:1,e:'«Dibagi 4» berarti x ÷ 4 atau x/4. Hati-hati, 4x berarti 4 kali x!'},
+{q:'«2 kali jumlah panjang (p) dan lebar (l)» ditulis sebagai …',o:['2p + l','2(p + l)','p + l','2 × p × l'],a:1,e:'«Jumlah p dan l» = p + l, lalu «2 kali» keseluruhan → 2(p + l). Gunakan tanda kurung!'},
+{q:'«Sepertiga dari g, dikurangi 2» ditulis sebagai …',o:['g ÷ 3 − 2','g ÷ (3 − 2)','3g − 2','g − 2 ÷ 3'],a:0,e:'«Sepertiga dari g» = g ÷ 3, lalu dikurangi 2 → g ÷ 3 − 2.'},
+{q:'Bentuk aljabar yang selalu menyatakan <b>bilangan genap</b> adalah …',o:['n + 2','2n','n ÷ 2','2n + 1'],a:1,e:'Bilangan genap selalu habis dibagi 2, sehingga bisa ditulis 2n. 2n + 1 justru selalu ganjil!'},
+{q:'Bilangan genap yang <b>tepat sesudah</b> 2n adalah …',o:['2n + 1','2n − 1','2n + 2','n + 2'],a:2,e:'Bilangan genap berurutan selalu berselisih 2, jadi genap sesudah 2n adalah 2n + 2.'},
+{q:'Setiap anak mendapat c permen. Banyak permen untuk 5 anak adalah …',o:['c + 5','c ÷ 5','5c','5 − c'],a:2,e:'c permen untuk setiap anak × 5 anak = 5c.'},
+{q:'Uang Rina Rp5.000 kurangnya dari uang Titi (t rupiah). Uang Rina adalah …',o:['t + 5.000','t − 5.000','5.000t','5.000 − t'],a:1,e:'«5.000 kurangnya dari t» berarti t dikurangi 5.000 → t − 5.000.'},
+{q:'Bilangan asli yang <b>tepat sesudah</b> n adalah …',o:['n + 1','n − 1','2n','n × 1'],a:0,e:'Bilangan asli berurutan selalu bertambah 1, jadi sesudah n adalah n + 1.'},
+{q:'«3 kali jumlah a dan b» ditulis sebagai …',o:['3a + b','3(a + b)','3a × b','a + 3b'],a:1,e:'«Jumlah a dan b» = a + b, lalu «3 kali» keseluruhan → 3(a + b). Tanda kurung wajib ada!'},
+{q:'Harga kerudung seperempat harga baju (b rupiah). Harga kerudung adalah …',o:['4b','b − 4','b ÷ 4','b + 4'],a:2,e:'«Seperempat dari b» berarti b dibagi 4 → b ÷ 4.'}
+],
+m4: [
+{q:'Hasil dari <b>3a + 2a</b> adalah …',o:['5a','6a','5a²','a⁵'],a:0,e:'Keduanya suku sejenis (memuat a). Jumlahkan koefisiennya: 3 + 2 = 5, sehingga 5a.'},
+{q:'Hasil dari <b>7x − 3x</b> adalah …',o:['10x','4x','4x²','x⁴'],a:1,e:'7 − 3 = 4, sehingga 7x − 3x = 4x.'},
+{q:'Hasil dari <b>5b + 2c</b> adalah …',o:['7bc','7b','5b + 2c (tidak dapat digabung)','5bc'],a:2,e:'5b dan 2c BUKAN suku sejenis (variabelnya berbeda), sehingga hasilnya tetap 5b + 2c.'},
+{q:'Hasil dari <b>4p + 3 + 2p</b> adalah …',o:['6p + 3','9p','6p','9p²'],a:0,e:'Gabungkan suku sejenis: 4p + 2p = 6p. Konstanta 3 tidak punya pasangan, tulis saja: 6p + 3.'},
+{q:'Hasil dari <b>9y − 4y + 2</b> adalah …',o:['7y','5y + 2','5y − 2','11y'],a:1,e:'9y − 4y = 5y, konstanta 2 tetap → 5y + 2.'},
+{q:'Hasil dari <b>8m − 3m − 2m</b> adalah …',o:['13m','3m','7m','3m²'],a:1,e:'8 − 3 − 2 = 3, sehingga hasilnya 3m.'},
+{q:'Hasil dari <b>6a + 2b − 4a</b> adalah …',o:['4a + 2b','2a + 2b','8ab','2ab'],a:1,e:'6a − 4a = 2a. Suku 2b tidak sejenis, tetap ditulis → 2a + 2b.'},
+{q:'Hasil dari <b>(3x + 2) + (4x − 1)</b> adalah …',o:['7x + 1','7x + 3','12x + 1','7x − 1'],a:0,e:'Buka kurung: 3x + 2 + 4x − 1 = (3x + 4x) + (2 − 1) = 7x + 1.'},
+{q:'Hasil dari <b>(5a − 3) + (2a + 7)</b> adalah …',o:['7a + 4','7a − 4','3a + 4','10a + 4'],a:0,e:'5a + 2a = 7a dan −3 + 7 = 4, sehingga 7a + 4.'},
+{q:'Hasil dari <b>(7k + 4) − (3k + 1)</b> adalah …',o:['4k + 3','4k + 5','10k + 5','4k − 3'],a:0,e:'Tanda − mengubah semua tanda dalam kurung kedua: 7k + 4 − 3k − 1 = 4k + 3.'},
+{q:'Hasil dari <b>(6n − 5) − (2n − 8)</b> adalah …',o:['4n − 13','4n + 3','8n + 3','4n − 3'],a:1,e:'6n − 5 − 2n + 8 (tanda −8 berubah menjadi +8!) = 4n + 3.'},
+{q:'Hasil dari <b>10 − (4x + 3)</b> adalah …',o:['7 − 4x','7 + 4x','13 − 4x','13 + 4x'],a:0,e:'10 − 4x − 3 = 7 − 4x. Tanda pada 4x tetap negatif karena ada tanda − di depan kurung!'},
+{q:'Hasil dari <b>a + 5 + 2a − 3</b> adalah …',o:['3a + 2','3a + 8','2a + 2','3a − 2'],a:0,e:'a + 2a = 3a dan 5 − 3 = 2 → 3a + 2.'},
+{q:'Hasil dari <b>12x − 5y + 3x − 2y</b> adalah …',o:['15x − 7y','15x + 7y','9x − 3y','15xy − 7'],a:0,e:'Kelompokkan: (12x + 3x) = 15x dan (−5y − 2y) = −7y → 15x − 7y.'},
+{q:'Pada bentuk <b>4a + 2b + 7 − a</b>, pasangan suku sejenis yang dapat digabung adalah …',o:['4a dan −a','2b dan 7','4a dan 7','2b dan −a'],a:0,e:'4a dan −a sama-sama memuat a → dapat digabung menjadi 3a. 2b dan 7 tidak punya pasangan.'},
+{q:'Hasil dari <b>3x + 4x − x</b> adalah …',o:['6x','7x','8x','x'],a:0,e:'Koefisien x adalah 1: 3 + 4 − 1 = 6 → 6x. Jangan lupa mengurangi x yang terakhir!'},
+{q:'Hasil dari <b>(2p + 8) + (p − 8)</b> adalah …',o:['3p','3p + 16','2p','3p + 8'],a:0,e:'2p + p = 3p dan +8 − 8 = 0, sehingga hasilnya 3p saja.'},
+{q:'Hasil dari <b>15 − 6t − 9 + t</b> adalah …',o:['6 − 5t','24t','6 − 7t','24 − 5t'],a:0,e:'Konstanta: 15 − 9 = 6. Suku t: −6t + t = −5t → 6 − 5t.'},
+{q:'Keliling segitiga dengan panjang sisi <b>(2x)</b>, <b>(3x + 1)</b>, dan <b>(x − 2)</b> adalah …',o:['6x − 1','6x + 3','5x − 1','6x + 1'],a:0,e:'Jumlahkan semua sisi: 2x + 3x + 1 + x − 2 = (2x + 3x + x) + (1 − 2) = 6x − 1.'},
+{q:'Hasil dari <b>5a + 3b − 2a + b</b> adalah …',o:['3a + 4b','7ab','3a + 2b','7a + 4b'],a:0,e:'(5a − 2a) = 3a dan (3b + b) = 4b → 3a + 4b. Suku b tetap terpisah dari suku a!'}
+]
+};
+
+/* ============ GAME: Jembatan ke Pulau Aljabar (info-gap) ============ */
+const GDATA = [
+{t:'Ronde 1 — Toko Alat Tulis',a:'Satu kotak pensil berisi 12 pensil.',b:'Bu Rina membeli k kotak pensil.',q:'Bentuk aljabar untuk banyak pensil yang dibeli Bu Rina adalah …',o:['k + 12','12k','k − 12','k ÷ 12'],ans:1,e:'Banyak pensil = banyak kotak × isi satu kotak = k × 12 = 12k.'},
+{t:'Ronde 2 — Kebun Pak Dedi',a:'Tanaman disusun menjadi b baris.',b:'Tiap baris berisi 8 tanaman, tetapi 3 tanaman layu.',q:'Bentuk aljabar banyak tanaman yang masih hidup adalah …',o:['8b + 3','b − 8','8b − 3','8 − 3b'],ans:2,e:'Semua tanaman = 8 × b = 8b; yang layu 3 diambil → 8b − 3.'},
+{t:'Ronde 3 — Tabungan Raka',a:'Uang saku Raka adalah r ribu rupiah.',b:'Setiap hari Raka menabung setengah dari uang sakunya.',q:'Bentuk aljabar tabungan Raka tiap hari (dalam ribuan rupiah) adalah …',o:['r + 2','r ÷ 2','2r','r − 2'],ans:1,e:'Setengah dari r berarti r ÷ 2.'},
+{t:'Ronde 4 — Umur Keluarga Dina',a:'Umur Dina adalah d tahun.',b:'Umur ayah 4 kali umur Dina dikurangi 3 tahun.',q:'Bentuk aljabar umur ayah adalah …',o:['4(d − 3)','3d − 4','4d + 3','4d − 3'],ans:3,e:'«4 kali umur Dina» = 4d, «dikurangi 3» → 4d − 3.'},
+{t:'Ronde 5 — Liburan ke Villa',a:'Biaya sewa villa 300 ribu untuk setiap malam.',b:'Keluarga Andi menginap m malam dan membayar biaya masuk 50 ribu sekali.',q:'Total biaya liburan (dalam ribuan rupiah) adalah …',o:['300m + 50','350m','300m − 50','50m + 300'],ans:0,e:'Sewa m malam = 300 × m = 300m, ditambah biaya masuk 50 → 300m + 50.'},
+{t:'Ronde 6 — Toko Kue',a:'Harga satu bolu adalah 15 ribu rupiah.',b:'Ibu membeli b bolu dan mendapat potongan 2 ribu rupiah.',q:'Total harga kue (dalam ribuan rupiah) adalah …',o:['15b + 2','2b − 15','15b − 2','13 + b'],ans:2,e:'Harga b bolu = 15 × b = 15b, dikurangi potongan 2 → 15b − 2.'},
+{t:'Ronde 7 — Panen Sawah',a:'Panen hari ini sebanyak p kg.',b:'Panen besok 5 kg lebih banyak dari 2 kali panen hari ini.',q:'Bentuk aljabar banyak panen besok adalah …',o:['2p + 5','2p − 5','5p + 2','2(p + 5)'],ans:0,e:'«2 kali panen hari ini» = 2p; «5 kg lebih banyak» berarti ditambah 5 → 2p + 5.'},
+{t:'Ronde 8 — Kereta Api',a:'Satu gerbong kereta berisi g penumpang.',b:'Di stasiun, 9 penumpang turun lalu 4 penumpang naik.',q:'Bentuk aljabar banyak penumpang sekarang adalah …',o:['g + 5','g − 13','g + 13','g − 5'],ans:3,e:'g − 9 + 4 = g − 5.'}
+];
+
+/* ============ EXIT TICKET (3 soal per siswa) ============ */
+const EXDATA = {
+s1: [
+{q:'Sebutkan koefisien, variabel, dan konstanta pada bentuk aljabar <b>4x + 7</b>!',o:['Koefisien 4, variabel x, konstanta 7','Koefisien 7, variabel 4, konstanta x','Koefisien x, variabel 4, konstanta 7','Koefisien 4, variabel 7, konstanta x'],ans:0,e:'4 menempel di depan x (koefisien), x adalah variabel, dan 7 adalah bilangan tetap (konstanta).'},
+{q:'«7 dikurangi dua kali m» ditulis dalam bentuk aljabar sebagai …',o:['2m − 7','7 − 2m','7 + 2m','7m − 2'],ans:1,e:'«Dua kali m» = 2m; «7 dikurangi» berarti 7 ditulis lebih dulu → 7 − 2m.'},
+{q:'Hasil dari <b>6a + 3 − 2a + 5</b> adalah …',o:['4a + 8','8a + 4','4a − 8','8a − 4'],ans:0,e:'6a − 2a = 4a dan 3 + 5 = 8 → 4a + 8.'}
+],
+s2: [
+{q:'Pada bentuk aljabar <b>9y − 5</b>, konstantanya adalah …',o:['9','y','5','−5'],ans:3,e:'Suku −5 tidak memuat variabel → konstanta. Tanda − ikut menempel pada sukunya, jadi konstantanya −5.'},
+{q:'«3 kali jumlah b dan 2» ditulis dalam bentuk aljabar sebagai …',o:['3b + 2','3(b + 2)','5b','b + 6'],ans:1,e:'«Jumlah b dan 2» = b + 2, lalu «3 kali» keseluruhan → 3(b + 2). Tanda kurung wajib!'},
+{q:'Hasil dari <b>(5x + 4) − (2x + 1)</b> adalah …',o:['7x + 5','3x + 3','3x + 5','7x + 3'],ans:1,e:'5x + 4 − 2x − 1 = (5x − 2x) + (4 − 1) = 3x + 3. Tanda isi kurung kedua berubah!'}
+]
+};
+
+/* ============ WIDGET DATA ============ */
+const TOKINFO = {
+t1:'<b>4a²</b> adalah <b>suku pertama</b>. Angka 4 adalah <b>koefisien</b> (bilangan di depan), a adalah <b>variabel</b>, dan pangkat 2 artinya a × a. Dibaca: «empat a kuadrat».',
+t2:'<b>3a</b> adalah <b>suku kedua</b>. Angka 3 adalah <b>koefisien</b> dan a adalah <b>variabel</b>. Karena ada tanda + di depannya, sukunya bernilai positif.',
+t3:'<b>7</b> adalah <b>suku ketiga</b> sekaligus <b>konstanta</b> — bilangan tetap tanpa variabel. Perhatikan: tanda − di depannya ikut suku, jadi nilainya −7!'
+};
+
+const STEPS = [
+'<b>📖 Kalimatnya:</b> «Umur Pak Rio 5 tahun lebihnya dari 2 kali umur Rafi (r tahun)». Klik <b>Berikutnya</b> untuk menyusun bentuk aljabarnya langkah demi langkah!',
+'<b>Langkah 1:</b> Tentukan yang belum diketahui → umur Rafi = <b>r</b> (variabel).',
+'<b>Langkah 2:</b> «2 kali umur Rafi» → <b>2r</b>.',
+'<b>Langkah 3:</b> «5 tahun lebihnya» berarti ditambah 5 → <b>2r + 5</b>.',
+'<b>✅ Hasil akhir:</b> Umur Pak Rio = <b style="font-size:1.3rem;color:var(--teal)">2r + 5</b> &nbsp;🎉 Coba uji: jika r = 10, umur Pak Rio = 25 tahun. Masuk akal!'
+];
+/* ================================================================
+   LOGIKA — Presentasi Interaktif Aljabar Kelas 7 SMP
+   ================================================================ */
+'use strict';
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ---------- Patch gaya kecil untuk tombol nonaktif ---------- */
+(function(){ const st=document.createElement('style');
+  st.textContent='.btn:disabled{opacity:.45;cursor:default;transform:none!important;box-shadow:none}';
+  document.head.appendChild(st); })();
+
+/* ---------- State global ---------- */
+const KEY='aljabar-seru-v1';
+let names=['Siswa 1','Siswa 2'];
+let cur=0;
+const QMETA={
+  m1:{label:'📚 M1 • Bentuk Aljabar',next:6,nextName:'Materi 2'},
+  m2:{label:'📚 M2 • Unsur Aljabar',next:8,nextName:'Materi 3'},
+  m3:{label:'📚 M3 • Kalimat → Aljabar',next:10,nextName:'Materi 4'},
+  m4:{label:'📚 M4 • Jumlah & Kurang',next:12,nextName:'Game Kerja Sama'}
+};
+const QSTATE={m1:{i:0,score:0,res:[]},m2:{i:0,score:0,res:[]},m3:{i:0,score:0,res:[]},m4:{i:0,score:0,res:[]}};
+let G={r:0,planks:0,active:false};
+const EX={s1:{res:[],chi:[]},s2:{res:[],chi:[]}};
+const RF={mood:null,fav:null,act:null,msg:'',done:false};
+
+/* ---------- Validasi data ---------- */
+console.assert(['m1','m2','m3','m4'].every(m=>QUESTIONS[m].length===20),'Setiap materi harus 20 soal!');
+console.assert(GDATA.length===8,'Game harus 8 ronde!');
+console.assert(EXDATA.s1.length===3&&EXDATA.s2.length===3,'Exit ticket harus 3 soal per siswa!');
+
+/* ---------- Util ---------- */
+function shuffleOpts(item){
+  const ai=typeof item.a==='number'?item.a:item.ans;
+  const arr=item.o.map((t,i)=>({t,ok:i===ai}));
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+let toastT=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ---------- Konfeti ---------- */
+const cv=$('#confetti'),cx=cv.getContext('2d');
+let parts=[],rafOn=false;
+const CCOLORS=['#5B5FE9','#FF6B6B','#00B894','#F59E0B','#0EA5E9','#EC4899','#8A4FFF'];
+function sizeCv(){cv.width=innerWidth;cv.height=innerHeight;}
+addEventListener('resize',sizeCv); sizeCv();
+function burst(n){
+  for(let i=0;i<n;i++){
+    parts.push({x:innerWidth/2+(Math.random()-0.5)*innerWidth*0.55,y:innerHeight*0.28+Math.random()*50,
+      vx:(Math.random()-0.5)*11,vy:-(4+Math.random()*9),g:0.32,s:5+Math.random()*7,
+      c:CCOLORS[Math.floor(Math.random()*CCOLORS.length)],rot:Math.random()*Math.PI,
+      vr:(Math.random()-0.5)*0.35,life:80+Math.random()*50});
+  }
+  if(!rafOn){rafOn=true;requestAnimationFrame(tickCv);}
+}
+function tickCv(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.rot+=p.vr; p.life--;
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot);
+    cx.fillStyle=p.c; cx.globalAlpha=Math.max(0,Math.min(1,p.life/40));
+    cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6); cx.restore();
+  });
+  parts=parts.filter(p=>p.life>0&&p.y<cv.height+40);
+  if(parts.length){requestAnimationFrame(tickCv);}
+  else{rafOn=false;cx.clearRect(0,0,cv.width,cv.height);}
+}
+
+/* ---------- Persistensi ---------- */
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify({n:names,s:cur,q:QSTATE,g:G,e:EX,r:RF}));}catch(_){}
+}
+function loadData(){ try{return JSON.parse(localStorage.getItem(KEY));}catch(_){return null;} }
+
+/* ---------- Navigasi slide ---------- */
+const SLIDES=$$('.slide');
+function goTo(i){
+  cur=Math.max(0,Math.min(SLIDES.length-1,i));
+  SLIDES.forEach((s,idx)=>s.classList.toggle('active',idx===cur));
+  $('#slideNow').textContent=cur+1;
+  $('#progressBar').style.width=(cur/(SLIDES.length-1)*100)+'%';
+  $('#btnPrev').disabled=cur===0;
+  $('#btnNext').disabled=cur===SLIDES.length-1;
+  if(SLIDES[cur].dataset.title==='Kesimpulan') buildDash();
+  if(SLIDES[cur].dataset.title==='Terima Kasih') buildThanks();
+  save();
+}
+function nextSlide(){goTo(cur+1);}
+function prevSlide(){goTo(cur-1);}
+$('#btnPrev').addEventListener('click',prevSlide);
+$('#btnNext').addEventListener('click',nextSlide);
+$('#btnReset').addEventListener('click',resetAll);
+function resetAll(){
+  if(confirm('Mulai dari awal? Semua jawaban dan skor akan dihapus.')){
+    try{localStorage.removeItem(KEY);}catch(_){}
+    location.reload();
+  }
+}
+document.addEventListener('keydown',e=>{
+  const t=e.target;
+  if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'))return;
+  if(e.key==='ArrowRight')nextSlide();
+  else if(e.key==='ArrowLeft')prevSlide();
+});
+let tsx=0,tsy=0;
+$('#deck').addEventListener('touchstart',e=>{tsx=e.touches[0].clientX;tsy=e.touches[0].clientY;},{passive:true});
+$('#deck').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tsx, dy=e.changedTouches[0].clientY-tsy;
+  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5){ if(dx<0)nextSlide(); else prevSlide(); }
+},{passive:true});
+
+/* ---------- Nama siswa ---------- */
+function refreshNames(){
+  $$('.nm1').forEach(el=>el.textContent=names[0]);
+  $$('.nm2').forEach(el=>el.textContent=names[1]);
+  $('#whoNames').textContent=names[0]+' & '+names[1];
+}
+$('#in1').addEventListener('input',()=>{names[0]=$('#in1').value.trim()||'Siswa 1';refreshNames();save();});
+$('#in2').addEventListener('input',()=>{names[1]=$('#in2').value.trim()||'Siswa 2';refreshNames();save();});
+$('#btnStart').addEventListener('click',()=>{
+  names[0]=$('#in1').value.trim()||'Siswa 1';
+  names[1]=$('#in2').value.trim()||'Siswa 2';
+  refreshNames(); save(); burst(45);
+  toast('🎉 Selamat datang, '+names[0]+' & '+names[1]+'!');
+  goTo(1);
+});
+$('#btnResume').addEventListener('click',()=>goTo(cur));
+
+/* ---------- Kartu apersepsi (flip) ---------- */
+$$('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('on')));
+
+/* ---------- Widget Materi 1: klik bentuk aljabar ---------- */
+(function(){
+  const grid=$('#m1grid');
+  grid.addEventListener('click',e=>{
+    const c=e.target.closest('.ck');
+    if(!c||c.classList.contains('done'))return;
+    c.classList.toggle('sel');
+  });
+  $('#m1check').addEventListener('click',()=>{
+    let sc=0;
+    grid.querySelectorAll('.ck').forEach(c=>{
+      const sel=c.classList.contains('sel'), ok=c.dataset.ok==='1';
+      c.classList.add('done'); c.classList.remove('sel');
+      if(sel===ok){c.classList.add('good');sc++;} else c.classList.add('bad');
+    });
+    $('#m1fb').textContent=sc===8?'🎉 Sempurna! 8/8 — kalian siap melanjutkan!':'Benar '+sc+'/8. Ingat: bentuk aljabar memuat huruf (variabel). Klik Ulangi untuk mencoba lagi!';
+    if(sc===8)burst(30);
+  });
+  $('#m1reset').addEventListener('click',()=>{
+    grid.querySelectorAll('.ck').forEach(c=>c.classList.remove('sel','done','good','bad'));
+    $('#m1fb').textContent='';
+  });
+})();
+
+/* ---------- Widget Materi 2: bedah bentuk ---------- */
+$('#m2expr').addEventListener('click',e=>{
+  const t=e.target.closest('.tok');
+  if(!t)return;
+  $$('#m2expr .tok').forEach(x=>x.classList.remove('sel'));
+  t.classList.add('sel');
+  const box=$('#m2info');
+  box.innerHTML=TOKINFO[t.dataset.tok];
+  box.style.animation='none'; void box.offsetWidth; box.style.animation='';
+});
+
+/* ---------- Widget Materi 3: stepper ---------- */
+let si=0;
+function renderStep(){
+  $('#stepshow').innerHTML=STEPS[si];
+  $('#stepIdx').textContent='Langkah '+(si+1)+' / '+STEPS.length;
+  $('#stepPrev').disabled=si===0;
+  $('#stepNext').disabled=si===STEPS.length-1;
+}
+$('#stepPrev').addEventListener('click',()=>{if(si>0){si--;renderStep();}});
+$('#stepNext').addEventListener('click',()=>{if(si<STEPS.length-1){si++;renderStep();}});
+
+/* ---------- Widget Materi 4: gabungkan suku sejenis ---------- */
+(function(){
+  let first=null;
+  const wrap=$('#m4chips'), fb=$('#m4fb');
+  wrap.addEventListener('click',e=>{
+    const c=e.target.closest('.tok');
+    if(!c||c.classList.contains('merged'))return;
+    if(!first){first=c;c.classList.add('sel');fb.textContent='👌 Sekarang klik pasangan sejenisnya…';return;}
+    if(first===c){c.classList.remove('sel');first=null;fb.textContent='Pilihan dibatalkan. Klik dua suku sejenis.';return;}
+    if(c.dataset.t===first.dataset.t){
+      const sum=parseInt(first.dataset.v,10)+parseInt(c.dataset.v,10);
+      const merged=document.createElement('button');
+      merged.className='tok merged'; merged.type='button';
+      merged.dataset.t=c.dataset.t; merged.dataset.v=String(sum);
+      merged.textContent=c.dataset.t==='v'?(sum+'a'):(sum>0?'+'+sum:String(sum).replace('-','−'));
+      first.replaceWith(merged); c.remove(); first=null;
+      const left=wrap.querySelectorAll('.tok');
+      fb.textContent='Keren! Suku sejenis berhasil digabung. '+
+        (left.length===2&&wrap.querySelectorAll('.merged').length===2?'':'Cari pasangan berikutnya…');
+      if(left.length===2&&wrap.querySelectorAll('.merged').length===2){
+        const res=$('#m4res');
+        res.classList.remove('hidden');
+        res.textContent='🎉 5a + 3 + 2a − 4 = 7a − 1 — berhasil disederhanakan!';
+        burst(40);
+      }
+    }else{
+      c.classList.add('shake');
+      setTimeout(()=>c.classList.remove('shake'),500);
+      fb.textContent='🤔 Bukan pasangan sejenis! Cari suku dengan variabel yang sama, atau keduanya konstanta.';
+    }
+  });
+})();
+
+/* ---------- Mesin kuis (4 materi × 20 soal) ---------- */
+function renderQuiz(m){
+  const st=QSTATE[m], list=QUESTIONS[m], body=$('#body-'+m);
+  body.dataset.locked='';
+  $('#cnt-'+m).textContent=st.i>=list.length?'Selesai!':'Soal '+(st.i+1)+' / '+list.length;
+  $('#scr-'+m).textContent='Benar: '+st.score;
+  $('#bar-'+m).style.width=(Math.min(st.i,list.length)/list.length*100)+'%';
+  if(st.i>=list.length){renderQuizSummary(m);return;}
+  const q=list[st.i], opts=shuffleOpts(q);
+  body.innerHTML=
+    '<div class="qcard">'+
+      '<div class="qtext">'+q.q+'</div>'+
+      '<div class="opts">'+opts.map((o,i)=>
+        '<button class="opt" data-ok="'+(o.ok?1:0)+'"><span class="ltr">'+'ABCD'[i]+'</span><span>'+o.t+'</span></button>').join('')+'</div>'+
+      '<div class="fb hidden" id="fb-'+m+'"></div>'+
+      '<div class="qnext hidden"><button class="btn" id="nx-'+m+'">'+(st.i===list.length-1?'Lihat Hasil 🏁':'Soal Berikutnya →')+'</button></div>'+
+    '</div>';
+}
+function renderQuizSummary(m){
+  const st=QSTATE[m], n=QUESTIONS[m].length, r=st.score/n;
+  const stars=r>=0.9?'⭐⭐⭐':r>=0.7?'⭐⭐':r>=0.5?'⭐':'💪';
+  const msg=r>=0.9?'Luar biasa! Kalian benar-benar menguasai materi ini! 🏆'
+    :r>=0.7?'Hebat! Pemahaman kalian sudah sangat baik! 🌟'
+    :r>=0.5?'Bagus! Sedikit lagi menuju sempurna. Terus berlatih! 💪'
+    :'Jangan menyerah! Ulangi latihannya pelan-pelan, kalian pasti bisa! 🔁';
+  $('#bar-'+m).style.width='100%';
+  $('#body-'+m).innerHTML=
+    '<div class="qsummary"><div class="big">'+st.score+' / '+n+'</div>'+
+    '<div class="stars">'+stars+'</div><p>'+msg+'</p>'+
+    '<div class="row"><button class="btn ghost" onclick="retryQuiz(\''+m+'\')">↺ Ulangi Latihan</button>'+
+    '<button class="btn" onclick="goTo('+QMETA[m].next+')">Lanjut ke '+QMETA[m].nextName+' →</button></div></div>';
+  if(r>=0.7)burst(70);
+}
+function retryQuiz(m){QSTATE[m]={i:0,score:0,res:[]};save();renderQuiz(m);}
+window.retryQuiz=retryQuiz; window.goTo=goTo; window.nextSlide=nextSlide; window.resetAll=resetAll;
+$$('.quiz').forEach(qz=>{
+  const m=qz.dataset.quiz;
+  qz.addEventListener('click',e=>{
+    const st=QSTATE[m], list=QUESTIONS[m], body=$('#body-'+m);
+    const opt=e.target.closest('.opt');
+    if(opt&&!body.dataset.locked){
+      body.dataset.locked='1';
+      const ok=opt.dataset.ok==='1', q=list[st.i];
+      body.querySelectorAll('.opt').forEach(b=>{
+        b.disabled=true;
+        if(b.dataset.ok==='1')b.classList.add('correct');
+        else if(b!==opt)b.classList.add('dim');
+      });
+      if(!ok)opt.classList.add('wrong');
+      if(ok){st.score++;burst(22);}
+      st.res[st.i]=ok;
+      const fb=$('#fb-'+m);
+      fb.className='fb '+(ok?'fb-ok':'fb-no');
+      fb.innerHTML=(ok?'<b>✅ Benar! Kerja bagus!</b>':'<b>❌ Belum tepat.</b> Jawaban yang benar: <b>'+q.o[q.a]+'</b>')+'<br>💡 Pembahasan: '+q.e;
+      $('#nx-'+m).parentElement.classList.remove('hidden');
+      $('#scr-'+m).textContent='Benar: '+st.score;
+      save();
+      return;
+    }
+    const nx=e.target.closest('#nx-'+m);
+    if(nx){
+      st.i++; save(); renderQuiz(m);
+      qz.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+
+/* ---------- Game: Jembatan ke Pulau Aljabar ---------- */
+$('#btnGameStart').addEventListener('click',startGame);
+function startGame(){
+  G={r:0,planks:0,active:true};
+  $('#gameIntro').classList.add('hidden');
+  $('#gameBoard').classList.remove('hidden');
+  renderPlanks(); renderRound(); save();
+}
+function renderPlanks(){
+  $('#planks').innerHTML=GDATA.map((_,i)=>'<div class="slot '+(i<G.planks?'filled':'')+'"></div>').join('');
+}
+function renderRound(){
+  const rd=GDATA[G.r], swap=G.r%2===1;
+  const L=swap?names[1]:names[0], R=swap?names[0]:names[1];
+  const card=$('#roundCard');
+  card.dataset.locked='';
+  card.innerHTML=
+    '<div class="roundhead"><span class="rbadge">Ronde '+(G.r+1)+' / '+GDATA.length+'</span><b class="rtitle">'+rd.t+'</b></div>'+
+    '<div class="clues">'+
+      '<div class="clue"><div class="cluehead">🃏 Clue milik <b>'+L+'</b></div><div class="cluebody hidden">'+rd.a+'</div><button class="btn small ghost cluetoggle">👆 Buka Clue</button></div>'+
+      '<div class="clue"><div class="cluehead">🃏 Clue milik <b>'+R+'</b></div><div class="cluebody hidden">'+rd.b+'</div><button class="btn small ghost cluetoggle">👆 Buka Clue</button></div>'+
+    '</div>'+
+    '<div class="discuss">🗣️ Kedua clue harus DIGABUNGKAN. Buka keduanya, bacakan satu sama lain, lalu diskusikan sebelum menjawab!</div>'+
+    '<div class="qtext">'+rd.q+'</div>'+
+    '<div class="opts">'+shuffleOpts(rd).map((o,i)=>
+      '<button class="opt" data-ok="'+(o.ok?1:0)+'"><span class="ltr">'+'ABCD'[i]+'</span><span>'+o.t+'</span></button>').join('')+'</div>'+
+    '<div class="fb hidden" id="gfb"></div>'+
+    '<div class="qnext hidden"><button class="btn" id="gnext">'+(G.r===GDATA.length-1?'Lihat Hasil 🏁':'Ronde Berikutnya →')+'</button></div>';
+}
+$('#roundCard').addEventListener('click',e=>{
+  const ct=e.target.closest('.cluetoggle');
+  if(ct){
+    const clue=ct.closest('.clue'), cb=clue.querySelector('.cluebody');
+    cb.classList.toggle('hidden');
+    ct.textContent=cb.classList.contains('hidden')?'👆 Buka Clue':'✅ Clue terbuka — bacakan ke pasanganmu!';
+    clue.classList.add('got');
+    return;
+  }
+  const card=$('#roundCard');
+  const opt=e.target.closest('.opt');
+  if(opt&&!card.dataset.locked){
+    card.dataset.locked='1';
+    const rd=GDATA[G.r], ok=opt.dataset.ok==='1';
+    card.querySelectorAll('.opt').forEach(b=>{
+      b.disabled=true;
+      if(b.dataset.ok==='1')b.classList.add('correct');
+      else if(b!==opt)b.classList.add('dim');
+    });
+    if(!ok)opt.classList.add('wrong');
+    if(ok){G.planks++;renderPlanks();burst(30);}
+    const fb=$('#gfb');
+    fb.className='fb '+(ok?'fb-ok':'fb-no');
+    fb.innerHTML=(ok?'<b>🪵 1 papan jembatan terpasang!</b>':'<b>❌ Belum tepat.</b> Jawaban benar: <b>'+rd.o[rd.ans]+'</b>. ')+'💡 '+rd.e;
+    $('#gnext').parentElement.classList.remove('hidden');
+    save();
+    return;
+  }
+  if(e.target.closest('#gnext')){
+    G.r++;
+    if(G.r>=GDATA.length)renderGameResult(true);
+    else renderRound();
+    save();
+  }
+});
+function renderGameResult(withBurst){
+  G.active=false;
+  const card=$('#roundCard');
+  const win=G.planks>=6;
+  card.innerHTML=
+    '<div class="gresult"><div class="gi">'+(win?'🏆':'🌉')+'</div>'+
+    '<h3>'+(win?'JEMBATAN SELESAI! 🎉':'Hampir Sampai! 💪')+'</h3>'+
+    '<p style="font-weight:800;margin-bottom:6px">Papan terpasang: '+G.planks+' / '+GDATA.length+'</p>'+
+    '<p class="mini">'+(win
+      ?'Luar biasa, <b>'+names[0]+'</b> & <b>'+names[1]+'</b>! Kalian berhasil menyeberang ke Pulau Aljabar. Clue dibagikan, didiskusikan, dan dijawab bersama — itu kunci kerja sama yang hebat! 🤝'
+      :'Butuh minimal 6 papan untuk menyeberang. Kuncinya: buka KEDUA clue, bacakan satu sama lain, dan sepakati jawaban bersama sebelum mengklik. Coba lagi ya!')+'</p>'+
+    '<div class="row" style="justify-content:center;margin-top:14px">'+
+    (win?'':'<button class="btn ghost" onclick="startGame()">↺ Main Lagi</button>')+
+    '<button class="btn" onclick="goTo(13)">Lanjut ke Exit Ticket 🎟️ →</button></div></div>';
+  if(win&&withBurst)burst(130);
+}
+window.startGame=startGame;
+
+/* ---------- Exit Ticket ---------- */
+$$('.xtab').forEach(t=>t.addEventListener('click',()=>{
+  $$('.xtab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const w=t.dataset.x;
+  $('#xbody-s1').classList.toggle('hidden',w!=='s1');
+  $('#xbody-s2').classList.toggle('hidden',w!=='s2');
+}));
+function exitCardHTML(w,i,q){
+  const done=EX[w].res[i]!==undefined, ok=EX[w].res[i]===true;
+  const optsHtml=q.o.map((t,j)=>{
+    let cls='opt', dis=done?' disabled':'';
+    if(done){
+      if(j===q.ans)cls+=' correct';
+      else if(j===EX[w].chi[i])cls+=' wrong';
+      else cls+=' dim';
+    }
+    return '<button class="'+cls+'" data-i="'+j+'"'+dis+'><span class="ltr">'+'ABCD'[j]+'</span><span>'+t+'</span></button>';
+  }).join('');
+  const fb=done?'<div class="xfb '+(ok?'ok':'no')+'">'+(ok?'✅ Benar! ':'❌ Belum tepat. Jawaban benar: <b>'+q.o[q.ans]+'</b>. ')+'💡 '+q.e+'</div>':'';
+  return '<div class="xcard"><div class="xq"><span class="xno">'+(i+1)+'</span>'+q.q+'</div><div class="optrow">'+optsHtml+'</div>'+fb+'</div>';
+}
+function renderExit(w){
+  $('#xbody-'+w).innerHTML=EXDATA[w].map((q,i)=>exitCardHTML(w,i,q)).join('');
+}
+function exitScore(w){return EX[w].res.filter(x=>x===true).length;}
+function exitAnswered(w){return EX[w].res.filter(x=>x!==undefined).length;}
+function updateExitStatus(){
+  const a1=exitAnswered('s1'), a2=exitAnswered('s2'), d1=a1===3, d2=a2===3;
+  $('#xtab-s1').classList.toggle('finished',d1);
+  $('#xtab-s2').classList.toggle('finished',d2);
+  $('#xstatus').innerHTML='🎟️ <b>'+names[0]+'</b>: '+exitScore('s1')+'/3 benar ('+a1+'/3 dikerjakan) &nbsp;•&nbsp; 🎟️ <b>'+names[1]+'</b>: '+exitScore('s2')+'/3 benar ('+a2+'/3 dikerjakan)';
+  const done=$('#xdone');
+  if(d1&&d2){
+    done.classList.remove('hidden');
+    done.innerHTML='🎉 Exit Ticket selesai! '+names[0]+' ('+exitScore('s1')+'/3) & '+names[1]+' ('+exitScore('s2')+'/3). Kerja bagus, lanjut ke kesimpulan! 🚀';
+    burst(60);
+  } else done.classList.add('hidden');
+}
+['s1','s2'].forEach(w=>{
+  $('#xbody-'+w).addEventListener('click',e=>{
+    const opt=e.target.closest('.opt');
+    if(!opt||opt.disabled)return;
+    const cards=$$('#xbody-'+w+' .xcard');
+    const idx=cards.indexOf(opt.closest('.xcard'));
+    if(EX[w].res[idx]!==undefined)return;
+    const chi=parseInt(opt.dataset.i,10), q=EXDATA[w][idx], ok=chi===q.ans;
+    EX[w].res[idx]=ok; EX[w].chi[idx]=chi;
+    renderExit(w); updateExitStatus(); save();
+    if(ok)burst(18);
+  });
+});
+
+/* ---------- Dashboard & slide terima kasih ---------- */
+function buildDash(){
+  let tot=0,max=0,html='';
+  ['m1','m2','m3','m4'].forEach(m=>{
+    const st=QSTATE[m], n=QUESTIONS[m].length;
+    tot+=st.score; max+=n;
+    html+='<div class="drow"><span class="dlabel">'+QMETA[m].label+'</span><div class="dtrack"><i style="width:'+(st.score/n*100)+'%"></i></div><span class="dval">'+st.score+'/'+n+'</span></div>';
+  });
+  tot+=G.planks; max+=GDATA.length;
+  html+='<div class="drow"><span class="dlabel">🌉 Game Jembatan</span><div class="dtrack"><i style="width:'+(G.planks/GDATA.length*100)+'%"></i></div><span class="dval">'+G.planks+'/'+GDATA.length+'</span></div>';
+  const e1=exitScore('s1'), e2=exitScore('s2');
+  tot+=e1+e2; max+=6;
+  html+='<div class="drow"><span class="dlabel">🎟️ Exit: '+names[0]+'</span><div class="dtrack"><i style="width:'+(e1/3*100)+'%"></i></div><span class="dval">'+e1+'/3</span></div>';
+  html+='<div class="drow"><span class="dlabel">🎟️ Exit: '+names[1]+'</span><div class="dtrack"><i style="width:'+(e2/3*100)+'%"></i></div><span class="dval">'+e2+'/3</span></div>';
+  $('#dash').innerHTML=html;
+  const p=Math.round(tot/max*100);
+  $('#dashtotal').innerHTML='Skor Total: '+tot+' / '+max+' ('+p+'%) — '+(p>=85?'LUAR BIASA! 🏆':p>=70?'HEBAT! 🌟':p>=50?'BAGUS, terus berlatih! 💪':'Ayo ulangi latihannya! 🔁');
+}
+function buildThanks(){
+  $('#tyName1').textContent=names[0];
+  $('#tyName2').textContent=names[1];
+  let tot=0,max=0;
+  ['m1','m2','m3','m4'].forEach(m=>{tot+=QSTATE[m].score;max+=QUESTIONS[m].length;});
+  tot+=G.planks; max+=GDATA.length;
+  tot+=exitScore('s1')+exitScore('s2'); max+=6;
+  $('#tyStats').innerHTML=
+    '<span class="pill">✔️ Latihan + Game + Exit: '+tot+'/'+max+' benar</span>'+
+    '<span class="pill">🌉 Jembatan: '+G.planks+'/'+GDATA.length+' papan</span>'+
+    '<span class="pill">🎟️ Exit Ticket: '+(exitScore('s1')+exitScore('s2'))+'/6</span>';
+}
+
+/* ---------- Refleksi ---------- */
+function bindRGroup(id,key){
+  $('#'+id).addEventListener('click',e=>{
+    const b=e.target.closest('.rb');
+    if(!b||RF.done)return;
+    $$('#'+id+' .rb').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    RF[key]=b.dataset.v;
+    save();
+  });
+}
+bindRGroup('r-mood','mood'); bindRGroup('r-fav','fav'); bindRGroup('r-act','act');
+$('#btnRefl').addEventListener('click',()=>{
+  RF.msg=$('#reflmsg').value.trim();
+  if(!RF.mood||!RF.fav||!RF.act){toast('Yuk isi dulu pilihan nomor 1, 2, dan 3 ya! 😊');return;}
+  RF.done=true; save(); burst(60);
+  const d=$('#reflDone'); d.classList.remove('hidden'); d.className='refldone';
+  d.innerHTML='✨ Terima kasih, <b>'+names[0]+' & '+names[1]+'</b>! Refleksimu sudah tercatat.<br>Terus semangat belajar aljabarnya! 🌟';
+  $('#btnRefl').disabled=true; $('#reflmsg').disabled=true;
+});
+function applyRfState(){
+  [['r-mood','mood'],['r-fav','fav'],['r-act','act']].forEach(pair=>{
+    const id=pair[0], key=pair[1];
+    if(RF[key])$$('#'+id+' .rb').forEach(b=>b.classList.toggle('sel',b.dataset.v===RF[key]));
+  });
+  $('#reflmsg').value=RF.msg||'';
+  if(RF.done){
+    $('#btnRefl').disabled=true; $('#reflmsg').disabled=true;
+    const d=$('#reflDone'); d.classList.remove('hidden'); d.className='refldone';
+    d.innerHTML='✨ Terima kasih, <b>'+names[0]+' & '+names[1]+'</b>! Refleksimu sudah tercatat.<br>Terus semangat belajar aljabarnya! 🌟';
+  }
+}
+
+/* ---------- Inisialisasi & pemulihan sesi ---------- */
+(function init(){
+  $('#slideTotal').textContent=SLIDES.length;
+  const d=loadData();
+  if(d){
+    if(Array.isArray(d.n)&&d.n[0])names=d.n;
+    if(typeof d.s==='number')cur=Math.max(0,Math.min(SLIDES.length-1,d.s));
+    if(d.q)['m1','m2','m3','m4'].forEach(m=>{if(d.q[m]&&typeof d.q[m].i==='number')QSTATE[m]=d.q[m];});
+    if(d.g)G={r:d.g.r||0,planks:d.g.planks||0,active:!!d.g.active};
+    if(d.e)['s1','s2'].forEach(w=>{if(d.e[w])EX[w]={res:d.e[w].res||[],chi:d.e[w].chi||[]};});
+    if(d.r){RF.mood=d.r.mood||null;RF.fav=d.r.fav||null;RF.act=d.r.act||null;RF.msg=d.r.msg||'';RF.done=!!d.r.done;}
+  }
+  $('#in1').value=names[0]==='Siswa 1'?'':names[0];
+  $('#in2').value=names[1]==='Siswa 2'?'':names[1];
+  refreshNames();
+  ['m1','m2','m3','m4'].forEach(m=>renderQuiz(m));
+  renderExit('s1'); renderExit('s2'); updateExitStatus();
+  renderStep(); applyRfState();
+  if(G.active){
+    $('#gameIntro').classList.add('hidden');
+    $('#gameBoard').classList.remove('hidden');
+    renderPlanks(); renderRound();
+  }else if(G.r>=GDATA.length&&G.planks>0){
+    $('#gameIntro').classList.add('hidden');
+    $('#gameBoard').classList.remove('hidden');
+    renderPlanks(); renderGameResult(false);
+  }
+  if(cur>0&&d)$('#btnResume').classList.remove('hidden');
+  goTo(cur);
+  if(d&&cur>0)toast('📂 Sesi sebelumnya dimuat. Selamat melanjutkan!');
+})();
+</script>
+</body>
+</html>
