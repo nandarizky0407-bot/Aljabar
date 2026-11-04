@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perkalian Aljabar & Identitas Istimewa — Matematika SMP Kelas VII</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Font dimuat non-blocking: bila internet lambat/mati, tombol & animasi TETAP berfungsi -->
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --navy:#17337e; --navy2:#0f2456; --blue:#2456a6; --sky:#eef3fc;
+  --red:#c62828; --red2:#a51d1d; --gold:#e0a106; --ok:#2e7d46;
+  --ink:#1c2540; --muted:#5a6b8c; --line:#d9e2f2; --bg:#f2f6fc;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+h1,h2,h3{font-family:'Lora',Georgia,serif;color:var(--navy)}
+h2{font-size:clamp(26px,3.6vw,38px);margin:8px 0 14px;line-height:1.15}
+h3{margin:0 0 8px;font-size:20px}
+p{line-height:1.6}
+button{font-family:inherit}
+.hidden{display:none!important}
+.kecil{font-size:13px;color:var(--muted)}
+.tanya{font-size:18px;font-weight:700;color:var(--navy)}
+.kicker{display:inline-block;background:var(--navy);color:#fff;font-weight:800;letter-spacing:.14em;font-size:12px;padding:6px 16px;border-radius:999px;text-transform:uppercase}
+.kicker.merah{background:var(--red)}
+
+/* ====== MATH CHIP ====== */
+.math{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;background:var(--sky);border:1px solid #d7e2f5;color:#12306e;border-radius:8px;padding:1px 9px;white-space:nowrap;display:inline-block;line-height:1.55;font-weight:600}
+.math.besar{font-size:clamp(17px,2.5vw,25px);padding:8px 16px}
+.rule{font-size:18px;display:inline-block;margin:4px 0 8px}
+
+/* ====== TOPBAR ====== */
+#topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px;z-index:50}
+#btnMenu{font-size:17px;padding:7px 12px;border-radius:10px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--navy);font-weight:800}
+#btnMenu:hover{border-color:var(--blue);color:var(--blue)}
+#progressWrap{flex:1;height:8px;background:#e3eaf6;border-radius:99px;overflow:hidden}
+#progressBar{height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--blue) 70%,var(--red));border-radius:99px;transition:width .4s ease}
+#slideCount{font-weight:800;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#chipNama{background:var(--sky);border:1px solid #d7e2f5;color:var(--navy);font-weight:700;padding:6px 12px;border-radius:999px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+
+/* ====== MENU OVERLAY ====== */
+#menuOverlay{position:fixed;inset:0;background:rgba(15,26,54,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px}
+.menu-kotak{background:#fff;border-radius:18px;max-width:540px;width:100%;max-height:80vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 60px rgba(15,26,54,.35)}
+.menu-kotak h3{margin-bottom:10px}
+.menu-item{display:flex;gap:10px;width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:15px;font-weight:600;color:var(--ink);border-radius:10px;cursor:pointer}
+.menu-item b{color:var(--navy);min-width:26px}
+.menu-item:hover{background:var(--sky);color:var(--navy)}
+#btnTutupMenu{margin-top:12px;width:100%}
+
+/* ====== SLIDES ====== */
+#deck{position:absolute;inset:0;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(26px);transition:opacity .45s ease,transform .45s ease,visibility .45s;pointer-events:none;padding:78px 0 96px;background:linear-gradient(180deg,#fbfcff,#f0f5fb)}
+.slide.active{opacity:1;visibility:visible;transform:none;pointer-events:auto;z-index:2}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+.tengah{min-height:calc(100vh - 190px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+
+/* ====== CARDS ====== */
+.kartu{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.kartu.tip{border-left:6px solid var(--gold);background:#fffdf4}
+.kartu.awas{border-left:6px solid var(--red);background:#fff7f7}
+.kartu.sukses{border-left:6px solid var(--ok);background:#f4fbf6}
+.kartu.navy{background:var(--navy);color:#fff;border:none}
+.kartu.navy h3{color:#fff}
+.kartu.navy .math{background:rgba(255,255,255,.14);color:#fff;border-color:transparent}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* ====== BUTTONS ====== */
+.btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:11px 20px;font-size:15px;font-weight:800;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(23,51,126,.25)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.merah{background:var(--red)} .btn.merah:hover:not(:disabled){box-shadow:0 6px 16px rgba(198,40,40,.3)}
+.btn.ghost{background:#fff;color:var(--navy);border:2px solid #c3d2ec}
+.btn.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--blue);box-shadow:none}
+.btn.kecil{font-size:14px;padding:8px 14px}
+
+/* ====== COVER ====== */
+.ribbon{background:var(--red);color:#fff;padding:8px 20px;border-radius:999px;font-weight:800;letter-spacing:.16em;font-size:13px;box-shadow:0 4px 14px rgba(198,40,40,.3)}
+.judul-besar{font-size:clamp(34px,6vw,58px);margin:18px 0 10px;line-height:1.12}
+.sub{font-size:clamp(15px,2vw,19px);color:var(--muted);max-width:660px;margin:0 auto;line-height:1.55}
+.float-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.chip-float{animation:mengapung 4.5s ease-in-out infinite}
+.chip-float.f2{animation-delay:1.4s}.chip-float.f3{animation-delay:2.6s}
+@keyframes mengapung{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.nama-kartu{max-width:560px;width:100%;margin-top:26px;text-align:left}
+.nama-kartu label{font-weight:800;color:var(--navy);font-size:17px}
+.baris-nama{display:flex;gap:10px;margin-top:12px}
+@media(max-width:560px){.baris-nama{flex-direction:column}}
+#inputNama{font:inherit;padding:12px 16px;border:2px solid var(--line);border-radius:12px;flex:1;font-size:16px;min-width:0}
+#inputNama:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(36,86,166,.12)}
+
+/* ====== TUJUAN ====== */
+.tujuan{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px}
+.tujuan li{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;align-items:flex-start;font-size:16px;line-height:1.55}
+.tujuan .ikon{font-size:24px;line-height:1.2}
+
+/* ====== CHIPS FAKTOR ====== */
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.chip{width:46px;height:46px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:16px;color:var(--navy);cursor:pointer;transition:.15s}
+.chip:hover:not(:disabled){border-color:var(--blue);transform:translateY(-2px)}
+.chip.cocok{background:#e7f6ec;border-color:var(--ok);color:var(--ok)}
+.chip.gagal{animation:goyang .45s;border-color:var(--red);background:#fdeaea}
+.chip-row.pasif .chip{cursor:default}
+.chip-label{font-weight:800;color:var(--navy);margin:10px 0 2px;font-size:14px;letter-spacing:.04em}
+
+/* ====== FPB WIDGET & MSG ====== */
+.fpb-widget{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:16px 18px;margin:12px 0}
+.fpb-cands,.pair-cands{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.fpb-cand{padding:9px 20px;border-radius:999px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:15px;cursor:pointer;transition:.15s}
+.fpb-cand:hover:not(:disabled){background:var(--navy);color:#fff}
+.fpb-cand.cocok{background:var(--ok);border-color:var(--ok);color:#fff}
+.fpb-cand.gagal{animation:goyang .45s;border-color:var(--red);color:var(--red);background:#fdeaea}
+.fpb-msg{min-height:24px;font-weight:600;margin:8px 0;color:var(--muted)}
+.fpb-msg.ok{color:var(--ok)} .fpb-msg.no{color:var(--red)}
+.fpb-result{margin-top:10px}
+
+/* ====== STEPPER ====== */
+.stepper{margin:10px 0}
+.st-step{background:var(--sky);border:1px solid #d7e2f5;border-radius:12px;padding:10px 16px;margin:8px 0;line-height:1.6}
+.st-btns{margin-top:4px}
+
+/* ====== CORET WIDGET ====== */
+.coret-demo{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:18px;margin:12px 0;text-align:center}
+.cd-head{font-weight:800;color:var(--red);letter-spacing:.1em;font-size:12px;text-transform:uppercase;margin-bottom:6px}
+.cd-line{margin:10px 0}
+.cbox{display:inline-block;border:2px solid var(--gold);border-radius:8px;padding:0 7px;background:#fff8e6}
+.cbox.struck{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px;color:#8fa0c4;opacity:.45;background:#f3f4f8;border-color:var(--red);transition:all .5s ease}
+.hasil{color:var(--ok)}
+.cd-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.cd-note{font-size:14px;color:var(--muted);margin-top:10px}
+.banner-besar{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;border-radius:16px;padding:18px 22px;text-align:center;font-size:clamp(17px,2.5vw,25px);font-weight:800;font-family:'Lora',serif;letter-spacing:.05em;margin:16px 0;box-shadow:0 8px 22px rgba(23,51,126,.25)}
+
+/* ====== PAIR WIDGET ====== */
+.pair-cand{padding:9px 18px;border-radius:12px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:15px;cursor:pointer;transition:.15s}
+.pair-cand:hover:not(:disabled){background:var(--navy);color:#fff}
+.pair-cand.cocok{background:var(--ok);border-color:var(--ok);color:#fff}
+.pair-cand.gagal{animation:goyang .45s;border-color:var(--red);color:var(--red);background:#fdeaea}
+
+/* ====== SOAL ====== */
+.latihan-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 2px}
+.skor-chip{background:#fff8e6;border:1px solid #ead9a8;color:#8a6d1a;font-weight:800;padding:6px 14px;border-radius:999px;font-size:13px;white-space:nowrap}
+.soal-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.sc-no{background:var(--navy);color:#fff;font-weight:800;border-radius:8px;padding:3px 12px;font-size:13px;white-space:nowrap}
+.sc-st{font-size:13px;color:var(--muted);font-weight:700;text-align:right}
+.sc-st.ok{color:var(--ok)}
+.sc-q{font-size:17px;margin:6px 0;font-weight:600}
+.opsi-grid{display:grid;gap:8px;margin:12px 0}
+.opsi{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s;line-height:1.5}
+.opsi b{color:var(--navy);min-width:24px;font-family:'IBM Plex Mono',monospace}
+.opsi:hover:not(:disabled){border-color:var(--blue);background:#f3f7ff}
+.opsi.benar{border-color:var(--ok);background:#e7f6ec}
+.opsi.salah{border-color:var(--red);background:#fdeaea;animation:goyang .45s}
+.opsi:disabled{cursor:default;opacity:.72}
+.opsi.benar:disabled{opacity:1}
+@keyframes goyang{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{border-radius:10px;padding:10px 14px;margin-top:8px;font-weight:600;line-height:1.5}
+.fb.ok{background:#e7f6ec;border:1px solid #bfe3cc}
+.fb.no{background:#fdeaea;border:1px solid #f3c1c1}
+.sc-bawah{margin-top:10px;display:flex;justify-content:flex-end}
+.pembahasan{margin-top:12px;background:#f2f7ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:12px 18px}
+.pb-judul{margin:0 0 6px;font-weight:800;color:var(--navy)}
+.langkah{margin:0;padding-left:22px}
+.langkah li{margin:7px 0;line-height:1.55}
+
+/* ====== REKAP ====== */
+.rekap{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.rekap th{background:var(--navy);color:#fff;padding:11px 14px;font-size:14px;text-align:left}
+.rekap td{padding:11px 14px;border-bottom:1px solid #e3eaf6;font-weight:600}
+.rekap tr:last-child td{border-bottom:none}
+
+/* ====== REFLEKSI ====== */
+.ref-row{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:8px 0;flex-wrap:wrap}
+.ref-row p{margin:0;font-weight:600}
+.ref-emos{display:flex;gap:6px}
+.emo{font-size:20px;width:46px;height:46px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:.15s}
+.emo:hover{transform:translateY(-2px)}
+.emo.aktif{border-color:var(--gold);background:#fff8e6;transform:scale(1.08)}
+#refleksiTeks{width:100%;min-height:96px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-family:inherit;font-size:15px;resize:vertical}
+#refleksiTeks:focus{outline:none;border-color:var(--blue)}
+
+/* ====== KONFETI & ANIMASI ====== */
+.kft{position:fixed;width:10px;height:14px;z-index:999;pointer-events:none;border-radius:2px;opacity:.95;animation:kft .95s ease-in forwards}
+@keyframes kft{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.92);opacity:0}100%{transform:scale(1);opacity:1}}
+.quote{font-style:italic;color:var(--muted);max-width:600px;margin:18px auto;font-family:'Lora',serif;font-size:17px}
+.seri-emoji{font-size:42px;letter-spacing:10px}
+
+/* ====== NAV BAWAH ====== */
+#navBawah{position:fixed;bottom:14px;right:16px;display:flex;gap:8px;z-index:60}
+@media(max-width:640px){
+  #navBawah{left:16px;right:16px}
+  #navBawah .btn{flex:1}
+  #chipNama{display:none}
+  .slide{padding:70px 0 110px}
+}
+
+/* ====== ALUR CEK JAWABAN ====== */
+.opsi.pilih{border-color:var(--navy);background:var(--sky);box-shadow:0 0 0 3px rgba(36,86,166,.14)}
+.opsi.pilih b{color:var(--red)}
+.aksi-baris{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.fb.warn{background:#fff8e6;border:1px solid #ead9a8;color:#8a6d1a}
+
+/* ====== MODEL LUAS (AREA WIDGET) ====== */
+.area-widget{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:16px 18px;margin:12px 0}
+.aw-grid{display:grid;grid-template-columns:64px 110px 110px;grid-auto-rows:64px;gap:6px;max-width:480px;margin:12px auto 6px;justify-content:center}
+.aw-h{display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:800;font-size:17px;color:var(--navy);background:#e3ebf8;border-radius:10px}
+.aw-h.aw-merah{color:var(--red);background:#fbe3e3}
+.aw-c{display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:18px;background:#fff;border:2px solid var(--line);border-radius:10px;color:var(--ink)}
+.aw-c.navy{background:var(--navy);color:#fff;border-color:var(--navy2)}
+.aw-c.gold{background:#fff4d6;border-color:var(--gold);color:#8a6d1a}
+.aw-c.merah{background:#fdeaea;border-color:var(--red);color:var(--red)}
+.aw-c.merah .coret-x{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px}
+.aw-hide{opacity:.07;filter:grayscale(1)}
+.aw-cap{min-height:24px;font-weight:600;color:var(--muted);text-align:center;margin:6px 0;line-height:1.5}
+
+/* ====== MODEL LUAS MINI (IDENTITAS KUADRAT) ====== */
+.area-mini{display:grid;grid-template-columns:52px 90px 90px;grid-auto-rows:52px;gap:5px;max-width:300px;margin:12px auto}
+.area-mini .aw-h{font-size:15px}
+.area-mini .aw-c{font-size:15px}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#c62828;color:#fff;padding:14px 18px;font-family:system-ui,sans-serif;font-size:15px;text-align:center;line-height:1.5">
+    ⚠️ <b>JavaScript sedang dinonaktifkan</b> di browser ini, sehingga seluruh tombol interaktif tidak dapat berfungsi. Aktifkan JavaScript (Settings/Privasi) lalu muat ulang halaman ini.
+  </div>
+</noscript>
+<header id="topbar">
+  <button id="btnMenu" title="Daftar slide">☰</button>
+  <div id="progressWrap"><div id="progressBar"></div></div>
+  <span id="slideCount">1 / 18</span>
+  <span id="chipNama">👤 Belum diisi</span>
+</header>
+<nav id="menuOverlay" class="hidden">
+  <div class="menu-kotak">
+    <h3>📚 Daftar Slide</h3>
+    <ol id="menuList" style="list-style:none;padding:0;margin:0"></ol>
+    <button id="btnTutupMenu" class="btn ghost">✕ Tutup</button>
+  </div>
+</nav>
+<main id="deck">
+<!-- ============ SLIDE 1 : COVER ============ -->
+<section class="slide active" id="slideCover" data-title="Cover">
+  <div class="wrap tengah cover">
+    <span class="ribbon">MATEMATIKA &bull; SMP KELAS VII</span>
+    <h1 class="judul-besar">Perkalian Aljabar &amp;<br>Identitas Istimewa</h1>
+    <p class="sub">Kuadrat raksasa tanpa kalkulator, memfaktorkan kuadrat sempurna, dan model luas untuk <b style="color:var(--red)">ax&sup2; + bx + c</b> — belajar lewat eksperimen interaktif! ⚡</p>
+    <div class="float-chips">
+      <span class="math chip-float">a&sup2; &minus; b&sup2; = (a + b)(a &minus; b)</span>
+      <span class="math chip-float f2">a&sup2; + 2ab + b&sup2; = (a + b)&sup2;</span>
+      <span class="math chip-float f3">1001&sup2; = 1.002.001 🤯</span>
+    </div>
+    <div class="kartu nama-kartu">
+      <label for="inputNama">👋 Halo! Siapa namamu?</label>
+      <div class="baris-nama">
+        <input id="inputNama" type="text" maxlength="24" placeholder="Tulis namamu di sini…" autocomplete="off">
+        <button id="btnMulai" class="btn merah">Mulai Belajar 🚀</button>
+      </div>
+      <p class="kecil" style="margin-top:10px">1 siswa per perangkat &middot; namamu akan menemanimu di sepanjang slide &middot; gunakan tombol ← → papan ketik untuk berpindah slide.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 : APERSEPSI ============ -->
+<section class="slide" id="slideApersepsi" data-title="Apersepsi">
+  <div class="wrap">
+    <span class="kicker merah">Tantangan Pembuka 🎯</span>
+    <h2>Apersepsi: Hitung Tanpa Kalkulator!</h2>
+    <div class="kartu">
+      <p>Pak Dengklek — guru matematika legendaris — meletakkan kalkulatornya di lemari, lalu menulis di papan tulis:</p>
+      <p class="tanya" style="text-align:center;font-size:22px"><span class="math besar">1001 &times; 1001 = ?</span></p>
+      <p>&ldquo;Tiga detik!&rdquo; katanya, lalu ia menuliskan jawabannya dalam sekejap. 🪄</p>
+    </div>
+    <div class="fpb-widget" id="tebak1001">
+      <p class="tanya">🎯 Tebak cepat: manakah hasil 1001 &times; 1001?</p>
+      <div class="fpb-cands">
+        <button class="fpb-cand" data-ok="0" data-msg="1.000.001 = 1000² + 1²? Hampir! Ada bagian &quot;suku tengah&quot; yang hilang… coba lagi!">1.000.001</button>
+        <button class="fpb-cand" data-ok="1" data-msg="Tepat sekali! 🎉 Dan yang hebat: Pak Dengklek menghitungnya TANPA mengalikan panjang. Rahasianya: identitas aljabar — dibuka di bawah! 👇">1.002.001</button>
+        <button class="fpb-cand" data-ok="0" data-msg="1.002.000 = 1000² + 2000? Sudah dekat, tetapi masih ada +1 yang tertinggal. Coba lagi!">1.002.000</button>
+        <button class="fpb-cand" data-ok="0" data-msg="1.020.001 terlalu besar — itu mendekati 1010². Coba lagi!">1.020.001</button>
+      </div>
+      <div class="fpb-msg">👆 Pilih salah satu jawaban…</div>
+      <div class="fpb-result hidden pop">
+        <div class="kartu sukses" style="margin-bottom:0">
+          <b>🪄 Rahasia Pak Dengklek:</b> 1001 = 1000 + 1, jadi
+          <span class="math besar">1001&sup2; = (1000 + 1)&sup2;</span>
+          dan bentuk <b>(a + b)&sup2;</b> punya pola yang bisa dihitung di kepala!
+          Hari ini kita akan menguasai pola-pola ajaib ini, memakainya untuk kuadrat raksasa, lalu membaliknya untuk memfaktorkan. 🚀
+        </div>
+      </div>
+    </div>
+    <div class="kartu tip">
+      💡 <b>Jembatan ke materi:</b> identitas itu seperti &ldquo;jalan pintas terbukti&rdquo; — sekali hafal polanya, perkalian panjang jadi hitungan kepala, dan jalan pintas yang sama bisa <b>dibalik</b> untuk memfaktorkan. Angka besi bukan soal kekuatan, tetapi soal <b>strategi</b>!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 3 : TUJUAN ============ -->
+<section class="slide" id="slideTujuan" data-title="Tujuan Pembelajaran">
+  <div class="wrap">
+    <span class="kicker">Kompetensi</span>
+    <h2>Tujuan Pembelajaran</h2>
+    <p>Setelah mengikuti presentasi ini, <b class="nama-slot">Sahabat Matematika</b> diharapkan mampu:</p>
+    <ol class="tujuan">
+      <li><span class="ikon">1️⃣</span><span>Menyebutkan dan <b>membuktikan dua identitas istimewa</b>: selisih kuadrat <span class="math">a&sup2; &minus; b&sup2; = (a + b)(a &minus; b)</span> dan kuadrat sempurna <span class="math">a&sup2; &plusmn; 2ab + b&sup2; = (a &plusmn; b)&sup2;</span>.</span></li>
+      <li><span class="ikon">2️⃣</span><span>Menggunakan identitas untuk <b>menghitung kuadrat raksasa tanpa kalkulator</b>, seperti <span class="math">1001&sup2;</span>, <span class="math">999&sup2;</span>, dan <span class="math">102 &times; 98</span>.</span></li>
+      <li><span class="ikon">3️⃣</span><span><b>Memfaktorkan bentuk kuadrat sempurna</b> dengan membalik identitas, termasuk bentuk berkoefisien seperti <span class="math">9x&sup2; + 12x + 4</span>.</span></li>
+      <li><span class="ikon">4️⃣</span><span>Memfaktorkan <span class="math">ax&sup2; + bx + c</span> yang <b>bukan kuadrat sempurna</b> menggunakan <b>konsep luas</b> (model kotak) secara interaktif.</span></li>
+    </ol>
+    <div class="kartu tip">
+      🎒 <b>Bekal yang perlu diingat:</b> sifat distributif <span class="math">a(b + c) = ab + ac</span> dan bilangan kuadrat 1, 4, 9, 16, 25, 36, 49, 64, 81, 100… Semuanya akan kita pakai hari ini!
+    </div>
+  </div>
+</section>
+<!-- ============ SLIDE 4 : MATERI 1A SELISIH KUADRAT ============ -->
+<section class="slide" id="slideM1a" data-title="Materi 1a · Identitas Selisih Kuadrat">
+  <div class="wrap">
+    <span class="kicker">Materi 1a</span>
+    <h2>Identitas #1: Selisih Kuadrat</h2>
+    <div class="kartu navy">
+      <h3>📜 Perjanjian Matematika (Identitas)</h3>
+      <p style="margin:4px 0 10px"><b>Identitas</b> = kesamaan yang <b>selalu benar</b> untuk nilai a dan b apa pun. Ia adalah &ldquo;jalan pintas yang sudah dibuktikan&rdquo; — kita tinggal memakainya!</p>
+      <span class="math besar">a&sup2; &minus; b&sup2; = (a + b)(a &minus; b)</span>
+    </div>
+    <div class="kartu">
+      <h3>🔍 Bukti: dari Mana Pola Ini Muncul?</h3>
+      <p>Klik tombolnya — kita buka identitasnya pelan-pelan dengan distributif:</p>
+      <div class="stepper" id="stBukti1">
+        <div class="st-step hidden"><b>Langkah 1:</b> kalikan tiap suku: <span class="math">(a + b)(a &minus; b) = a&middot;a + a&middot;(&minus;b) + b&middot;a + b&middot;(&minus;b)</span></div>
+        <div class="st-step hidden"><b>Langkah 2:</b> rapikan: <span class="math">= a&sup2; &minus; ab + ab &minus; b&sup2;</span> — perhatikan <span class="math">&minus;ab</span> dan <span class="math">+ab</span> berjomblo! 👀</div>
+        <div class="st-step hidden"><b>Langkah 3:</b> <span class="math">&minus;ab + ab = 0</span> — keduanya <b>saling melenyapkan</b>! Sisa: <span class="math">a&sup2; &minus; b&sup2;</span> ✅ Terbukti!</div>
+        <div class="st-btns"><button class="btn kecil st-next">Buka bukti langkah 1 ➜</button></div>
+      </div>
+      <div class="kartu tip" style="margin-bottom:0">
+        💡 <b>Kata kuncinya:</b> bentuk <b>(suku + suku)(suku − suku)</b> yang sama persis — suku tengahnya dijamin hilang. Inilah wajah yang harus kamu kenali!
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>✨ Contoh Kilat</h3>
+      <div class="grid2">
+        <div class="kartu tip" style="margin:0"><span class="math rule">(x + 3)(x &minus; 3) = x&sup2; &minus; 9</span><br>a = x, b = 3 → cukup kuadratkan keduanya!</div>
+        <div class="kartu tip" style="margin:0"><span class="math rule">(2x + 5)(2x &minus; 5) = 4x&sup2; &minus; 25</span><br>a = 2x → a&sup2; = 4x&sup2;; b = 5 → b&sup2; = 25.</div>
+        <div class="kartu tip" style="margin:0"><span class="math rule">(10x + 7y)(10x &minus; 7y) = 100x&sup2; &minus; 49y&sup2;</span><br>Dua variabel pun sama saja.</div>
+        <div class="kartu awas" style="margin:0"><b>⚠️ Awas jebakan:</b> <span class="math">(x + 3)(x &minus; 3) &ne; x&sup2; &minus; 3</span>. Yang dikuadratkan adalah <b>3</b> (jadi 9), bukan tetap 3!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 5 : MATERI 1B KUADRAT SEMPURNA ============ -->
+<section class="slide" id="slideM1b" data-title="Materi 1b · Identitas Kuadrat Sempurna">
+  <div class="wrap">
+    <span class="kicker">Materi 1b</span>
+    <h2>Identitas #2: Kuadrat Sempurna</h2>
+    <div class="kartu navy">
+      <h3>📜 Dua Kembar: Tanda Plus &amp; Minus</h3>
+      <span class="math besar">a&sup2; + 2ab + b&sup2; = (a + b)&sup2;</span> &nbsp; <span class="math besar">a&sup2; &minus; 2ab + b&sup2; = (a &minus; b)&sup2;</span>
+      <p style="margin-top:10px;opacity:.9">Tanda pada suku tengah (2ab) ikut masuk ke dalam kurung.</p>
+    </div>
+    <div class="kartu">
+      <h3>🖼️ Bukti Visual: Model Luas</h3>
+      <p>Persegi bersisi (a + b) kita potong menjadi 4 bagian. Jumlah luas keempatnya = luas persegi besar:</p>
+      <div class="area-mini">
+        <div class="aw-h"></div>
+        <div class="aw-h">a</div>
+        <div class="aw-h">b</div>
+        <div class="aw-h">a</div>
+        <div class="aw-c navy">a&sup2;</div>
+        <div class="aw-c gold">ab</div>
+        <div class="aw-h">b</div>
+        <div class="aw-c gold">ab</div>
+        <div class="aw-c merah">b&sup2;</div>
+      </div>
+      <div class="stepper" id="stBukti2">
+        <div class="st-step hidden">Persegi besar bersisi <b>(a + b)</b> → luasnya <span class="math">(a + b)&sup2;</span>.</div>
+        <div class="st-step hidden">Empat potongan luasnya: <span class="math">a&sup2;</span> + <span class="math">ab</span> + <span class="math">ab</span> + <span class="math">b&sup2;</span> — ada <b>DUA</b> persegi panjang ab!</div>
+        <div class="st-step hidden">Jadi <span class="math">(a + b)&sup2; = a&sup2; + <b>2ab</b> + b&sup2;</span> ✅ — bukan a&sup2; + ab + b&sup2;! Dua ab itu berasal dari dua potongan persegi panjang. 🔑</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>✨ Contoh Kilat</h3>
+      <div class="grid2">
+        <div class="kartu tip" style="margin:0"><span class="math rule">(x + 4)&sup2; = x&sup2; + 8x + 16</span><br>Suku tengah: 2·x·4 = <b>8x</b>.</div>
+        <div class="kartu tip" style="margin:0"><span class="math rule">(x &minus; 6)&sup2; = x&sup2; &minus; 12x + 36</span><br>Tanda minus hanya menyengat suku tengah.</div>
+        <div class="kartu tip" style="margin:0"><span class="math rule">(3x + 2)&sup2; = 9x&sup2; + 12x + 4</span><br>a = 3x, b = 2 → 2·3x·2 = 12x.</div>
+        <div class="kartu awas" style="margin:0"><b>⚠️ Kesalahan paling populer:</b> <span class="math">(x + 5)&sup2; &ne; x&sup2; + 25</span>. Yang benar: <span class="math">x&sup2; + 10x + 25</span> — jangan buang 2ab-nya!</div>
+      </div>
+    </div>
+    <div class="kartu tip">
+      🎯 <b>Cara mengingat:</b> &ldquo;<b>Kua-Dua-Tua</b>&rdquo; — <b>Kua</b>drat pertama, <b>Dua</b> kali hasil kali, <b>Tua</b> (kuadrat) terakhir: <span class="math">a&sup2;, 2ab, b&sup2;</span>.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 6 : LATIHAN 1 ============ -->
+<section class="slide" id="slideL1" data-title="Latihan 1 · Perkalian dengan Identitas">
+  <div class="wrap">
+    <span class="kicker merah">Waktunya Berlatih ✏️</span>
+    <div class="latihan-head">
+      <h2>Latihan 1 — Perkalian dengan Identitas</h2>
+      <span class="skor-chip" id="chipL1">0/10 · 0⭐</span>
+    </div>
+    <p>Pilih jawaban, lalu tekan <b>✅ Cek Jawaban</b>. Boleh mencoba lagi jika belum tepat — pembahasan menanti di bawah setiap soal!</p>
+    <div id="listL1"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 7 : MATERI 2A KUADRAT RAKSASA ============ -->
+<section class="slide" id="slideM2a" data-title="Materi 2a · Kuadrat Raksasa">
+  <div class="wrap">
+    <span class="kicker merah">Superpower 🦸</span>
+    <h2>Kuadrat Raksasa Tanpa Kalkulator</h2>
+    <div class="kartu">
+      <h3>🧠 Strategi Jujur: Dekatkan ke Angka Gampang</h3>
+      <p>Rahasia Pak Dengklek: geser angkanya sedikit agar menjadi <b>100, 1000, atau 10</b> — lalu biarkan identitas bekerja. <span class="math">1001 = 1000 + 1</span> → bentuk <span class="math">(a + b)&sup2;</span>!</p>
+      <div class="stepper" id="st1001">
+        <div class="st-step hidden"><b>Ubah bentuk:</b> <span class="math">1001&sup2; = (1000 + 1)&sup2;</span> — sekarang a = 1000, b = 1.</div>
+        <div class="st-step hidden"><b>Pasang identitas:</b> <span class="math">(a + b)&sup2; = a&sup2; + 2ab + b&sup2;</span> → <span class="math">1000&sup2; + 2(1000)(1) + 1&sup2;</span></div>
+        <div class="st-step hidden"><b>Hitung tiap bagian:</b> <span class="math">1.000.000</span> + <span class="math">2.000</span> + <span class="math">1</span> — semuanya hitungan kepala!</div>
+        <div class="st-step hidden"><b>Jumlahkan:</b> <span class="math">1.000.000 + 2.000 + 1 = 1.002.001</span> ✅ Kuadrat raksasa selesai dalam 5 detik! 🎉</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>🐢 Sekarang Giliran 999&sup2;</h3>
+      <div class="stepper" id="st999">
+        <div class="st-step hidden"><b>Ubah bentuk:</b> <span class="math">999&sup2; = (1000 &minus; 1)&sup2;</span> — bentuk <span class="math">(a &minus; b)&sup2;</span>.</div>
+        <div class="st-step hidden"><b>Pasang identitas:</b> <span class="math">a&sup2; &minus; 2ab + b&sup2;</span> → <span class="math">1.000.000 &minus; 2.000 + 1</span></div>
+        <div class="st-step hidden"><b>Hati-hati urutan:</b> kurang dulu, baru tambah: <span class="math">1.000.000 &minus; 2.000 = 998.000</span>, lalu <span class="math">+ 1 = 998.001</span> ✅</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu awas">
+      ⚠️ <b>Jebakan klasik:</b> <span class="math">(1000 + 1)&sup2; &ne; 1000&sup2; + 1&sup2; = 1.000.001</span>. Hasil itu <b>kekurangan 2.000</b>! Suku tengah <b>2ab</b> wajib ikut — ingat &ldquo;Kua-Dua-Tua&rdquo;.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 8 : MATERI 2B PERKALIAN SELISIH ============ -->
+<section class="slide" id="slideM2b" data-title="Materi 2b · Perkalian Cepat Selisih Kuadrat">
+  <div class="wrap">
+    <span class="kicker">Trik Lanjutan ⚡</span>
+    <h2>Perkalian Cepat ala Selisih Kuadrat</h2>
+    <div class="kartu">
+      <h3>✂️ 102 &times; 98? Pakai Identitas #1!</h3>
+      <p>Dua angka yang <b>jauh dari 100 sama banyak</b> (100+2 dan 100−2) adalah pasangan sempurna untuk <span class="math">(a + b)(a &minus; b)</span>:</p>
+      <div class="stepper" id="st102">
+        <div class="st-step hidden"><b>Ubah bentuk:</b> <span class="math">102 &times; 98 = (100 + 2)(100 &minus; 2)</span></div>
+        <div class="st-step hidden"><b>Pasang identitas selisih kuadrat:</b> <span class="math">= 100&sup2; &minus; 2&sup2;</span> — suku tengah otomatis lenyap!</div>
+        <div class="st-step hidden"><b>Hitung:</b> <span class="math">10.000 &minus; 4 = 9.996</span> ✅ Selesai tanpa mengalikan bersusun!</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>🎯 51&sup2; dan 49 &times; 51 — Dua Wajah Sekaligus</h3>
+      <div class="grid2">
+        <div class="stepper" id="st51">
+          <div class="st-step hidden"><span class="math">51&sup2; = (50 + 1)&sup2;</span></div>
+          <div class="st-step hidden"><span class="math">= 2.500 + 2(50)(1) + 1 = 2.500 + 100 + 1</span></div>
+          <div class="st-step hidden"><span class="math">= 2.601</span> ✅</div>
+          <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+        </div>
+        <div class="stepper" id="st4951">
+          <div class="st-step hidden"><span class="math">49 &times; 51 = (50 &minus; 1)(50 + 1)</span></div>
+          <div class="st-step hidden"><span class="math">= 50&sup2; &minus; 1&sup2; = 2.500 &minus; 1</span></div>
+          <div class="st-step hidden"><span class="math">= 2.499</span> ✅ — satu kurangnya dari 2.600? Bukan! Perhatikan polanya.</div>
+          <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="banner-besar">MAKIN DEKAT KE 100 · 10 · 1000 → MAKIN GAMPANG! 🎯</div>
+    <div class="kartu tip">
+      💡 <b>Pola yang bisa langsung dipakai:</b> <span class="math">(100 + k)&sup2; = 10.000 + 200k + k&sup2;</span> &nbsp;dan&nbsp; <span class="math">(100 + k)(100 &minus; k) = 10.000 &minus; k&sup2;</span>. Contoh: <span class="math">107&sup2; = 10.000 + 1.400 + 49 = 11.449</span>.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 9 : LATIHAN 2 ============ -->
+<section class="slide" id="slideL2" data-title="Latihan 2 · Kuadrat Raksasa">
+  <div class="wrap">
+    <span class="kicker merah">Sirkus Angka Besar 🎪</span>
+    <div class="latihan-head">
+      <h2>Latihan 2 — Kuadrat Raksasa</h2>
+      <span class="skor-chip" id="chipL2">0/10 · 0⭐</span>
+    </div>
+    <p>Hitung <b>tanpa kalkulator</b> — pilih jawaban lalu tekan ✅ Cek Jawaban. Di pembahasan, perhatikan cara angkanya didekatkan ke 100/1000 dulu!</p>
+    <div id="listL2"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 10 : MATERI 3A FAKTOR KUADRAT SEMPURNA ============ -->
+<section class="slide" id="slideM3a" data-title="Materi 3a · Faktor Kuadrat Sempurna">
+  <div class="wrap">
+    <span class="kicker">Identitas Dibalik 🔁</span>
+    <h2>Memfaktorkan Kuadrat Sempurna</h2>
+    <div class="kartu navy">
+      <h3>📖 Balik Arah Identitas</h3>
+      <p style="margin:4px 0 10px">Kemarin kita mengalikan <span class="math">(a + b)&sup2; = a&sup2; + 2ab + b&sup2;</span>. Sekarang arahnya dibalik: melihat bentuk <b>a&sup2; + 2ab + b&sup2;</b> dan mengembalikannya menjadi <b>(a + b)&sup2;</b>.</p>
+      <span class="math besar">a&sup2; &plusmn; 2ab + b&sup2; = (a &plusmn; b)&sup2;</span>
+    </div>
+    <div class="kartu">
+      <h3>🚦 3 Cek Wajib (seperti pemeriksaan satpam!)</h3>
+      <div class="grid2">
+        <div class="kartu tip" style="margin:0"><b>1️⃣ Suku pertama kuadrat?</b><br><span class="math">x&sup2;</span> → akarnya <span class="math">x</span> (itu a).</div>
+        <div class="kartu tip" style="margin:0"><b>2️⃣ Suku terakhir kuadrat?</b><br><span class="math">9 = 3&sup2;</span> → akarnya <span class="math">3</span> (itu b).</div>
+        <div class="kartu tip" style="margin:0"><b>3️⃣ Suku tengah = 2·a·b?</b><br><span class="math">2 · x · 3 = 6x</span> — harus sama persis dengan suku tengahnya.</div>
+        <div class="kartu sukses" style="margin:0"><b>✅ Lolos 3 cek?</b> Tulis <span class="math">(a + b)&sup2;</span> — tandanya mengikuti tanda suku tengah!</div>
+      </div>
+      <div class="stepper" id="stKs1">
+        <div class="st-step hidden"><b>Contoh:</b> <span class="math">x&sup2; + 6x + 9</span>. Cek 1: suku pertama <span class="math">x&sup2; = (x)&sup2;</span> → a = x ✔</div>
+        <div class="st-step hidden">Cek 2: suku terakhir <span class="math">9 = 3&sup2;</span> → b = 3 ✔</div>
+        <div class="st-step hidden">Cek 3: suku tengah seharusnya <span class="math">2·x·3 = 6x</span> — dan bentuknya memang <span class="math">+6x</span> ✔</div>
+        <div class="st-step hidden">Jadi <span class="math">x&sup2; + 6x + 9 = (x + 3)&sup2;</span> 🎉 — tanda + pada 6x ikut masuk kurung.</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 11 : MATERI 3B BERKOEFISIEN ============ -->
+<section class="slide" id="slideM3b" data-title="Materi 3b · Kuadrat Sempurna Berkoefisien">
+  <div class="wrap">
+    <span class="kicker">Naik Level 📈</span>
+    <h2>Kuadrat Sempurna dengan Koefisien</h2>
+    <div class="kartu">
+      <h3>🧪 9x&sup2; + 12x + 4 — Tiga Cek Tetap Sama</h3>
+      <div class="stepper" id="stKs2">
+        <div class="st-step hidden">Cek 1: <span class="math">9x&sup2; = (3x)&sup2;</span> → a = 3x ✔ (ingat: 9 = 3&sup2;)</div>
+        <div class="st-step hidden">Cek 2: <span class="math">4 = 2&sup2;</span> → b = 2 ✔</div>
+        <div class="st-step hidden">Cek 3: <span class="math">2 · 3x · 2 = 12x</span> — cocok dengan suku tengah ✔</div>
+        <div class="st-step hidden">Jadi <span class="math">9x&sup2; + 12x + 4 = (3x + 2)&sup2;</span> 🎉</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="kartu tip" style="margin:0">
+        <b>➖ Versi minus:</b> <span class="math">4x&sup2; &minus; 20x + 25</span><br>
+        Cek: <span class="math">(2x)&sup2; = 4x&sup2;</span> ✔, <span class="math">5&sup2; = 25</span> ✔, <span class="math">2·2x·5 = 20x</span> ✔ — suku tengahnya <b>minus</b>, jadi <span class="math">= (2x &minus; 5)&sup2;</span>.
+      </div>
+      <div class="kartu tip" style="margin:0">
+        <b>🔢 Bilangan kuadrat sahabatmu:</b><br>
+        <span class="math">1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144</span> — hafalkan! Mereka adalah &ldquo;wajah&rdquo; b untuk cek 2.
+      </div>
+    </div>
+    <div class="kartu awas">
+      ⚠️ <b>AWAS — tidak semua lolos!</b> <span class="math">x&sup2; + 6x + 8</span>: cek 1 ✔ (x), cek 2 gagal karena 8 bukan kuadrat. Bentuk ini <b>BUKAN kuadrat sempurna</b> — jangan dipaksakan jadi <span class="math">(x + 3)&sup2;</span> (itu hasilnya x&sup2; + 6x + <b>9</b>). Untuk bentuk seperti ini kita perlu senjata baru: <b>model luas</b> di Materi 4! 🔜
+    </div>
+    <div class="kartu tip">
+      💡 <b>Trik cepat menolak:</b> jika suku tengah &ne; 2·(akar₁)·(akar₂), atau suku terakhir bukan kuadrat — bukan kuadrat sempurna. Lanjut ke model luas!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 12 : LATIHAN 3 ============ -->
+<section class="slide" id="slideL3" data-title="Latihan 3 · Faktor Kuadrat Sempurna">
+  <div class="wrap">
+    <span class="kicker merah">Polisi Identitas 🚨</span>
+    <div class="latihan-head">
+      <h2>Latihan 3 — Faktor Kuadrat Sempurna</h2>
+      <span class="skor-chip" id="chipL3">0/10 · 0⭐</span>
+    </div>
+    <p>Periksa selalu <b>3 cek wajib</b> sebelum menjawab. Hati-hati soal dengan tanda minus dan koefisien!</p>
+    <div id="listL3"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 13 : MATERI 4A MODEL LUAS ============ -->
+<section class="slide" id="slideM4a" data-title="Materi 4a · Model Luas ax² + bx + c">
+  <div class="wrap">
+    <span class="kicker">Senjata Baru 🖼️</span>
+    <h2>Memfaktorkan <span class="math">ax&sup2; + bx + c</span> dengan Konsep Luas</h2>
+    <div class="kartu">
+      <h3>🤔 Masalahnya</h3>
+      <p><span class="math">x&sup2; + 7x + 12</span> — bukan kuadrat sempurna (12 bukan kuadrat, dan 2·x·√12 ≠ 7x). Bagaimana memfaktorkannya?</p>
+      <p class="tanya">💡 Ide besar: bentuk <span class="math">(x + p)(x + q)</span> adalah <b>luas</b> persegi panjang bersisi <span class="math">(x + p)</span> dan <span class="math">(x + q)</span>! Kita cukup membalik: menyusun persegi panjang yang luasnya <span class="math">x&sup2; + 7x + 12</span>, lalu membaca sisinya.</p>
+    </div>
+    <div class="area-widget" id="area1" data-steps="5" data-cap='["① Mulai dari luas terbesar: persegi bersisi x → area x&sup2;. Taruh di pojok kiri atas.","② Suku 7x kita belah dua: 7x = 4x + 3x (kenapa? sabar, segera terungkap!). Tempel persegi panjang bersisi 4 dan x di kanan → area 4x.","③ Tempel persegi panjang bersisi 3 dan x di bawah → area 3x.","④ Sisa pojok kanan bawah harus 4 × 3 = 12 — dan bentuk aslinya memang punya sisa +12. PAS sempurna! 🎯","⑤ Baca sisinya: panjang (x + 4), lebar (x + 3). Jadi x&sup2; + 7x + 12 = (x + 4)(x + 3)! 🎉 Cek: x·x + x·3 + 4·x + 4·3 = x&sup2; + 7x + 12 ✔"]'>
+      <p style="margin:4px 0"><b>🧩 Lab Model Luas:</b> faktorkan <span class="math">x&sup2; + 7x + 12</span> — klik tombol untuk mengisi kotak luas satu per satu!</p>
+      <div class="aw-grid">
+        <div class="aw-h"></div>
+        <div class="aw-h aw-hide" data-step="5">x</div>
+        <div class="aw-h aw-hide" data-step="5">+4</div>
+        <div class="aw-h aw-hide" data-step="5">x</div>
+        <div class="aw-c navy aw-hide" data-step="1">x&sup2;</div>
+        <div class="aw-c gold aw-hide" data-step="2">4x</div>
+        <div class="aw-h aw-hide" data-step="5">+3</div>
+        <div class="aw-c gold aw-hide" data-step="3">3x</div>
+        <div class="aw-c merah aw-hide" data-step="4">12</div>
+      </div>
+      <div class="aw-cap">👆 Tekan tombol untuk mulai mengisi model luas…</div>
+      <div class="st-btns" style="text-align:center"><button class="btn kecil aw-next">Isi model luas ➜</button></div>
+      <div class="aw-hide fpb-result" data-step="5" style="margin-top:12px;text-align:center"><span class="math besar">x&sup2; + 7x + 12 = (x + 4)(x + 3)</span> 🎉</div>
+    </div>
+    <div class="kartu">
+      <h3>🪜 Langkah Emas Model Luas</h3>
+      <div class="grid2">
+        <div class="kartu tip" style="margin:0"><b>1️⃣ Cari pasangan ajaib m dan n:</b> harus <span class="math">m &times; n = c</span> (12) dan <span class="math">m + n = b</span> (7). Kandidat: 3 &amp; 4 → 3·4=12 ✔, 3+4=7 ✔</div>
+        <div class="kartu tip" style="margin:0"><b>2️⃣ Belah suku tengah:</b> <span class="math">7x = 3x + 4x</span> — pakai pasangan tadi.</div>
+        <div class="kartu tip" style="margin:0"><b>3️⃣ Susun kotak luas:</b> pojok x&sup2;, kanan 4x, bawah 3x, sisa pojok 12.</div>
+        <div class="kartu tip" style="margin:0"><b>4️⃣ Baca sisi-sisinya:</b> faktornya <span class="math">(x + 4)(x + 3)</span> — cek dengan distributif ✅</div>
+      </div>
+    </div>
+    <div class="kartu tip">
+      💡 <b>Kenapa 7x dibelah jadi 3x + 4x?</b> Karena di kotak, sisa pojok otomatis berupa <span class="math">4 &times; 3 = 12</span>. Pasangan (m, n) harus mengalikan ke <b>c</b> DAN menjumlahkan ke <b>b</b> — itulah syarat kotaknya pas!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 14 : MATERI 4B TANDA NEGATIF ============ -->
+<section class="slide" id="slideM4b" data-title="Materi 4b · Model Luas dengan Tanda Negatif">
+  <div class="wrap">
+    <span class="kicker">Tanda Minus Masuk 🌡️</span>
+    <h2>Model Luas dengan Tanda Negatif</h2>
+    <div class="kartu">
+      <h3>🧊 x&sup2; &minus; 3x &minus; 10: Ada Area yang Dicoret</h3>
+      <p>Sekarang c = −10 (negatif) dan b = −3. Artinya pasangan m, n harus <b>m &times; n = &minus;10</b> (tanda berbeda!) dan <b>m + n = &minus;3</b>. Kandidat: <span class="math">(&minus;5) &times; 2 = &minus;10</span> ✔ dan <span class="math">&minus;5 + 2 = &minus;3</span> ✔</p>
+      <div class="area-mini" style="max-width:340px">
+        <div class="aw-h"></div>
+        <div class="aw-h">x</div>
+        <div class="aw-h aw-merah">&minus;5</div>
+        <div class="aw-h">x</div>
+        <div class="aw-c navy">x&sup2;</div>
+        <div class="aw-c merah"><span class="coret-x">&minus;5x</span></div>
+        <div class="aw-h">+2</div>
+        <div class="aw-c gold">2x</div>
+        <div class="aw-c merah"><span class="coret-x">&minus;10</span></div>
+      </div>
+      <p class="kecil" style="text-align:center">Area <b style="color:var(--red)">merah</b> = &ldquo;area dicoret&rdquo; (nilai negatif) — dihitung mengurangi.</p>
+      <div class="stepper" id="stNeg1">
+        <div class="st-step hidden">Susun kotak: kolom <span class="math">x</span> dan <span class="math">&minus;5</span>; baris <span class="math">x</span> dan <span class="math">+2</span>.</div>
+        <div class="st-step hidden">Empat areanya: <span class="math">x&sup2;</span>, <span class="math">&minus;5x</span>, <span class="math">2x</span>, <span class="math">&minus;10</span>. Jumlahkan: <span class="math">x&sup2; + 2x &minus; 5x &minus; 10</span></div>
+        <div class="st-step hidden">Gabungkan suku tengah: <span class="math">2x &minus; 5x = &minus;3x</span> → total <span class="math">x&sup2; &minus; 3x &minus; 10</span> — cocok! ✅</div>
+        <div class="st-step hidden">Jadi <span class="math">x&sup2; &minus; 3x &minus; 10 = (x &minus; 5)(x + 2)</span> 🎉</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>⚖️ Jika a ≠ 1: FPB Dulu, Model Luas Kemudian!</h3>
+      <p><span class="math">2x&sup2; + 10x + 12</span> — semua suku habis dibagi 2:</p>
+      <div class="stepper" id="stFpbDulu">
+        <div class="st-step hidden">Keluarkan FPB 2: <span class="math">2x&sup2; + 10x + 12 = 2(x&sup2; + 5x + 6)</span></div>
+        <div class="st-step hidden">Sekarang a = 1! Cari pasangan: <span class="math">m&middot;n = 6</span>, <span class="math">m+n = 5</span> → 2 &amp; 3 ✔</div>
+        <div class="st-step hidden">Jadi <span class="math">= 2(x + 2)(x + 3)</span> 🎉 — jangan lupa FPB-nya menunggu di depan!</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="banner-besar">CARI PASANGAN → BELAH SUKU TENGAH → SUSUN KOTAK → BACA SISI! 🖼️</div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 15 : LATIHAN 4 ============ -->
+<section class="slide" id="slideL4" data-title="Latihan 4 · Model Luas">
+  <div class="wrap">
+    <span class="kicker merah">Pebisnis Luas 📐</span>
+    <div class="latihan-head">
+      <h2>Latihan 4 — Faktorkan dengan Model Luas</h2>
+      <span class="skor-chip" id="chipL4">0/10 · 0⭐</span>
+    </div>
+    <p>Tips: cari dulu pasangan <b>m·n = c</b> dan <b>m+n = b</b> — hati-hati dengan tanda! Ingat juga: ada FPB? Keluarkan dulu!</p>
+    <div id="listL4"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 16 : KESIMPULAN ============ -->
+<section class="slide" id="slideKesimpulan" data-title="Kesimpulan">
+  <div class="wrap">
+    <span class="kicker">Rangkuman</span>
+    <h2>Kesimpulan Hari Ini</h2>
+    <div class="grid2">
+      <div class="kartu navy">
+        <h3>1️⃣ Dua Identitas Istimewa</h3>
+        <p><span class="math">a&sup2; &minus; b&sup2; = (a + b)(a &minus; b)</span> &nbsp;·&nbsp; <span class="math">a&sup2; &plusmn; 2ab + b&sup2; = (a &plusmn; b)&sup2;</span> — terbukti lewat distributif dan model luas. Ingat &ldquo;Kua-Dua-Tua&rdquo;!</p>
+      </div>
+      <div class="kartu navy">
+        <h3>2️⃣ Kuadrat Raksasa? Gampang!</h3>
+        <p>Dekatkan ke 10/100/1000 lalu pakai identitas: <span class="math">1001&sup2; = (1000+1)&sup2; = 1.002.001</span>, <span class="math">102 &times; 98 = 10.000 &minus; 4 = 9.996</span>. Tanpa kalkulator! 🦸</p>
+      </div>
+      <div class="kartu navy">
+        <h3>3️⃣ Faktor Kuadrat Sempurna</h3>
+        <p>Tiga cek wajib: suku pertama kuadrat ✔, suku terakhir kuadrat ✔, suku tengah = 2·a·b ✔ → tulis <span class="math">(a &plusmn; b)&sup2;</span>.</p>
+      </div>
+      <div class="kartu navy">
+        <h3>4️⃣ Bukan Kuadrat Sempurna? Model Luas!</h3>
+        <p>Cari <b>m·n = c</b> dan <b>m+n = b</b>, belah suku tengah, susun kotak, baca sisi: <span class="math">x&sup2; + 7x + 12 = (x + 4)(x + 3)</span>. Ada FPB? Keluarkan dulu!</p>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>📊 Rekap Petualanganmu, <span class="nama-slot">Sahabat Matematika</span></h3>
+      <table class="rekap">
+        <thead><tr><th>Bagian</th><th>Selesai</th><th>⭐ Benar di Percobaan Pertama</th></tr></thead>
+        <tbody id="rekapBody"></tbody>
+      </table>
+      <p id="rekapPesan" style="font-weight:800;color:var(--navy);margin-top:12px"></p>
+    </div>
+    <div class="kartu tip">
+      🎯 <b>Untuk pertemuan berikutnya:</b> identitas ini adalah pintu menuju persamaan kuadrat dan penyederhanaan pecahan aljabar. Identitas yang kuat hari ini = fondasi yang kokoh esok!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 17 : REFLEKSI ============ -->
+<section class="slide" id="slideRefleksi" data-title="Refleksi">
+  <div class="wrap">
+    <span class="kicker">Introspeksi Diri 🪞</span>
+    <h2>Refleksi Belajar</h2>
+    <p>Seberapa paham kamu dengan setiap materi hari ini? Pilih emoji yang paling menggambarkan perasaanmu, <b class="nama-slot">Sahabat Matematika</b>!</p>
+    <div class="ref-row"><p>Saya paham dan bisa memakai <b>dua identitas istimewa</b></p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa menghitung <b>kuadrat raksasa tanpa kalkulator</b></p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa memfaktorkan <b>kuadrat sempurna</b> dengan 3 cek wajib</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa memfaktorkan <b>ax&sup2; + bx + c</b> dengan model luas</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="kartu">
+      <h3>✍️ Ceritakan Pengalamanmu</h3>
+      <textarea id="refleksiTeks" placeholder="Trik mana yang paling ajaib menurutmu? Bagian mana yang masih ingin kamu latih lagi?"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center">
+        <button id="btnSimpanRef" class="btn">💾 Simpan Refleksiku</button>
+        <span class="kecil">🔒 Refleksi hanya tersimpan di perangkatmu, tidak dikirim ke mana pun.</span>
+      </div>
+      <div id="refleksiHasil" class="kartu sukses hidden pop" style="margin-bottom:0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 18 : THANK YOU ============ -->
+<section class="slide" id="slideThanks" data-title="Thank You for Today">
+  <div class="wrap tengah">
+    <div class="seri-emoji">🎉 🧮 ✨</div>
+    <h1 class="judul-besar">Thank You for Today!</h1>
+    <p class="sub">Kerja bagus, <b style="color:var(--red)" class="nama-slot">Sahabat Matematika</b>! Hari ini kamu mengubah kuadrat raksasa menjadi hitungan kepala, dan mengubah penjumlahan kembali menjadi perkalian faktor. Identitas telah menjadi sahabatmu — sampai jumpa di petualangan aljabar berikutnya! 🚀</p>
+    <blockquote class="quote">&ldquo;Identitas bukan sekadar rumus — ia adalah jalan pintas yang sudah menunggumu.&rdquo;</blockquote>
+    <button id="btnUlang" class="btn merah">🔁 Ulangi Presentasi dari Awal</button>
+  </div>
+</section>
+</main>
+<div id="navBawah">
+  <button id="btnPrev" class="btn ghost">‹ Sebelumnya</button>
+  <button id="btnNext" class="btn">Berikutnya ›</button>
+</div>
+<script id="data-js">
+/* Semua opsi ditulis ASCII (x^2, -) lalu dirapikan oleh fungsi tampil():
+   ^2→², ^3→³, '-'→− (minus), dan angka besar diberi titik ribuan.
+   'ver' = bentuk acuan untuk verifikasi kesetaraan matematika (tidak ditampilkan). */
+var SOAL = {
+L1: [
+ {q:'Hasil dari <span class="math">(x + 3)(x &minus; 3)</span> adalah…',
+  opts:['x^2 - 9','x^2 + 9','x^2 - 6x + 9','x^2 + 6x + 9'], key:0, ver:'(x+3)*(x-3)',
+  pemb:['Kenali wajahnya: <span class="math">(x + 3)(x &minus; 3) = (a + b)(a &minus; b)</span> dengan <span class="math">a = x</span>, <span class="math">b = 3</span>.','Pakai identitas selisih kuadrat: <span class="math">(a + b)(a &minus; b) = a&sup2; &minus; b&sup2;</span>.','Jadi <span class="math">x&sup2; &minus; 3&sup2; = x&sup2; &minus; 9</span> ✅ — suku tengah saling menghilangkan.']},
+ {q:'Hasil dari <span class="math">(x + 5)(x &minus; 5)</span> adalah…',
+  opts:['x^2 - 25','x^2 + 25','x^2 - 10x + 25','x^2 + 10x + 25'], key:0, ver:'(x+5)*(x-5)',
+  pemb:['a = x, b = 5 → identitas selisih kuadrat: <span class="math">a&sup2; &minus; b&sup2;</span>.','<span class="math">x&sup2; &minus; 5&sup2; = x&sup2; &minus; 25</span> ✅','Hati-hati: opsi <span class="math">x&sup2; &minus; 10x + 25</span> itu hasil <span class="math">(x &minus; 5)&sup2;</span> — wajahnya beda!']},
+ {q:'Hasil dari <span class="math">(2x + 5)(2x &minus; 5)</span> adalah…',
+  opts:['4x^2 - 25','2x^2 - 25','4x^2 + 25','4x^2 - 10x + 25'], key:0, ver:'(2x+5)*(2x-5)',
+  pemb:['a = 2x → <span class="math">a&sup2; = (2x)&sup2; = 4x&sup2;</span> (kuadratkan angka DAN variabelnya!).','b = 5 → <span class="math">b&sup2; = 25</span>.','Jadi <span class="math">(2x + 5)(2x &minus; 5) = 4x&sup2; &minus; 25</span> ✅']},
+ {q:'Hasil dari <span class="math">(x + 4)&sup2;</span> adalah…',
+  opts:['x^2 + 8x + 16','x^2 + 16','x^2 + 4x + 16','x^2 + 8x + 8'], key:0, ver:'(x+4)^2',
+  pemb:['Ingat &ldquo;Kua-Dua-Tua&rdquo;: <span class="math">a&sup2; + 2ab + b&sup2;</span> dengan a = x, b = 4.','<span class="math">a&sup2; = x&sup2;</span>; <span class="math">2ab = 2 &middot; x &middot; 4 = 8x</span>; <span class="math">b&sup2; = 16</span>.','Jadi <span class="math">(x + 4)&sup2; = x&sup2; + 8x + 16</span> ✅ — jangan hilangkan suku tengah!']},
+ {q:'Hasil dari <span class="math">(x &minus; 6)&sup2;</span> adalah…',
+  opts:['x^2 - 12x + 36','x^2 - 6x + 36','x^2 - 12x - 36','x^2 + 12x + 36'], key:0, ver:'(x-6)^2',
+  pemb:['a = x, b = 6 dengan tanda minus: <span class="math">a&sup2; &minus; 2ab + b&sup2;</span>.','<span class="math">2ab = 2 &middot; x &middot; 6 = 12x</span>, sehingga <span class="math">x&sup2; &minus; 12x + 36</span>.','Perhatikan: b&sup2; = 36 tetap <b>positif</b> — minus hanya menyengat suku tengah ✅']},
+ {q:'Hasil dari <span class="math">(3x + 1)&sup2;</span> adalah…',
+  opts:['9x^2 + 6x + 1','3x^2 + 6x + 1','9x^2 + 3x + 1','9x^2 - 6x + 1'], key:0, ver:'(3x+1)^2',
+  pemb:['a = 3x → <span class="math">a&sup2; = 9x&sup2;</span>; b = 1 → <span class="math">b&sup2; = 1</span>.','Suku tengah: <span class="math">2ab = 2 &middot; 3x &middot; 1 = 6x</span>.','Jadi <span class="math">9x&sup2; + 6x + 1</span> ✅']},
+ {q:'Hasil dari <span class="math">(y &minus; 7)(y + 7)</span> adalah…',
+  opts:['y^2 - 49','y^2 + 49','y^2 - 14y + 49','y^2 + 14y + 49'], key:0, ver:'(y-7)*(y+7)',
+  pemb:['Wajah (a &minus; b)(a + b) — urutan penjumlahan tidak mengubah hasil.','a = y, b = 7 → <span class="math">y&sup2; &minus; 49</span> ✅','Opsi <span class="math">y&sup2; &minus; 14y + 49</span> adalah <span class="math">(y &minus; 7)&sup2;</span> — beda wajah, beda identitas.']},
+ {q:'Hasil dari <span class="math">(10x + 3)(10x &minus; 3)</span> adalah…',
+  opts:['100x^2 - 9','100x^2 + 9','10x^2 - 9','100x^2 - 30x + 9'], key:0, ver:'(10x+3)*(10x-3)',
+  pemb:['a = 10x → <span class="math">a&sup2; = 100x&sup2;</span>; b = 3 → <span class="math">b&sup2; = 9</span>.','Identitas selisih kuadrat: <span class="math">100x&sup2; &minus; 9</span> ✅','Suku tengah <span class="math">+30x &minus; 30x</span> saling lenyapkan.']},
+ {q:'Hasil dari <span class="math">(x + 2y)&sup2;</span> adalah…',
+  opts:['x^2 + 4xy + 4y^2','x^2 + 2xy + 4y^2','x^2 + 4xy + 2y^2','x^2 + 4xy + 4y'], key:0, ver:'(x+2*y)^2',
+  pemb:['a = x, b = 2y → &ldquo;Kua-Dua-Tua&rdquo;.','<span class="math">a&sup2; = x&sup2;</span>; <span class="math">2ab = 2 &middot; x &middot; 2y = 4xy</span>; <span class="math">b&sup2; = (2y)&sup2; = 4y&sup2;</span>.','Jadi <span class="math">x&sup2; + 4xy + 4y&sup2;</span> ✅ — kuadratkan juga angka pada (2y)&sup2;!']},
+ {q:'<span class="math">(x + 8)&sup2; = x&sup2; + … + 64</span>. Suku tengah yang tepat adalah…',
+  opts:['16x','8x','64x','16'], key:0, ver:'16*x',
+  pemb:['Suku tengah = <span class="math">2ab = 2 &middot; x &middot; 8 = 16x</span>.','Jadi <span class="math">(x + 8)&sup2; = x&sup2; + 16x + 64</span> ✅','Ini jebakan klasik: bukan 8x (lupa dikali 2), bukan pula 64x.']}
+],
+L2: [
+ {q:'Tanpa kalkulator! <span class="math">1001&sup2;</span> = …',
+  opts:['1002001','1000001','1002000','1020001'], key:0, ver:'1001*1001',
+  pemb:['<span class="math">1001&sup2; = (1000 + 1)&sup2;</span> → a = 1000, b = 1.','<span class="math">a&sup2; + 2ab + b&sup2; = 1.000.000 + 2.000 + 1</span>.','Jadi <span class="math">1001&sup2; = 1.002.001</span> ✅ — persis rahasia Pak Dengklek!']},
+ {q:'Tanpa kalkulator! <span class="math">999&sup2;</span> = …',
+  opts:['998001','999001','990001','998999'], key:0, ver:'999*999',
+  pemb:['<span class="math">999&sup2; = (1000 &minus; 1)&sup2;</span> → bentuk <span class="math">a&sup2; &minus; 2ab + b&sup2;</span>.','<span class="math">1.000.000 &minus; 2.000 + 1</span> — kurangi dulu, baru tambah 1.','Hasil: <span class="math">998.001</span> ✅']},
+ {q:'Tanpa kalkulator! <span class="math">102 &times; 98</span> = …',
+  opts:['9996','10004','9904','9096'], key:0, ver:'102*98',
+  pemb:['Keduanya jauh dari 100 sama banyak: <span class="math">(100 + 2)(100 &minus; 2)</span>.','Identitas selisih kuadrat: <span class="math">100&sup2; &minus; 2&sup2; = 10.000 &minus; 4</span>.','Hasil: <span class="math">9.996</span> ✅']},
+ {q:'Tanpa kalkulator! <span class="math">51&sup2;</span> = …',
+  opts:['2601','2501','2600','2510'], key:0, ver:'51*51',
+  pemb:['<span class="math">51&sup2; = (50 + 1)&sup2; = 2.500 + 2(50)(1) + 1</span>.','<span class="math">2.500 + 100 + 1 = 2.601</span> ✅','Opsi 2.501 adalah jebakan &ldquo;lupa suku tengah&rdquo;!']},
+ {q:'Tanpa kalkulator! <span class="math">97&sup2;</span> = …',
+  opts:['9409','9413','9309','9490'], key:0, ver:'97*97',
+  pemb:['<span class="math">97&sup2; = (100 &minus; 3)&sup2; = 10.000 &minus; 2(100)(3) + 9</span>.','<span class="math">10.000 &minus; 600 + 9 = 9.409</span> ✅','Cek terakhir: hasil harus berakhiran 9 (dari 3&sup2;).']},
+ {q:'Tanpa kalkulator! <span class="math">105&sup2;</span> = …',
+  opts:['11025','10225','11250','10025'], key:0, ver:'105*105',
+  pemb:['<span class="math">105&sup2; = (100 + 5)&sup2; = 10.000 + 2(100)(5) + 25</span>.','<span class="math">10.000 + 1.000 + 25 = 11.025</span> ✅']},
+ {q:'Tanpa kalkulator! <span class="math">49 &times; 51</span> = …',
+  opts:['2499','2501','2490','2599'], key:0, ver:'49*51',
+  pemb:['<span class="math">49 &times; 51 = (50 &minus; 1)(50 + 1)</span>.','Selisih kuadrat: <span class="math">2.500 &minus; 1 = 2.499</span> ✅','Perhatikan: 49×51 = 51² − 51 − 49 + …? Jangan! Pakai identitas lebih cepat.']},
+ {q:'Tanpa kalkulator! <span class="math">1002&sup2;</span> = …',
+  opts:['1004004','1002004','1004400','1000004'], key:0, ver:'1002*1002',
+  pemb:['<span class="math">1002&sup2; = (1000 + 2)&sup2; = 1.000.000 + 2(1000)(2) + 4</span>.','<span class="math">1.000.000 + 4.000 + 4 = 1.004.004</span> ✅','Pola cantik: 1.00<b>4</b>.0<b>04</b>!']},
+ {q:'Tanpa kalkulator! <span class="math">95&sup2;</span> = …',
+  opts:['9025','9250','9125','8925'], key:0, ver:'95*95',
+  pemb:['<span class="math">95&sup2; = (100 &minus; 5)&sup2; = 10.000 &minus; 1.000 + 25</span>.','<span class="math">= 9.025</span> ✅','Trik cepat 25-akhir: kuadrat berakhiran 5 selalu berakhir 25!']},
+ {q:'Tanpa kalkulator! <span class="math">69 &times; 71</span> = …',
+  opts:['4899','4901','4890','4999'], key:0, ver:'69*71',
+  pemb:['Tengah-tengahnya 70: <span class="math">(70 &minus; 1)(70 + 1)</span>.','<span class="math">70&sup2; &minus; 1&sup2; = 4.900 &minus; 1 = 4.899</span> ✅','Selalu cari &ldquo;tengah gampang&rdquo;: 69 dan 71 mengapung di sekitar 70.']}
+],
+L3: [
+ {q:'Faktorkan <span class="math">x&sup2; + 6x + 9</span>!',
+  opts:['(x+3)^2','(x+9)^2','(x-3)^2','(x+3)(x-3)'], key:0, ver:'x^2+6x+9',
+  pemb:['Cek 1: <span class="math">x&sup2; = (x)&sup2;</span> → a = x ✔','Cek 2: <span class="math">9 = 3&sup2;</span> → b = 3 ✔','Cek 3: <span class="math">2 &middot; x &middot; 3 = 6x</span> — cocok dengan suku tengah ✔','Lolos semua → <span class="math">(x + 3)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; &minus; 10x + 25</span>!',
+  opts:['(x-5)^2','(x+5)^2','(x-5)(x+5)','(x-10)^2'], key:0, ver:'x^2-10x+25',
+  pemb:['<span class="math">x&sup2; = (x)&sup2;</span> ✔; <span class="math">25 = 5&sup2;</span> ✔','Cek tengah: <span class="math">2 &middot; x &middot; 5 = 10x</span>, dan tandanya <b>minus</b> ✔','Jadi <span class="math">(x &minus; 5)&sup2;</span> ✅ — tanda minus ikut masuk kurung.']},
+ {q:'Faktorkan <span class="math">y&sup2; + 8y + 16</span>!',
+  opts:['(y+4)^2','(y+8)^2','(y-4)^2','(y+4)(y-4)'], key:0, ver:'y^2+8y+16',
+  pemb:['<span class="math">y&sup2; = (y)&sup2;</span> ✔; <span class="math">16 = 4&sup2;</span> ✔','<span class="math">2 &middot; y &middot; 4 = 8y</span> ✔ → <span class="math">(y + 4)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">9x&sup2; + 12x + 4</span>!',
+  opts:['(3x+2)^2','(9x+2)^2','(3x+4)^2','(3x-2)^2'], key:0, ver:'9x^2+12x+4',
+  pemb:['Cek 1: <span class="math">9x&sup2; = (3x)&sup2;</span> → a = 3x ✔','Cek 2: <span class="math">4 = 2&sup2;</span> → b = 2 ✔','Cek 3: <span class="math">2 &middot; 3x &middot; 2 = 12x</span> ✔','Jadi <span class="math">(3x + 2)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">4x&sup2; &minus; 20x + 25</span>!',
+  opts:['(2x-5)^2','(4x-5)^2','(2x+5)^2','(2x-5)(2x+5)'], key:0, ver:'4x^2-20x+25',
+  pemb:['<span class="math">4x&sup2; = (2x)&sup2;</span> ✔; <span class="math">25 = 5&sup2;</span> ✔','<span class="math">2 &middot; 2x &middot; 5 = 20x</span> — suku tengah minus ✔','Jadi <span class="math">(2x &minus; 5)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">25x&sup2; + 30x + 9</span>!',
+  opts:['(5x+3)^2','(25x+3)^2','(5x+9)^2','(5x-3)^2'], key:0, ver:'25x^2+30x+9',
+  pemb:['<span class="math">25x&sup2; = (5x)&sup2;</span> ✔; <span class="math">9 = 3&sup2;</span> ✔','<span class="math">2 &middot; 5x &middot; 3 = 30x</span> ✔','Jadi <span class="math">(5x + 3)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; &minus; 14x + 49</span>!',
+  opts:['(x-7)^2','(x+7)^2','(x-49)^2','(x-7)(x+7)'], key:0, ver:'x^2-14x+49',
+  pemb:['<span class="math">49 = 7&sup2;</span> ✔; <span class="math">2 &middot; x &middot; 7 = 14x</span> ✔ dengan tanda minus.','Jadi <span class="math">(x &minus; 7)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">16y&sup2; + 40y + 25</span>!',
+  opts:['(4y+5)^2','(16y+5)^2','(4y-5)^2','(8y+5)^2'], key:0, ver:'16y^2+40y+25',
+  pemb:['<span class="math">16y&sup2; = (4y)&sup2;</span> ✔ (16 = 4&sup2;); <span class="math">25 = 5&sup2;</span> ✔','<span class="math">2 &middot; 4y &middot; 5 = 40y</span> ✔','Jadi <span class="math">(4y + 5)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">36x&sup2; &minus; 12x + 1</span>!',
+  opts:['(6x-1)^2','(36x-1)^2','(6x+1)^2','(6x-1)(6x+1)'], key:0, ver:'36x^2-12x+1',
+  pemb:['<span class="math">36x&sup2; = (6x)&sup2;</span> ✔; <span class="math">1 = 1&sup2;</span> ✔','<span class="math">2 &middot; 6x &middot; 1 = 12x</span> — minus ✔','Jadi <span class="math">(6x &minus; 1)&sup2;</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; + 16x + 64</span>!',
+  opts:['(x+8)^2','(x+16)^2','(x+8)(x-8)','(x-8)^2'], key:0, ver:'x^2+16x+64',
+  pemb:['<span class="math">64 = 8&sup2;</span> ✔; <span class="math">2 &middot; x &middot; 8 = 16x</span> ✔ tanda plus.','Jadi <span class="math">(x + 8)&sup2;</span> ✅ — kebalikan dari soal suku tengah di Latihan 1!']}
+],
+L4: [
+ {q:'Faktorkan <span class="math">x&sup2; + 7x + 12</span> (bukan kuadrat sempurna — pakai model luas!)',
+  opts:['(x+3)(x+4)','(x+2)(x+6)','(x+1)(x+12)','(x-3)(x-4)'], key:0, ver:'x^2+7x+12',
+  pemb:['Cari pasangan: <span class="math">m &times; n = 12</span> dan <span class="math">m + n = 7</span> → <b>3 dan 4</b> (3·4=12 ✔, 3+4=7 ✔).','Belah suku tengah: <span class="math">7x = 3x + 4x</span>.','Susun kotak: <span class="math">x&sup2; | 4x</span> di atas, <span class="math">3x | 12</span> di bawah.','Baca sisi: <span class="math">(x + 3)(x + 4)</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; + 9x + 20</span>!',
+  opts:['(x+4)(x+5)','(x+2)(x+10)','(x-4)(x-5)','(x+1)(x+20)'], key:0, ver:'x^2+9x+20',
+  pemb:['<span class="math">m &times; n = 20</span>, <span class="math">m + n = 9</span> → <b>4 dan 5</b>.','Kotak: <span class="math">x&sup2; | 5x</span> atas; <span class="math">4x | 20</span> bawah.','<span class="math">(x + 4)(x + 5)</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; &minus; 9x + 20</span>!',
+  opts:['(x-4)(x-5)','(x+4)(x+5)','(x-4)(x+5)','(x-2)(x-10)'], key:0, ver:'x^2-9x+20',
+  pemb:['<span class="math">m &times; n = +20</span> tetapi <span class="math">m + n = &minus;9</span> → keduanya harus <b>minus</b>: <b>&minus;4 dan &minus;5</b>.','Cek: (−4)(−5) = +20 ✔; (−4) + (−5) = −9 ✔','<span class="math">(x &minus; 4)(x &minus; 5)</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; + 2x &minus; 15</span>!',
+  opts:['(x+5)(x-3)','(x-5)(x+3)','(x+15)(x-1)','(x-15)(x+1)'], key:0, ver:'x^2+2x-15',
+  pemb:['<span class="math">m &times; n = &minus;15</span> → tanda berbeda; <span class="math">m + n = +2</span> → yang positif lebih besar: <b>5 dan &minus;3</b>.','Cek: 5·(−3) = −15 ✔; 5 + (−3) = 2 ✔','<span class="math">(x + 5)(x &minus; 3)</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; &minus; 3x &minus; 10</span>!',
+  opts:['(x-5)(x+2)','(x+5)(x-2)','(x-10)(x+1)','(x-5)(x-2)'], key:0, ver:'x^2-3x-10',
+  pemb:['<span class="math">m &times; n = &minus;10</span>; <span class="math">m + n = &minus;3</span> → yang negatif lebih besar: <b>&minus;5 dan +2</b>.','Cek: (−5)(2) = −10 ✔; (−5) + 2 = −3 ✔','Di model luas, area −5x dan −10 adalah area merah (dicoret).','<span class="math">(x &minus; 5)(x + 2)</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; + 5x + 6</span>!',
+  opts:['(x+2)(x+3)','(x+1)(x+6)','(x+5)(x+1)','(x-2)(x-3)'], key:0, ver:'x^2+5x+6',
+  pemb:['<span class="math">m &times; n = 6</span>, <span class="math">m + n = 5</span> → <b>2 dan 3</b>.','<span class="math">(x + 2)(x + 3)</span> ✅ — model luasnya: x&sup2;|3x; 2x|6.']},
+ {q:'Faktorkan <span class="math">x&sup2; &minus; 7x + 10</span>!',
+  opts:['(x-2)(x-5)','(x+2)(x+5)','(x-2)(x+5)','(x-1)(x-10)'], key:0, ver:'x^2-7x+10',
+  pemb:['<span class="math">m &times; n = +10</span>, <span class="math">m + n = &minus;7</span> → <b>&minus;2 dan &minus;5</b>.','Cek: (−2)(−5) = 10 ✔; (−2) + (−5) = −7 ✔','<span class="math">(x &minus; 2)(x &minus; 5)</span> ✅']},
+ {q:'Faktorkan <span class="math">x&sup2; &minus; x &minus; 12</span>!',
+  opts:['(x-4)(x+3)','(x+4)(x-3)','(x-4)(x-3)','(x-12)(x+1)'], key:0, ver:'x^2-x-12',
+  pemb:['<span class="math">m &times; n = &minus;12</span>; <span class="math">m + n = &minus;1</span> → <b>&minus;4 dan +3</b> (yang negatif lebih besar).','Cek: (−4)(3) = −12 ✔; (−4) + 3 = −1 ✔','<span class="math">(x &minus; 4)(x + 3)</span> ✅']},
+ {q:'Faktorkan <span class="math">2x&sup2; + 10x + 12</span> — ingat cek FPB dulu!',
+  opts:['2(x+2)(x+3)','2(x+1)(x+6)','(x+2)(x+3)','2(x-2)(x-3)'], key:0, ver:'2x^2+10x+12',
+  pemb:['FPB 2 mengikat semua suku → <span class="math">2(x&sup2; + 5x + 6)</span>.','Sekarang a = 1: <span class="math">m&middot;n = 6</span>, <span class="math">m+n = 5</span> → <b>2 dan 3</b>.','Jangan lupa FPB menunggu di depan: <span class="math">2(x + 2)(x + 3)</span> ✅','Opsi tanpa 2 hanya bernilai setengah — tidak setara!']},
+ {q:'Faktorkan <span class="math">x&sup2; + 11x + 24</span>!',
+  opts:['(x+3)(x+8)','(x+4)(x+6)','(x+2)(x+12)','(x-3)(x-8)'], key:0, ver:'x^2+11x+24',
+  pemb:['<span class="math">m &times; n = 24</span>, <span class="math">m + n = 11</span> → uji: 4+6=10 ✘, <b>3+8=11 ✔</b> dengan 3·8=24 ✔','<span class="math">(x + 3)(x + 8)</span> ✅']}
+]};
+</script>
+<script id="app-js">
+/* ============ PENGAMAN GLOBAL ============ */
+/* 1) Polyfill browser lama (tanpa Element.closest semua tombol bisa mati) */
+if(!Element.prototype.closest){
+  Element.prototype.closest = function(sel){
+    var el=this;
+    while(el && el.nodeType===1){
+      if(el.matches ? el.matches(sel) : (el.msMatchesSelector && el.msMatchesSelector(sel))) return el;
+      el = el.parentElement || el.parentNode;
+    }
+    return null;
+  };
+}
+if(!Element.prototype.matches){
+  Element.prototype.matches = Element.prototype.msMatchesSelector || function(sel){
+    var el=this, all=(el.document||el.ownerDocument).querySelectorAll(sel), i;
+    for(i=0;i<all.length && all[i]!==el;i++);
+    return i<all.length;
+  };
+}
+/* 2) Penangkap error: banner + tombol Muat Ulang (halaman tidak mati diam-diam) */
+window.addEventListener('error', function(){
+  var b=document.getElementById('errBanner');
+  if(b) return;
+  b=document.createElement('div'); b.id='errBanner';
+  b.style.cssText='position:fixed;left:12px;right:12px;bottom:78px;z-index:1000;background:#c62828;color:#fff;padding:12px 16px;border-radius:12px;font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;box-shadow:0 10px 28px rgba(0,0,0,.35)';
+  b.innerHTML='<b>\u26a0\ufe0f Ada bagian yang belum termuat sempurna.</b> Klik tombol berikut lalu muat ulang halaman: '+
+    '<button onclick="location.reload()" style="margin-left:8px;padding:6px 14px;border:none;border-radius:8px;background:#fff;color:#c62828;font-weight:800;cursor:pointer">\u21bb Muat Ulang</button>';
+  document.body.appendChild(b);
+});
+
+(function(){
+'use strict';
+/* ============ UTILITAS & STATE ============ */
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+/* Penyimpanan aman: bila localStorage diblokir, pakai memori sementara */
+var MEM={};
+function lsGet(k){ try{ return window.localStorage.getItem(k); }catch(e){ return (k in MEM)?MEM[k]:null; } }
+function lsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){ MEM[k]=v; } }
+function lsDel(k){ try{ window.localStorage.removeItem(k); }catch(e){ delete MEM[k]; } }
+function bacaJSON(k){ try{ return JSON.parse(lsGet(k)||'null'); }catch(e){ return null; } }
+function tryRun(fn,label){ try{ fn(); }catch(e){ if(window.console&&console.error) console.error('[Presentasi] Bagian "'+label+'" gagal dimuat:', e); } }
+var LS_NAMA='ia_nama', LS_SKOR='ia_skor', LS_REF='ia_refleksi';
+var NAMA = lsGet(LS_NAMA) || '';
+var SKOR = bacaJSON(LS_SKOR) || {L1:{ok:0,ft:0},L2:{ok:0,ft:0},L3:{ok:0,ft:0},L4:{ok:0,ft:0}};
+var TOTAL = {L1:10,L2:10,L3:10,L4:10};
+var LABEL = {L1:'Latihan 1 · Perkalian dengan Identitas', L2:'Latihan 2 · Kuadrat Raksasa', L3:'Latihan 3 · Kuadrat Sempurna', L4:'Latihan 4 · Model Luas ax² + bx + c'};
+var WARNA = ['#c62828','#17337e','#2456a6','#e0a106','#2e7d46','#7e57c2'];
+var HURUF = ['A','B','C','D'];
+
+function simpanSkor(){ lsSet(LS_SKOR, JSON.stringify(SKOR)); }
+function refreshNama(){
+  $$('.nama-slot').forEach(function(e){ e.textContent = NAMA || 'Sahabat Matematika'; });
+  $('#chipNama').textContent = '👤 ' + (NAMA || 'Belum diisi');
+}
+/* Merapikan teks opsi ASCII menjadi tampilan cantik */
+function tampil(s){
+  var t=s.replace(/\^2/g,'\u00b2').replace(/\^3/g,'\u00b3');
+  t=t.replace(/-/g,' \u2212 ').replace(/\+/g,' + ');
+  t=t.replace(/\s+/g,' ').trim();
+  t=t.replace(/\(\s/g,'(').replace(/\s\)/g,')');
+  t=t.replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1.');
+  return t;
+}
+
+/* ============ NAVIGASI SLIDE ============ */
+var slides = $$('.slide'), cur = 0;
+function go(i){
+  if(i<0 || i>=slides.length) return;
+  slides[cur].classList.remove('active');
+  cur = i;
+  slides[cur].classList.add('active');
+  slides[cur].scrollTop = 0;
+  $('#progressBar').style.width = ((cur+1)/slides.length*100) + '%';
+  $('#slideCount').textContent = (cur+1) + ' / ' + slides.length;
+  $('#btnPrev').disabled = (cur===0);
+  $('#btnNext').disabled = (cur===slides.length-1);
+  var id = slides[cur].id;
+  if(id==='slideKesimpulan') renderRekap();
+  if(id==='slideThanks') konfetiHujan();
+}
+$('#btnPrev').addEventListener('click',function(){go(cur-1);});
+$('#btnNext').addEventListener('click',function(){go(cur+1);});
+document.addEventListener('keydown',function(e){
+  var t=e.target;
+  if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA')) return;
+  var menu=$('#menuOverlay');
+  if(!menu.classList.contains('hidden')){ if(e.key==='Escape') menu.classList.add('hidden'); return; }
+  if(e.key==='ArrowRight') go(cur+1);
+  if(e.key==='ArrowLeft') go(cur-1);
+});
+
+/* ============ MENU SLIDE ============ */
+slides.forEach(function(s,i){
+  var li=document.createElement('li');
+  li.innerHTML='<button class="menu-item" data-i="'+i+'"><b>'+(i+1)+'.</b><span>'+s.dataset.title+'</span></button>';
+  $('#menuList').appendChild(li);
+});
+$('#menuList').addEventListener('click',function(e){
+  var b=e.target.closest('.menu-item');
+  if(b){ go(+b.dataset.i); $('#menuOverlay').classList.add('hidden'); }
+});
+$('#btnMenu').addEventListener('click',function(){ $('#menuOverlay').classList.remove('hidden'); });
+$('#btnTutupMenu').addEventListener('click',function(){ $('#menuOverlay').classList.add('hidden'); });
+$('#menuOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.add('hidden'); });
+
+/* ============ NAMA SISWA ============ */
+function mulai(){
+  NAMA = $('#inputNama').value.trim() || 'Sahabat Matematika';
+  lsSet(LS_NAMA, NAMA);
+  refreshNama();
+  konfeti($('#btnMulai'));
+  go(1);
+}
+$('#btnMulai').addEventListener('click', mulai);
+$('#inputNama').addEventListener('keydown', function(e){ if(e.key==='Enter') mulai(); });
+if(NAMA) $('#inputNama').value = NAMA;
+
+/* ============ KONFETI ============ */
+function konfeti(el){
+  var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(var i=0;i<18;i++){
+    var p=document.createElement('i'); p.className='kft';
+    p.style.left=cx+'px'; p.style.top=cy+'px';
+    p.style.background=WARNA[i%WARNA.length];
+    p.style.setProperty('--dx',(Math.random()*280-140)+'px');
+    p.style.setProperty('--dy',(90+Math.random()*190)+'px');
+    p.style.animationDelay=(Math.random()*90)+'ms';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){this.remove();});
+  }
+}
+function konfetiHujan(){
+  for(var i=0;i<60;i++){
+    var p=document.createElement('i'); p.className='kft';
+    p.style.left=(Math.random()*100)+'vw'; p.style.top='-20px';
+    p.style.background=WARNA[i%WARNA.length];
+    p.style.setProperty('--dx',(Math.random()*180-90)+'px');
+    p.style.setProperty('--dy',(window.innerHeight*0.75+Math.random()*220)+'px');
+    p.style.animationDelay=(Math.random()*700)+'ms';
+    p.style.animationDuration=(1.2+Math.random()*1.2)+'s';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){this.remove();});
+  }
+}
+
+/* ============ RENDER SOAL: PILIH -> CEK JAWABAN ============ */
+function acak(arr,seed){
+  var a=arr.slice(), s=(seed*2654435761)>>>0 || 1;
+  for(var i=a.length-1;i>0;i--){
+    s=(s*1664525+1013904223)>>>0;
+    var j=s%(i+1), tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+function renderSoal(contId, daftar, sec){
+  var wrap=document.getElementById(contId);
+  daftar.forEach(function(item,i){
+    var card=document.createElement('div');
+    card.className='soal-card';
+    card.dataset.sec=sec; card.dataset.idx=i;
+    var order=acak([0,1,2,3], i+11+['L1','L2','L3','L4'].indexOf(sec)*17);
+    var ops=order.map(function(oi,pos){
+      return '<button class="opsi" data-oi="'+oi+'"><b>'+HURUF[pos]+'.</b><span class="math">'+tampil(item.opts[oi])+'</span></button>';
+    }).join('');
+    var pemb=(item.pemb||[]).map(function(s){return '<li>'+s+'</li>';}).join('');
+    card.innerHTML=
+      '<div class="sc-top"><span class="sc-no">Soal '+(i+1)+'</span><span class="sc-st">⬜ belum dijawab</span></div>'+
+      '<p class="sc-q">'+item.q+'</p>'+
+      '<div class="opsi-grid">'+ops+'</div>'+
+      '<div class="fb" hidden></div>'+
+      '<div class="aksi-baris"><button class="btn kecil cek-btn">✅ Cek Jawaban</button><button class="btn ghost kecil pb-btn">📖 Pembahasan</button></div>'+
+      '<div class="pembahasan" hidden><p class="pb-judul">Pembahasan Soal '+(i+1)+'</p><ol class="langkah">'+pemb+'</ol></div>';
+    wrap.appendChild(card);
+  });
+  wrap.addEventListener('click', function(e){
+    var card=e.target.closest('.soal-card');
+    if(!card) return;
+    var opsi=e.target.closest('.opsi');
+    if(opsi && !opsi.disabled && !card.dataset.locked){
+      $$('.opsi',card).forEach(function(o){o.classList.remove('pilih');});
+      opsi.classList.add('pilih');
+      card.dataset.sel=opsi.dataset.oi;
+      var fb0=card.querySelector('.fb');
+      if(fb0.classList.contains('no')||fb0.classList.contains('warn')) fb0.hidden=true;
+    }
+    var cek=e.target.closest('.cek-btn');
+    if(cek){ cekJawab(card, daftar, sec); }
+    var pb=e.target.closest('.pb-btn');
+    if(pb){
+      var panel=card.querySelector('.pembahasan');
+      panel.hidden=!panel.hidden;
+      pb.textContent=panel.hidden?'📖 Pembahasan':'📕 Tutup Pembahasan';
+    }
+  });
+}
+function cekJawab(card, daftar, sec){
+  if(card.dataset.locked) return;
+  var fb=card.querySelector('.fb'), st=card.querySelector('.sc-st');
+  var cek=card.querySelector('.cek-btn');
+  if(card.dataset.sel===undefined){
+    fb.hidden=false; fb.className='fb warn';
+    fb.innerHTML='👆 Pilih dulu salah satu jawaban A–D, lalu tekan <b>Cek Jawaban</b> ya!';
+    return;
+  }
+  var item=daftar[+card.dataset.idx], oi=+card.dataset.sel;
+  var picked=card.querySelector('.opsi.pilih');
+  if(oi===item.key){
+    card.dataset.locked='1';
+    if(picked){ picked.classList.remove('pilih'); picked.classList.add('benar'); }
+    $$('.opsi',card).forEach(function(o){o.disabled=true;});
+    cek.disabled=true; cek.textContent='✔ Jawaban Terkunci';
+    st.textContent='✅ benar!'; st.classList.add('ok');
+    fb.hidden=false; fb.className='fb ok';
+    fb.innerHTML='✅ <b>Benar, '+(NAMA||'Sahabat Matematika')+'!</b> Kerja bagus — selalu cek jawabanmu dengan sifat distributif ya.';
+    if(!card.dataset.tried) SKOR[sec].ft++;
+    SKOR[sec].ok++;
+    simpanSkor(); perbaruiChip(sec);
+    konfeti(picked||cek);
+  } else {
+    card.dataset.tried='1';
+    if(picked){
+      picked.classList.remove('pilih'); picked.classList.add('salah');
+      setTimeout(function(){ picked.classList.remove('salah'); },500);
+      card.dataset.sel=undefined;
+    }
+    st.textContent='🔁 coba lagi';
+    fb.hidden=false; fb.className='fb no';
+    fb.innerHTML='❌ Belum tepat. Pilih jawaban lain lalu <b>Cek Jawaban</b> lagi — atau buka 📖 pembahasan di bawah.';
+  }
+}
+function perbaruiChip(sec){
+  var c=$('#chip'+sec);
+  if(c) c.textContent = SKOR[sec].ok+'/'+TOTAL[sec]+' · '+SKOR[sec].ft+'⭐';
+}
+
+/* ============ REKAP KESIMPULAN ============ */
+function renderRekap(){
+  var body=$('#rekapBody'); body.innerHTML='';
+  ['L1','L2','L3','L4'].forEach(function(k){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+LABEL[k]+'</td><td>'+SKOR[k].ok+' / '+TOTAL[k]+'</td><td>'+SKOR[k].ft+' ⭐</td>';
+    body.appendChild(tr);
+  });
+  var tot=totSkor();
+  var pesan;
+  if(tot>=36) pesan='🏆 LUAR BIASA, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/40 — kamu siap jadi master identitas aljabar!';
+  else if(tot>=27) pesan='🌟 Hebat, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/40 — pemahamanmu sudah kokoh, tinggal diasah.';
+  else if(tot>=15) pesan='👍 Bagus, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/40 — ulangi soal yang keliru lewat pembahasan, pasti makin naik!';
+  else pesan='💪 Jangan menyerah, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/40 — buka lagi slide materinya, lalu coba latihan sekali lagi.';
+  $('#rekapPesan').textContent=pesan;
+}
+function totSkor(){ return SKOR.L1.ok+SKOR.L2.ok+SKOR.L3.ok+SKOR.L4.ok; }
+
+/* ============ WIDGET: TEBAK (APERSEPSI) ============ */
+tryRun(function(){ $$('.fpb-widget').forEach(function(w){
+  $$('.fpb-cand',w).forEach(function(b){
+    b.addEventListener('click',function(){
+      if(w.dataset.done) return;
+      var msg=w.querySelector('.fpb-msg');
+      if(b.dataset.ok==='1'){
+        w.dataset.done='1';
+        b.classList.add('cocok');
+        $$('.fpb-cand',w).forEach(function(x){ if(x!==b) x.disabled=true; });
+        msg.textContent=b.dataset.msg; msg.className='fpb-msg ok';
+        var res=w.querySelector('.fpb-result');
+        if(res) res.classList.remove('hidden');
+        konfeti(b);
+      } else {
+        b.classList.add('gagal');
+        setTimeout(function(){b.classList.remove('gagal');},450);
+        msg.textContent=b.dataset.msg; msg.className='fpb-msg no';
+      }
+    });
+  });
+}); },'Tebak Apersepsi');
+
+/* ============ WIDGET: STEPPER LANGKAH ============ */
+tryRun(function(){ $$('.stepper').forEach(function(st){
+  var steps=$$('.st-step',st), btn=$('.st-next',st), t=0;
+  function reset(){
+    steps.forEach(function(s){s.classList.add('hidden');});
+    t=0; btn.dataset.mode='next'; btn.disabled=false;
+    btn.textContent='Lihat langkah 1 \u279c';
+  }
+  btn.addEventListener('click',function(){
+    if(btn.dataset.mode==='reset'){ reset(); return; }
+    if(t<steps.length){
+      steps[t].classList.remove('hidden');
+      steps[t].classList.add('pop');
+      t++;
+    }
+    if(t>=steps.length){ btn.dataset.mode='reset'; btn.textContent='\u21ba Ulangi langkah'; }
+    else { btn.textContent='Lihat langkah '+(t+1)+' \u279c'; }
+  });
+}); },'Stepper');
+
+/* ============ WIDGET: MODEL LUAS (AREA) ============ */
+tryRun(function(){ $$('.area-widget').forEach(function(w){
+  var parts=$$('[data-step]',w);
+  var caps=[];
+  try{ caps=JSON.parse(w.dataset.cap||'[]'); }catch(e){ caps=[]; }
+  var maxT=parseInt(w.dataset.steps,10)||caps.length||1;
+  var cap=$('.aw-cap',w), btn=$('.aw-next',w), t=0;
+  if(!btn) return;
+  function reset(){
+    parts.forEach(function(p){p.classList.add('aw-hide');});
+    t=0; btn.dataset.mode='next'; btn.disabled=false;
+    btn.textContent='Isi model luas \u279c';
+    cap.innerHTML='\ud83d\udc46 Tekan tombol untuk mulai mengisi model luas\u2026';
+  }
+  btn.addEventListener('click',function(){
+    if(btn.dataset.mode==='reset'){ reset(); return; }
+    t++;
+    parts.forEach(function(p){
+      if(+p.dataset.step===t){ p.classList.remove('aw-hide'); p.classList.add('pop'); }
+    });
+    cap.innerHTML=caps[t-1]||'';
+    if(t>=maxT){ btn.dataset.mode='reset'; btn.textContent='\u21ba Ulangi model luas'; konfeti(btn); }
+    else { btn.textContent='Lanjut langkah '+(t+1)+' \u279c'; }
+  });
+}); },'Model Luas');
+
+/* ============ REFLEKSI ============ */
+tryRun(function(){ $$('.ref-emos .emo').forEach(function(b){
+  b.addEventListener('click',function(){
+    $$('.emo',b.parentElement).forEach(function(x){x.classList.remove('aktif');});
+    b.classList.add('aktif');
+  });
+}); },'Emoji Refleksi');
+tryRun(function(){$('#btnSimpanRef').addEventListener('click',function(){
+  var pilihan=$$('.ref-row').map(function(r){
+    var a=$('.emo.aktif',r);
+    return a? +a.dataset.v : 0;
+  });
+  var teks=$('#refleksiTeks').value.trim();
+  lsSet(LS_REF, JSON.stringify({nama:NAMA,pilihan:pilihan,teks:teks,waktu:new Date().toISOString()}));
+  var h=$('#refleksiHasil');
+  var terisi=pilihan.filter(function(v){return v>0;}).length;
+  h.innerHTML='<b>💚 Terima kasih, '+(NAMA||'Sahabat Matematika')+'!</b> Refleksimu ('+terisi+'/4 aspek dinilai) sudah tersimpan di perangkat ini. '+
+    (totSkor()>=27?'Skor latihanmu '+totSkor()+'/40 — hebat!':'Terus semangat berlatih ya!');
+  h.classList.remove('hidden');
+  konfeti(h);
+}); },'Simpan Refleksi');
+
+/* ============ TOMBOL ULANGI ============ */
+tryRun(function(){$('#btnUlang').addEventListener('click',function(){
+  lsDel(LS_SKOR);
+  lsDel(LS_REF);
+  location.reload();
+}); },'Tombol Ulangi');
+
+/* ============ INISIALISASI ============ */
+tryRun(function(){renderSoal('listL1', SOAL.L1, 'L1');},'Render Soal L1');
+tryRun(function(){renderSoal('listL2', SOAL.L2, 'L2');},'Render Soal L2');
+tryRun(function(){renderSoal('listL3', SOAL.L3, 'L3');},'Render Soal L3');
+tryRun(function(){renderSoal('listL4', SOAL.L4, 'L4');},'Render Soal L4');
+tryRun(function(){Object.keys(TOTAL).forEach(perbaruiChip);},'Chip Skor');
+tryRun(refreshNama,'Nama');
+go(0);
+})();
+</script>
+</body>
+</html>
