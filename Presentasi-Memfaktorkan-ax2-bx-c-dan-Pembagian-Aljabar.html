@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memfaktorkan ax² + bx + c (a ≠ 1) & Pembagian Aljabar — Matematika SMP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Font dimuat non-blocking: bila internet lambat/mati, tombol & animasi TETAP berfungsi -->
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --navy:#17337e; --navy2:#0f2456; --blue:#2456a6; --sky:#eef3fc;
+  --red:#c62828; --red2:#a51d1d; --gold:#e0a106; --ok:#2e7d46;
+  --ink:#1c2540; --muted:#5a6b8c; --line:#d9e2f2; --bg:#f2f6fc;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+h1,h2,h3{font-family:'Lora',Georgia,serif;color:var(--navy)}
+h2{font-size:clamp(26px,3.6vw,38px);margin:8px 0 14px;line-height:1.15}
+h3{margin:0 0 8px;font-size:20px}
+p{line-height:1.6}
+button{font-family:inherit}
+.hidden{display:none!important}
+.kecil{font-size:13px;color:var(--muted)}
+.tanya{font-size:18px;font-weight:700;color:var(--navy)}
+.kicker{display:inline-block;background:var(--navy);color:#fff;font-weight:800;letter-spacing:.14em;font-size:12px;padding:6px 16px;border-radius:999px;text-transform:uppercase}
+.kicker.merah{background:var(--red)}
+
+/* ====== MATH CHIP ====== */
+.math{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;background:var(--sky);border:1px solid #d7e2f5;color:#12306e;border-radius:8px;padding:1px 9px;white-space:nowrap;display:inline-block;line-height:1.55;font-weight:600}
+.math.besar{font-size:clamp(17px,2.5vw,25px);padding:8px 16px}
+.rule{font-size:18px;display:inline-block;margin:4px 0 8px}
+
+/* ====== TOPBAR ====== */
+#topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px;z-index:50}
+#btnMenu{font-size:17px;padding:7px 12px;border-radius:10px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--navy);font-weight:800}
+#btnMenu:hover{border-color:var(--blue);color:var(--blue)}
+#progressWrap{flex:1;height:8px;background:#e3eaf6;border-radius:99px;overflow:hidden}
+#progressBar{height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--blue) 70%,var(--red));border-radius:99px;transition:width .4s ease}
+#slideCount{font-weight:800;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#chipNama{background:var(--sky);border:1px solid #d7e2f5;color:var(--navy);font-weight:700;padding:6px 12px;border-radius:999px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+
+/* ====== MENU OVERLAY ====== */
+#menuOverlay{position:fixed;inset:0;background:rgba(15,26,54,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px}
+.menu-kotak{background:#fff;border-radius:18px;max-width:540px;width:100%;max-height:80vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 60px rgba(15,26,54,.35)}
+.menu-kotak h3{margin-bottom:10px}
+.menu-item{display:flex;gap:10px;width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:15px;font-weight:600;color:var(--ink);border-radius:10px;cursor:pointer}
+.menu-item b{color:var(--navy);min-width:26px}
+.menu-item:hover{background:var(--sky);color:var(--navy)}
+#btnTutupMenu{margin-top:12px;width:100%}
+
+/* ====== SLIDES ====== */
+#deck{position:absolute;inset:0;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(26px);transition:opacity .45s ease,transform .45s ease,visibility .45s;pointer-events:none;padding:78px 0 96px;background:linear-gradient(180deg,#fbfcff,#f0f5fb)}
+.slide.active{opacity:1;visibility:visible;transform:none;pointer-events:auto;z-index:2}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+.tengah{min-height:calc(100vh - 190px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+
+/* ====== CARDS ====== */
+.kartu{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.kartu.tip{border-left:6px solid var(--gold);background:#fffdf4}
+.kartu.awas{border-left:6px solid var(--red);background:#fff7f7}
+.kartu.sukses{border-left:6px solid var(--ok);background:#f4fbf6}
+.kartu.navy{background:var(--navy);color:#fff;border:none}
+.kartu.navy h3{color:#fff}
+.kartu.navy .math{background:rgba(255,255,255,.14);color:#fff;border-color:transparent}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* ====== BUTTONS ====== */
+.btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:11px 20px;font-size:15px;font-weight:800;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(23,51,126,.25)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.merah{background:var(--red)} .btn.merah:hover:not(:disabled){box-shadow:0 6px 16px rgba(198,40,40,.3)}
+.btn.ghost{background:#fff;color:var(--navy);border:2px solid #c3d2ec}
+.btn.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--blue);box-shadow:none}
+.btn.kecil{font-size:14px;padding:8px 14px}
+
+/* ====== COVER ====== */
+.ribbon{background:var(--red);color:#fff;padding:8px 20px;border-radius:999px;font-weight:800;letter-spacing:.16em;font-size:13px;box-shadow:0 4px 14px rgba(198,40,40,.3)}
+.judul-besar{font-size:clamp(34px,6vw,58px);margin:18px 0 10px;line-height:1.12}
+.sub{font-size:clamp(15px,2vw,19px);color:var(--muted);max-width:660px;margin:0 auto;line-height:1.55}
+.float-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.chip-float{animation:mengapung 4.5s ease-in-out infinite}
+.chip-float.f2{animation-delay:1.4s}.chip-float.f3{animation-delay:2.6s}
+@keyframes mengapung{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.nama-kartu{max-width:560px;width:100%;margin-top:26px;text-align:left}
+.nama-kartu label{font-weight:800;color:var(--navy);font-size:17px}
+.baris-nama{display:flex;gap:10px;margin-top:12px}
+@media(max-width:560px){.baris-nama{flex-direction:column}}
+#inputNama{font:inherit;padding:12px 16px;border:2px solid var(--line);border-radius:12px;flex:1;font-size:16px;min-width:0}
+#inputNama:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(36,86,166,.12)}
+
+/* ====== TUJUAN ====== */
+.tujuan{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px}
+.tujuan li{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;align-items:flex-start;font-size:16px;line-height:1.55}
+.tujuan .ikon{font-size:24px;line-height:1.2}
+
+/* ====== PAIR WIDGET ====== */
+.fpb-widget{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:16px 18px;margin:12px 0}
+.pair-cands,.sil-cands{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pair-cand{padding:9px 18px;border-radius:12px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:15px;cursor:pointer;transition:.15s}
+.pair-cand:hover:not(:disabled){background:var(--navy);color:#fff}
+.pair-cand.cocok{background:var(--ok);border-color:var(--ok);color:#fff}
+.pair-cand.gagal{animation:goyang .45s;border-color:var(--red);color:var(--red);background:#fdeaea}
+.fpb-msg{min-height:24px;font-weight:600;margin:8px 0;color:var(--muted)}
+.fpb-msg.ok{color:var(--ok)} .fpb-msg.no{color:var(--red)}
+.fpb-result{margin-top:10px}
+
+/* ====== STEPPER ====== */
+.stepper{margin:10px 0}
+.st-step{background:var(--sky);border:1px solid #d7e2f5;border-radius:12px;padding:10px 16px;margin:8px 0;line-height:1.6}
+.st-btns{margin-top:4px}
+
+/* ====== CEK SILANG ====== */
+.silang-widget{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:16px 18px;margin:12px 0;text-align:center}
+.sil-tabel{border-collapse:collapse;margin:12px auto}
+.sil-tabel td{border:2px solid #c9d6ee;padding:8px 18px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:700;font-size:15px;text-align:center;min-width:74px;background:#fff;color:var(--ink)}
+.sil-head{background:var(--sky);color:var(--navy)}
+.sil-corner{background:transparent;border:none!important;min-width:20px!important;padding:0!important}
+.sil-cell.isi{background:#fff8e6;border-color:var(--gold);color:#8a6d1a;transition:all .3s}
+.sil-cand{padding:9px 16px;border-radius:12px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
+.sil-cand:hover:not(:disabled){background:var(--navy);color:#fff}
+.sil-cand.cocok{background:var(--ok);border-color:var(--ok);color:#fff}
+.sil-cand.gagal{animation:goyang .45s;border-color:var(--red);color:var(--red);background:#fdeaea}
+.sil-msg{min-height:24px;font-weight:600;margin:8px 0;color:var(--muted)}
+.sil-msg.ok{color:var(--ok)} .sil-msg.no{color:var(--red)}
+.sil-result{margin-top:10px}
+
+/* ====== CORET WIDGET ====== */
+.coret-demo{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:18px;margin:12px 0;text-align:center}
+.cd-head{font-weight:800;color:var(--red);letter-spacing:.1em;font-size:12px;text-transform:uppercase;margin-bottom:6px}
+.cd-line{margin:10px 0}
+.cbox{display:inline-block;border:2px solid var(--gold);border-radius:8px;padding:0 7px;background:#fff8e6}
+.cbox.struck{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px;color:#8fa0c4;opacity:.45;background:#f3f4f8;border-color:var(--red);transition:all .5s ease}
+.hasil{color:var(--ok)}
+.cd-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.cd-note{font-size:14px;color:var(--muted);margin-top:10px}
+.banner-besar{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;border-radius:16px;padding:18px 22px;text-align:center;font-size:clamp(17px,2.5vw,25px);font-weight:800;font-family:'Lora',serif;letter-spacing:.05em;margin:16px 0;box-shadow:0 8px 22px rgba(23,51,126,.25)}
+
+/* ====== SOAL ====== */
+.latihan-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 2px}
+.skor-chip{background:#fff8e6;border:1px solid #ead9a8;color:#8a6d1a;font-weight:800;padding:6px 14px;border-radius:999px;font-size:13px;white-space:nowrap}
+.soal-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.sc-no{background:var(--navy);color:#fff;font-weight:800;border-radius:8px;padding:3px 12px;font-size:13px;white-space:nowrap}
+.sc-st{font-size:13px;color:var(--muted);font-weight:700;text-align:right}
+.sc-st.ok{color:var(--ok)}
+.sc-q{font-size:17px;margin:6px 0;font-weight:600}
+.opsi-grid{display:grid;gap:8px;margin:12px 0}
+.opsi{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s;line-height:1.5}
+.opsi b{color:var(--navy);min-width:24px;font-family:'IBM Plex Mono',monospace}
+.opsi:hover:not(:disabled){border-color:var(--blue);background:#f3f7ff}
+.opsi.pilih{border-color:var(--navy);background:#e8f0fe;box-shadow:0 0 0 3px rgba(36,86,166,.14)}
+.opsi.benar{border-color:var(--ok);background:#e7f6ec}
+.opsi.salah{border-color:var(--red);background:#fdeaea;animation:goyang .45s}
+.opsi:disabled{cursor:default;opacity:.72}
+.opsi.benar:disabled{opacity:1}
+@keyframes goyang{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{border-radius:10px;padding:10px 14px;margin-top:8px;font-weight:600;line-height:1.5}
+.fb.ok{background:#e7f6ec;border:1px solid #bfe3cc}
+.fb.no{background:#fdeaea;border:1px solid #f3c1c1}
+.sc-bawah{margin-top:10px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.pembahasan{margin-top:12px;background:#f2f7ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:12px 18px}
+.pb-judul{margin:0 0 6px;font-weight:800;color:var(--navy)}
+.langkah{margin:0;padding-left:22px}
+.langkah li{margin:7px 0;line-height:1.55}
+
+/* ====== REKAP ====== */
+.rekap{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.rekap th{background:var(--navy);color:#fff;padding:11px 14px;font-size:14px;text-align:left}
+.rekap td{padding:11px 14px;border-bottom:1px solid #e3eaf6;font-weight:600}
+.rekap tr:last-child td{border-bottom:none}
+
+/* ====== REFLEKSI ====== */
+.ref-row{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:8px 0;flex-wrap:wrap}
+.ref-row p{margin:0;font-weight:600}
+.ref-emos{display:flex;gap:6px}
+.emo{font-size:20px;width:46px;height:46px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:.15s}
+.emo:hover{transform:translateY(-2px)}
+.emo.aktif{border-color:var(--gold);background:#fff8e6;transform:scale(1.08)}
+#refleksiTeks{width:100%;min-height:96px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-family:inherit;font-size:15px;resize:vertical}
+#refleksiTeks:focus{outline:none;border-color:var(--blue)}
+
+/* ====== KONFETI & ANIMASI ====== */
+.kft{position:fixed;width:10px;height:14px;z-index:999;pointer-events:none;border-radius:2px;opacity:.95;animation:kft .95s ease-in forwards}
+@keyframes kft{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.92);opacity:0}100%{transform:scale(1);opacity:1}}
+.quote{font-style:italic;color:var(--muted);max-width:600px;margin:18px auto;font-family:'Lora',serif;font-size:17px}
+.seri-emoji{font-size:42px;letter-spacing:10px}
+
+/* ====== NAV BAWAH ====== */
+#navBawah{position:fixed;bottom:14px;right:16px;display:flex;gap:8px;z-index:60}
+@media(max-width:640px){
+  #navBawah{left:16px;right:16px}
+  #navBawah .btn{flex:1}
+  #chipNama{display:none}
+  .slide{padding:70px 0 110px}
+}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#c62828;color:#fff;padding:14px 18px;font-family:system-ui,sans-serif;font-size:15px;text-align:center;line-height:1.5">
+    ⚠️ <b>JavaScript sedang dinonaktifkan</b> di browser ini, sehingga seluruh tombol interaktif tidak dapat berfungsi. Aktifkan JavaScript (Settings/Privasi) lalu muat ulang halaman ini.
+  </div>
+</noscript>
+<header id="topbar">
+  <button id="btnMenu" title="Daftar slide">☰</button>
+  <div id="progressWrap"><div id="progressBar"></div></div>
+  <span id="slideCount">1 / 13</span>
+  <span id="chipNama">👤 Belum diisi</span>
+</header>
+<nav id="menuOverlay" class="hidden">
+  <div class="menu-kotak">
+    <h3>📚 Daftar Slide</h3>
+    <ol id="menuList" style="list-style:none;padding:0;margin:0"></ol>
+    <button id="btnTutupMenu" class="btn ghost">✕ Tutup</button>
+  </div>
+</nav>
+<main id="deck">
+<!-- ============ SLIDE 1 : COVER ============ -->
+<section class="slide" id="slideCover" data-title="Cover">
+  <div class="wrap tengah">
+    <span class="ribbon">MATEMATIKA SMP · BENTUK ALJABAR</span>
+    <h1 class="judul-besar">Memfaktorkan ax&sup2; + bx + c <span style="color:var(--red)">(a &ne; 1)</span></h1>
+    <p class="sub">Dengan <b>Trik Kali&ndash;Jumlah</b> di tangan, bentuk kuadrat berkoefisien tidak lagi jadi momok &mdash; dan pembagian aljabar? Tinggal <b>faktorkan, coret, selesai!</b> Lengkap dengan <b>20 soal interaktif</b>: tombol cek jawaban &amp; pembahasan langkah demi langkah.</p>
+    <div class="float-chips">
+      <span class="math besar chip-float">🔑 Trik Kali&ndash;Jumlah</span>
+      <span class="math besar chip-float f2">✂️ Faktorkan → Coret</span>
+      <span class="math besar chip-float f3">📝 20 Soal + Pembahasan</span>
+    </div>
+    <div class="kartu nama-kartu">
+      <label for="inputNama">👋 Siapa nama kamu?</label>
+      <div class="baris-nama">
+        <input id="inputNama" type="text" placeholder="Tulis namamu di sini…" maxlength="30" autocomplete="off">
+        <button id="btnMulai" class="btn">Mulai Belajar 🚀</button>
+      </div>
+      <p class="kecil" style="margin:10px 0 0">Nama hanya untuk menyapamu &amp; menyimpan skormu di perangkat ini — tidak dikirim ke mana pun.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 : TUJUAN ============ -->
+<section class="slide" id="slideTujuan" data-title="Tujuan Hari Ini">
+  <div class="wrap">
+    <span class="kicker">Peta Perjalanan</span>
+    <h2>Setelah pelajaran ini, kamu bisa…</h2>
+    <ul class="tujuan">
+      <li><span class="ikon">🔑</span><span>Memfaktorkan <span class="math">ax&sup2; + bx + c</span> ketika <b>a &ne; 1</b> memakai <b>Trik Kali&ndash;Jumlah</b> — tanpa menebak-nebak buta.</span></li>
+      <li><span class="ikon">🔍</span><span>Memeriksa jawaban dalam hitungan detik dengan <b>cek silang</b> dan <b>tips tanda</b>.</span></li>
+      <li><span class="ikon">✂️</span><span>Menghitung pembagian seperti <span class="math">(3x&sup2; + 10x + 8) &divide; (x + 2)</span> dengan cara <b>memfaktorkan terlebih dahulu</b>, lalu mencoret faktor yang sama.</span></li>
+      <li><span class="ikon">⚠️</span><span>Menuliskan <b>syarat penyebut &ne; 0</b> dengan benar setiap kali mencoret.</span></li>
+    </ul>
+    <div class="kartu navy">
+      <h3>🗺️ Rute Hari Ini</h3>
+      <p>Materi 1 · Trik Kali&ndash;Jumlah (4 slide) → 📝 <b>Latihan 1</b> (10 soal) → Materi 2 · Pembagian (2 slide) → 📝 <b>Latihan 2</b> (10 soal) → 🎓 Kesimpulan &amp; Refleksi</p>
+    </div>
+  </div>
+</section>
+<!-- ============ SLIDE 3 : MATERI 1A — KENAPA a ≠ 1 ============ -->
+<section class="slide" id="slideM1a" data-title="Materi 1 · Kenapa a ≠ 1 Istimewa?">
+  <div class="wrap">
+    <span class="kicker">Materi 1 dari 2</span>
+    <h2>Kenapa <span class="math">a &ne; 1</span> Itu Istimewa?</h2>
+    <div class="grid2">
+      <div class="kartu sukses">
+        <h3>✅ Bekal Lama: a = 1</h3>
+        <p>Untuk <span class="math">x&sup2; + px + q</span> cukup cari dua bilangan yang <b>dikalikan = q</b> dan <b>dijumlahkan = p</b>:</p>
+        <p style="text-align:center"><span class="math besar">x&sup2; + 5x + 6 = (x + 2)(x + 3)</span></p>
+        <p class="kecil">2 &times; 3 = 6 ✔ &nbsp;·&nbsp; 2 + 3 = 5 ✔</p>
+      </div>
+      <div class="kartu awas">
+        <h3>😅 Sekarang: a &ne; 1</h3>
+        <p>Suku pertama punya koefisien: <span class="math">3x&sup2; + 10x + 8</span>. Tebakan <span class="math">(3x + …)(x + …)</span> banyak sekali kemungkinannya — faktor dari 3 ada 2 pilihan, faktor dari 8 ada 4 pilihan, ditambah bolak-balik tanda!</p>
+        <p><b>Menebak terus = buang waktu.</b> Kita butuh trik yang langsung menunjuk pasangan yang tepat.</p>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>🧪 Bukti: Menebak Itu Melelahkan</h3>
+      <p>Mari kita uji tebakan satu per satu untuk <span class="math">3x&sup2; + 10x + 8</span>. Klik tombolnya!</p>
+      <div class="stepper" id="stM1a">
+        <div class="st-step hidden">Tebakan 1: <span class="math">(3x + 1)(x + 8) = 3x&sup2; + 25x + 8</span> ✘ — suku tengahnya 25, bukan 10!</div>
+        <div class="st-step hidden">Tebakan 2: <span class="math">(3x + 8)(x + 1) = 3x&sup2; + 11x + 8</span> ✘ — meleset 1 saja… tetapi tetap salah!</div>
+        <div class="st-step hidden">Tebakan 3: <span class="math">(3x + 4)(x + 2) = 3x&sup2; + 10x + 8</span> ✔ ketemu — setelah <b>3 kali percobaan</b>.</div>
+        <div class="st-step hidden">Bayangkan kalau <span class="math">a</span> = 12 dan <span class="math">c</span> = 35 — kombinasi tebakannya bisa <b>puluhan</b>! Karena itu, pelajari triknya di slide berikutnya ➜</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 4 : MATERI 1B — TRIK KALI–JUMLAH ============ -->
+<section class="slide" id="slideM1b" data-title="Materi 1 · Trik Kali–Jumlah">
+  <div class="wrap">
+    <span class="kicker merah">Trik Utama 🔑</span>
+    <h2>Trik Kali&ndash;Jumlah: Mulai dari <span class="math">a &times; c</span></h2>
+    <p>Empat langkah yang selalu berhasil untuk <span class="math">ax&sup2; + bx + c</span> dengan a &ne; 1:</p>
+    <div class="grid2">
+      <div class="kartu"><h3>1️⃣ KALI UJUNG</h3><p>Kalikan <b>a &times; c</b> — koefisien pertama kali konstanta terakhir.</p></div>
+      <div class="kartu"><h3>2️⃣ CARI PASANGAN</h3><p>Cari dua bilangan <b>p</b> dan <b>q</b> dengan <span class="math">p &times; q = a &times; c</span> dan <span class="math">p + q = b</span>.</p></div>
+      <div class="kartu"><h3>3️⃣ PECAH TENGAH</h3><p>Ganti <span class="math">bx</span> menjadi <span class="math">px + qx</span> — bentuknya kini menjadi 4 suku.</p></div>
+      <div class="kartu"><h3>4️⃣ KELOMPOKKAN</h3><p>Faktorkan dua-dua, keluarkan faktor bersamanya — selesai! ✅</p></div>
+    </div>
+    <div class="fpb-widget" id="pairTrik" data-kali="24" data-jumlah="11">
+      <p style="margin:4px 0"><b>🎯 Misi langkah 1&ndash;2:</b> untuk <span class="math">6x&sup2; + 11x + 4</span>, sudahkah kamu hitung <b>a &times; c = 6 &times; 4 = 24</b>? Klik pasangan yang <b>dikalikan = 24</b> dan <b>dijumlahkan = 11</b>!</p>
+      <div class="pair-cands">
+        <button class="pair-cand" data-a="1" data-b="24">1 &amp; 24</button>
+        <button class="pair-cand" data-a="2" data-b="12">2 &amp; 12</button>
+        <button class="pair-cand" data-a="3" data-b="8">3 &amp; 8</button>
+        <button class="pair-cand" data-a="4" data-b="6">4 &amp; 6</button>
+      </div>
+      <div class="fpb-msg">Klik sepasang bilangan…</div>
+      <div class="fpb-result hidden pop"><span class="math besar">3 &times; 8 = 24 ✔ &nbsp;dan&nbsp; 3 + 8 = 11 ✔</span> — pasangannya <b>3 dan 8</b>! 🎉</div>
+    </div>
+    <div class="kartu">
+      <h3>🎬 Demo Lengkap: 6x&sup2; + 11x + 4</h3>
+      <div class="stepper" id="stTrik">
+        <div class="st-step hidden"><b>Langkah 1 — KALI:</b> <span class="math">a &times; c = 6 &times; 4 = 24</span></div>
+        <div class="st-step hidden"><b>Langkah 2 — CARI:</b> dari misi di atas: <span class="math">3 &times; 8 = 24</span> dan <span class="math">3 + 8 = 11</span> ✔</div>
+        <div class="st-step hidden"><b>Langkah 3 — PECAH:</b> <span class="math">6x&sup2; + 11x + 4 = 6x&sup2; + 8x + 3x + 4</span></div>
+        <div class="st-step hidden"><b>Langkah 4 — KELOMPOKKAN:</b> <span class="math">2x(3x + 4) + 1(3x + 4)</span> — faktor <b>(3x + 4)</b> muncul dua kali!</div>
+        <div class="st-step hidden">Keluarkan (3x + 4): <span class="math besar">6x&sup2; + 11x + 4 = (3x + 4)(2x + 1)</span> ✅</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu tip">💡 <b>Kenapa trik ini pasti berhasil?</b> Hasil kali <span class="math">(px + q)(rx + s)</span> memiliki suku tengah <span class="math">psx + qrx</span> — dan pasangan yang dipilih Trik Kali&ndash;Jumlah menjamin jumlahnya tepat <span class="math">b</span>. Jadi bukan sulap, murni logika!</div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 5 : MATERI 1C — CEK SILANG & TIPS TANDA ============ -->
+<section class="slide" id="slideM1c" data-title="Materi 1 · Cek Silang & Tips Tanda">
+  <div class="wrap">
+    <span class="kicker">Pemeriksa Kilat 🔍</span>
+    <h2>Cek Silang: Bukti 3 Detik</h2>
+    <p>Setelah mendapat <span class="math">(px + q)(rx + s)</span>, periksa tiga posisi: <b>p·r</b> (harus = a), <b>q·s</b> (harus = c), dan <b>jumlah silang p·s + q·r</b> (harus = b). Klik kandidat pasangan di bawah untuk mengujinya!</p>
+    <div class="silang-widget" data-b="10x">
+      <p style="margin:4px 0"><b>🎯 Misi:</b> faktorkan <span class="math">3x&sup2; + 10x + 8</span>. Pasangan faktor mana yang lolos cek silang?</p>
+      <div class="sil-cands">
+        <button class="sil-cand" data-h1="3x" data-h2="4" data-h3="x" data-h4="2" data-p1="3x&sup2;" data-p2="6x" data-p3="4x" data-p4="8" data-cross="6x + 4x" data-sum="10x" data-ok="1">(3x + 4)(x + 2)</button>
+        <button class="sil-cand" data-h1="3x" data-h2="8" data-h3="x" data-h4="1" data-p1="3x&sup2;" data-p2="3x" data-p3="8x" data-p4="8" data-cross="3x + 8x" data-sum="11x" data-ok="0">(3x + 8)(x + 1)</button>
+        <button class="sil-cand" data-h1="3x" data-h2="2" data-h3="x" data-h4="4" data-p1="3x&sup2;" data-p2="12x" data-p3="2x" data-p4="8" data-cross="12x + 2x" data-sum="14x" data-ok="0">(3x + 2)(x + 4)</button>
+      </div>
+      <table class="sil-tabel">
+        <tr><td class="sil-corner"></td><td class="sil-head" data-h="3">?</td><td class="sil-head" data-h="4">?</td></tr>
+        <tr><td class="sil-head" data-h="1">?</td><td class="sil-cell" data-c="1">?</td><td class="sil-cell" data-c="2">?</td></tr>
+        <tr><td class="sil-head" data-h="2">?</td><td class="sil-cell" data-c="3">?</td><td class="sil-cell" data-c="4">?</td></tr>
+      </table>
+      <div class="sil-msg">Klik salah satu pasangan faktor di atas…</div>
+      <div class="sil-result hidden pop"><span class="math besar">(3x + 4)(x + 2) = 3x&sup2; + 6x + 4x + 8 = 3x&sup2; + 10x + 8</span> 🎉</div>
+    </div>
+    <h3 style="margin-top:18px">⚡ Tips Tanda Instan</h3>
+    <div class="grid2">
+      <div class="kartu"><h3>🟢 c positif, b positif</h3><p>Kedua faktor bertanda <b>+</b>. Contoh: <span class="math">2x&sup2; + 7x + 6 = (2x + 3)(x + 2)</span></p></div>
+      <div class="kartu"><h3>🔴 c positif, b negatif</h3><p>Kedua faktor bertanda <b>&minus;</b>. Contoh: <span class="math">2x&sup2; &minus; 7x + 6 = (2x &minus; 3)(x &minus; 2)</span></p></div>
+      <div class="kartu"><h3>🟠 c negatif</h3><p>Tanda <b>berbeda</b>; bilangan yang besarnya lebih besar mengikuti tanda b. Contoh: <span class="math">6x&sup2; + x &minus; 12 = (2x + 3)(3x &minus; 4)</span> — silangnya +9 dan &minus;8, karena 9 lebih besar maka b bertanda +.</p></div>
+      <div class="kartu tip"><h3>🧹 Jangan Lupa: FPB Dulu!</h3><p>Sebelum memakai trik, keluarkan FPB bila ada: <span class="math">6x&sup2; + 15x + 9 = 3(2x&sup2; + 5x + 3)</span> — angkanya menjadi kecil, hitungan jadi ringan!</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 6 : MATERI 1D — CONTOH CEPAT ============ -->
+<section class="slide" id="slideM1d" data-title="Materi 1 · Contoh Cepat">
+  <div class="wrap">
+    <span class="kicker">Contoh Berjenjang 🎬</span>
+    <h2>Tiga Contoh, Tiga Rasa</h2>
+    <p>Klik tombol langkah untuk membuka pembahasannya satu per satu.</p>
+    <div class="kartu">
+      <h3>Contoh A · Tanda minus (c positif, b negatif)</h3>
+      <p style="text-align:center"><span class="math besar">2x&sup2; &minus; 7x + 6</span></p>
+      <div class="stepper" id="st5a">
+        <div class="st-step hidden">Langkah 1&ndash;2: <span class="math">a &times; c = 2 &times; 6 = 12</span>. Karena c positif dan b negatif → kedua bilangan <b>negatif</b>: <span class="math">&minus;3</span> dan <span class="math">&minus;4</span> (&minus;3 &times; &minus;4 = 12 ✔, &minus;3 + (&minus;4) = &minus;7 ✔)</div>
+        <div class="st-step hidden">Langkah 3: pecah → <span class="math">2x&sup2; &minus; 3x &minus; 4x + 6</span></div>
+        <div class="st-step hidden">Langkah 4: kelompokkan → <span class="math">x(2x &minus; 3) &minus; 2(2x &minus; 3)</span></div>
+        <div class="st-step hidden">Hasil: <span class="math besar">(2x &minus; 3)(x &minus; 2)</span> — cek silang: 2 &times; 1 = 2 ✔ · (&minus;3)(&minus;2) = 6 ✔ · &minus;4x &minus; 3x = &minus;7x ✔</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>Contoh B · c negatif (tanda berbeda)</h3>
+      <p style="text-align:center"><span class="math besar">6x&sup2; + x &minus; 12</span></p>
+      <div class="stepper" id="st5b">
+        <div class="st-step hidden">Langkah 1&ndash;2: <span class="math">a &times; c = 6 &times; (&minus;12) = &minus;72</span>. c negatif → tanda <b>berbeda</b>. Cari pasangan: <span class="math">9 &times; (&minus;8) = &minus;72</span> dan <span class="math">9 + (&minus;8) = 1</span> ✔ (9 lebih besar → b bertanda +)</div>
+        <div class="st-step hidden">Langkah 3: pecah → <span class="math">6x&sup2; + 9x &minus; 8x &minus; 12</span></div>
+        <div class="st-step hidden">Langkah 4: kelompokkan → <span class="math">3x(2x + 3) &minus; 4(2x + 3)</span></div>
+        <div class="st-step hidden">Hasil: <span class="math besar">(2x + 3)(3x &minus; 4)</span> — cek silang: 2 &times; 3 = 6 ✔ · 3 &times; (&minus;4) = &minus;12 ✔ · &minus;8x + 9x = x ✔</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>Contoh C · FPB Dulu!</h3>
+      <p style="text-align:center"><span class="math besar">6x&sup2; + 15x + 9</span></p>
+      <div class="stepper" id="st5c">
+        <div class="st-step hidden"><b>Perhatikan:</b> 6, 15, 9 semuanya habis dibagi 3 → keluarkan FPB: <span class="math">3(2x&sup2; + 5x + 3)</span></div>
+        <div class="st-step hidden">Di dalam kurung: <span class="math">a &times; c = 2 &times; 3 = 6</span>; pasangan <b>2 dan 3</b> (2 &times; 3 = 6 ✔, 2 + 3 = 5 ✔)</div>
+        <div class="st-step hidden">Pecah &amp; kelompokkan: <span class="math">3(2x&sup2; + 3x + 2x + 3) = 3[x(2x + 3) + 1(2x + 3)]</span></div>
+        <div class="st-step hidden">Hasil: <span class="math besar">3(2x + 3)(x + 1)</span> — <b>jangan lupa menulis angka 3-nya!</b> Jawaban tanpa 3 berarti belum lengkap. ✅</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ SLIDE 7 : LATIHAN 1 ============ -->
+<section class="slide" id="slideL1" data-title="Latihan 1 · Faktorisasi a ≠ 1">
+  <div class="wrap">
+    <span class="kicker merah">Giliranmu! ✍️</span>
+    <div class="latihan-head">
+      <h2>Latihan 1 — Faktorkan ax&sup2; + bx + c</h2>
+      <span class="skor-chip" id="chipL1">0/10 · 0⭐</span>
+    </div>
+    <p>Sepuluh soal, semuanya dengan <b>a &ne; 1</b>. Cara main: <b>pilih jawaban → tekan ✅ Cek Jawaban → baca pembahasan</b>. Jawaban benar pada percobaan pertama mendapat ⭐. Bila salah, pilihan itu dikunci merah — masih boleh mencoba opsi lain!</p>
+    <div id="listL1"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 8 : MATERI 2A — PEMBAGIAN KONSEP ============ -->
+<section class="slide" id="slideM2a" data-title="Materi 2 · Pembagian: Faktorkan Dulu!">
+  <div class="wrap">
+    <span class="kicker">Materi 2 dari 2</span>
+    <h2>Pembagian Aljabar: Faktorkan Dulu! ✂️</h2>
+    <div class="kartu">
+      <h3>🤔 Masalah Baru</h3>
+      <p class="tanya" style="text-align:center"><span class="math besar">(3x&sup2; + 10x + 8) &divide; (x + 2) = ?</span></p>
+      <p>Pembaginya <b>dua suku</b> — cara bagi-per-suku tidak bisa dipakai. Tetapi perhatikan: bentuk di pembilang persis contoh Materi 1! Artinya…</p>
+      <div class="stepper" id="stM2a">
+        <div class="st-step hidden">Berpikir terbalik: <span class="math">? &times; (x + 2) = 3x&sup2; + 10x + 8</span> — kita sedang mencari berapa tanda tanya itu.</div>
+        <div class="st-step hidden">Dari Materi 1: <span class="math">3x&sup2; + 10x + 8 = (3x + 4)(x + 2)</span></div>
+        <div class="st-step hidden">Maka <span class="math">? &times; (x + 2) = (3x + 4)(x + 2)</span> → jelas terlihat <span class="math">? = 3x + 4</span>!</div>
+        <div class="st-step hidden"><b>Kesimpulan:</b> jika pembagi adalah salah satu <b>faktor</b> pembilang, jawabannya langsung kelihatan. Mari kita mesinkan dengan pencoretan ⬇️</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>✂️ Mesin Pencoret</h3>
+      <div class="coret-demo" id="cw1">
+        <div class="cd-head">Contoh 1</div>
+        <div class="cd-line"><span class="math besar">(3x&sup2; + 10x + 8) &divide; (x + 2)</span></div>
+        <div class="cd-line cd-s2 hidden"><span class="math besar">= <span class="cbox">(x + 2)</span>(3x + 4) &divide; <span class="cbox">(x + 2)</span></span></div>
+        <div class="cd-line cd-s3 hidden"><span class="math besar">= <b class="hasil">3x + 4</b> 🎉</span></div>
+        <div class="cd-btns">
+          <button class="btn kecil cd-faktor">1️⃣ Faktorkan pembilangnya</button>
+          <button class="btn kecil merah cd-coret" disabled>2️⃣ Coret faktor yang sama!</button>
+          <button class="btn kecil ghost cd-reset">↺ Ulangi</button>
+        </div>
+        <div class="cd-note hidden">Faktorkan dengan Trik Kali&ndash;Jumlah: <span class="math">3x&sup2; + 10x + 8 = (3x + 4)(x + 2)</span>. Faktor (x + 2) di atas dan di bawah saling menghilangkan karena <span class="math">(x + 2) &divide; (x + 2) = 1</span>.</div>
+      </div>
+    </div>
+    <div class="kartu awas">
+      <h3>⚠️ Syarat Mencoret: Penyebut &ne; 0</h3>
+      <p>Mencoret artinya <b>membagi</b> — dan pembagi tidak boleh nol! Jadi mencoret (x + 2) hanya sah jika <span class="math">x + 2 &ne; 0</span>, artinya <span class="math">x &ne; &minus;2</span>. Biasakan menuliskan syarat ini di pekerjaanmu — guru matematika pasti tersenyum 😊</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 9 : MATERI 2B — PRAKTIK MESIN PENCORET ============ -->
+<section class="slide" id="slideM2b" data-title="Materi 2 · Praktik Mesin Pencoret">
+  <div class="wrap">
+    <span class="kicker">Praktik Mesin Pencoret ✂️</span>
+    <h2>Tiga Level Mesin Pencoret</h2>
+    <div class="coret-demo" id="cw2">
+      <div class="cd-head">Level 1 · Trinomial Sederhana (a = 1)</div>
+      <div class="cd-line"><span class="math besar">(x&sup2; &minus; 5x + 6) &divide; (x &minus; 2)</span></div>
+      <div class="cd-line cd-s2 hidden"><span class="math besar">= (x &minus; 3)<span class="cbox">(x &minus; 2)</span> &divide; <span class="cbox">(x &minus; 2)</span></span></div>
+      <div class="cd-line cd-s3 hidden"><span class="math besar">= <b class="hasil">x &minus; 3</b> 🎉</span></div>
+      <div class="cd-btns">
+        <button class="btn kecil cd-faktor">1️⃣ Faktorkan</button>
+        <button class="btn kecil merah cd-coret" disabled>2️⃣ Coret!</button>
+        <button class="btn kecil ghost cd-reset">↺ Ulangi</button>
+      </div>
+      <div class="cd-note hidden">x&sup2; &minus; 5x + 6: cari dua bilangan kali 6, jumlah &minus;5 → &minus;2 dan &minus;3, jadi (x &minus; 2)(x &minus; 3). Coret (x &minus; 2) dengan syarat x &ne; 2.</div>
+    </div>
+    <div class="coret-demo" id="cw3">
+      <div class="cd-head">Level 2 · FPB Dulu, Lalu Selisih Kuadrat</div>
+      <div class="cd-line"><span class="math besar">(2x&sup2; &minus; 8) &divide; (x + 2)</span></div>
+      <div class="cd-line cd-s2 hidden"><span class="math besar">= 2<span class="cbox">(x + 2)</span>(x &minus; 2) &divide; <span class="cbox">(x + 2)</span></span></div>
+      <div class="cd-line cd-s3 hidden"><span class="math besar">= <b class="hasil">2x &minus; 4</b> 🎉</span></div>
+      <div class="cd-btns">
+        <button class="btn kecil cd-faktor">1️⃣ Faktorkan</button>
+        <button class="btn kecil merah cd-coret" disabled>2️⃣ Coret!</button>
+        <button class="btn kecil ghost cd-reset">↺ Ulangi</button>
+      </div>
+      <div class="cd-note hidden">Tiga langkah: FPB dulu → <span class="math">2(x&sup2; &minus; 4)</span>; selisih kuadrat → <span class="math">2(x + 2)(x &minus; 2)</span>; coret (x + 2) dengan syarat x &ne; &minus;2. Sisanya <span class="math">2(x &minus; 2) = 2x &minus; 4</span>.</div>
+    </div>
+    <div class="coret-demo" id="cw4">
+      <div class="cd-head">Level 3 · Dua-duanya Difaktorkan!</div>
+      <div class="cd-line"><span class="math besar">(x&sup2; &minus; 5x + 6) &divide; (x&sup2; &minus; 9)</span></div>
+      <div class="cd-line cd-s2 hidden"><span class="math besar">= (x &minus; 2)<span class="cbox">(x &minus; 3)</span> &divide; <span class="cbox">(x + 3)</span><span class="cbox">(x &minus; 3)</span></span></div>
+      <div class="cd-line cd-s3 hidden"><span class="math besar">= <b class="hasil">(x &minus; 2) / (x + 3)</b> 🎉</span></div>
+      <div class="cd-btns">
+        <button class="btn kecil cd-faktor">1️⃣ Faktorkan keduanya</button>
+        <button class="btn kecil merah cd-coret" disabled>2️⃣ Coret!</button>
+        <button class="btn kecil ghost cd-reset">↺ Ulangi</button>
+      </div>
+      <div class="cd-note hidden">Pembilang: (x &minus; 2)(x &minus; 3). Penyebut: selisih kuadrat (x + 3)(x &minus; 3). Yang kebetulan sama hanya (x &minus; 3); (x + 3) tidak memiliki pasangan, jadi tetap di penyebut. Syarat: x &ne; 3 dan x &ne; &minus;3.</div>
+    </div>
+    <div class="banner-besar">FAKTORKAN DULU → CORET YANG SAMA → TULIS SISANYA ✂️</div>
+    <div class="kartu tip">💡 <b>Urutan berpikir pembagian:</b> FPB → pola spesial (selisih kuadrat / kuadrat sempurna) → Trik Kali&ndash;Jumlah. Begitu faktor muncul, pembagian selesai sekali coret — dan jangan lupa syarat penyebutnya &ne; 0!</div>
+  </div>
+</section>
+<!-- ============ SLIDE 10 : LATIHAN 2 ============ -->
+<section class="slide" id="slideL2" data-title="Latihan 2 · Pembagian Aljabar">
+  <div class="wrap">
+    <span class="kicker merah">Uji Superpower ✂️</span>
+    <div class="latihan-head">
+      <h2>Latihan 2 — Pembagian yang Wajib Difaktorkan Dulu</h2>
+      <span class="skor-chip" id="chipL2">0/10 · 0⭐</span>
+    </div>
+    <p>Seluruh soal di bawah <b>tidak bisa dihitung langsung</b> — kamu harus <b>memfaktorkan terlebih dahulu</b>, baru mencoret. Pilih jawaban → ✅ Cek Jawaban → baca pembahasan. Semangat, <b class="nama-slot">Sahabat Matematika</b>!</p>
+    <div id="listL2"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 11 : KESIMPULAN ============ -->
+<section class="slide" id="slideKesimpulan" data-title="Kesimpulan">
+  <div class="wrap">
+    <span class="kicker">Rangkuman</span>
+    <h2>Kesimpulan Hari Ini</h2>
+    <div class="grid2">
+      <div class="kartu navy">
+        <h3>1️⃣ Trik Kali&ndash;Jumlah</h3>
+        <p>Untuk <span class="math">ax&sup2; + bx + c</span> dengan a &ne; 1: <b>kali</b> a&times;c → <b>cari</b> pasangan (kali = a&times;c, jumlah = b) → <b>pecah</b> suku tengah → <b>kelompokkan</b>. Contoh: <span class="math">6x&sup2; + 11x + 4 = (3x + 4)(2x + 1)</span></p>
+      </div>
+      <div class="kartu navy">
+        <h3>2️⃣ Cek Silang &amp; Tips Tanda</h3>
+        <p>Periksa: p·r = a, q·s = c, silang p·s + q·r = b. Tips: c positif → tanda sama; c negatif → tanda beda. Dan selalu <b>FPB dulu</b> bila ada!</p>
+      </div>
+      <div class="kartu navy">
+        <h3>3️⃣ Pembagian = Faktorkan + Coret</h3>
+        <p>Jika pembagi adalah faktor pembilang, bagi dengan mencoret: <span class="math">(3x&sup2; + 10x + 8) &divide; (x + 2) = 3x + 4</span> ✂️</p>
+      </div>
+      <div class="kartu navy">
+        <h3>4️⃣ Syarat: Penyebut &ne; 0</h3>
+        <p>Mencoret hanya boleh jika faktor yang dicoret tidak nol: mencoret (x + 2) berlaku untuk <span class="math">x &ne; &minus;2</span>. Tulis syaratnya setiap kali!</p>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>📊 Rekap Petualanganmu, <span class="nama-slot">Sahabat Matematika</span></h3>
+      <table class="rekap">
+        <thead><tr><th>Bagian</th><th>Selesai</th><th>⭐ Benar di Percobaan Pertama</th></tr></thead>
+        <tbody id="rekapBody"></tbody>
+      </table>
+      <p id="rekapPesan" style="font-weight:800;color:var(--navy);margin-top:12px"></p>
+    </div>
+    <div class="kartu tip">
+      🎯 <b>Untuk pertemuan berikutnya:</b> keterampilan hari ini adalah pintu menuju <b>pecahan aljabar</b> dan <b>persamaan kuadrat</b>. Fondasimu sudah kokoh — pertahankan!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 12 : REFLEKSI ============ -->
+<section class="slide" id="slideRefleksi" data-title="Refleksi">
+  <div class="wrap">
+    <span class="kicker">Introspeksi Diri 🪞</span>
+    <h2>Refleksi Belajar</h2>
+    <p>Seberapa paham kamu dengan setiap keterampilan hari ini? Pilih emoji yang paling menggambarkan perasaanmu, <b class="nama-slot">Sahabat Matematika</b>!</p>
+    <div class="ref-row"><p>Saya bisa memfaktorkan <span class="math">ax&sup2; + bx + c</span> (a &ne; 1) dengan Trik Kali&ndash;Jumlah</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa memeriksa hasil faktorisasi dengan cek silang &amp; tips tanda</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa membagi bentuk aljabar dengan cara faktorkan-lalu-coret</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya paham mengapa penyebut tidak boleh nol saat mencoret</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="kartu">
+      <h3>✍️ Ceritakan Pengalamanmu</h3>
+      <textarea id="refleksiTeks" placeholder="Bagian mana yang paling menarik hari ini? Langkah mana yang masih membuatmu ragu dan ingin diulang?"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center">
+        <button id="btnSimpanRef" class="btn">💾 Simpan Refleksiku</button>
+        <span class="kecil">🔒 Refleksi hanya tersimpan di perangkatmu, tidak dikirim ke mana pun.</span>
+      </div>
+      <div id="refleksiHasil" class="kartu sukses hidden pop" style="margin-bottom:0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 13 : THANK YOU ============ -->
+<section class="slide" id="slideThanks" data-title="Thank You for Today">
+  <div class="wrap tengah">
+    <div class="seri-emoji">🎉 ✂️ ✨</div>
+    <h1 class="judul-besar">Thank You for Today!</h1>
+    <p class="sub">Kerja bagus, <b style="color:var(--red)" class="nama-slot">Sahabat Matematika</b>! Hari ini kamu menguasai <b>Trik Kali&ndash;Jumlah</b> untuk memfaktorkan <span class="math">ax&sup2; + bx + c</span> dengan a &ne; 1, dan menjadikan pembagian aljabar semudah sekali coret. Terima kasih untuk hari ini — sampai jumpa di petualangan aljabar berikutnya! 🚀</p>
+    <blockquote class="quote">“Matematika adalah ratu dari ilmu pengetahuan.” — Carl Friedrich Gauss</blockquote>
+    <button id="btnUlang" class="btn merah">🔁 Ulangi Presentasi dari Awal</button>
+  </div>
+</section>
+</main>
+<div id="navBawah">
+  <button id="btnPrev" class="btn ghost">‹ Sebelumnya</button>
+  <button id="btnNext" class="btn">Berikutnya ›</button>
+</div>
+<script id="data-js">
+/* ============ BANK SOAL ============
+   L1: faktorisasi ax²+bx+c dengan a ≠ 1  (ref = bentuk faktor asal)
+   L2: pembagian aljabar yang wajib difaktorkan dulu (pem = pembilang, pen = penyebut)
+   key = indeks jawaban benar pada opts */
+var SOAL = {
+L1: [
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">2x² + 7x + 6</span>',
+   ref:'(2x + 3)(x + 2)',
+   opts:['(2x + 3)(x + 2)','(2x + 6)(x + 1)','(2x + 1)(x + 6)','(2x + 2)(x + 3)'], key:0,
+   pemb:['Hitung a × c: <b>2 × 6 = 12</b>.',
+   'Cari dua bilangan yang dikali = 12 dan dijumlah = 7 → <b>3 dan 4</b> (3×4 = 12 ✔, 3+4 = 7 ✔).',
+   'Pecah suku tengah: 2x² + 3x + 4x + 6.',
+   'Kelompokkan: x(2x + 3) + 2(2x + 3).',
+   'Keluarkan faktor (2x + 3): <b>(2x + 3)(x + 2)</b> ✅',
+   'Cek silang: 2x·x = 2x² ✔ · 3·2 = 6 ✔ · 2x·2 + 3·x = 7x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">3x² + 10x + 8</span>',
+   ref:'(3x + 4)(x + 2)',
+   opts:['(3x + 4)(x + 2)','(3x + 8)(x + 1)','(3x + 2)(x + 4)','(3x + 1)(x + 8)'], key:0,
+   pemb:['Hitung a × c: <b>3 × 8 = 24</b>.',
+   'Cari pasangan: <b>6 dan 4</b> (6×4 = 24 ✔, 6+4 = 10 ✔).',
+   'Pecah suku tengah: 3x² + 6x + 4x + 8.',
+   'Kelompokkan: 3x(x + 2) + 4(x + 2).',
+   'Keluarkan faktor (x + 2): <b>(3x + 4)(x + 2)</b> ✅',
+   'Cek silang: 3x·x = 3x² ✔ · 4·2 = 8 ✔ · 3x·2 + 4·x = 10x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">6x² + 11x + 3</span>',
+   ref:'(3x + 1)(2x + 3)',
+   opts:['(3x + 1)(2x + 3)','(6x + 1)(x + 3)','(6x + 3)(x + 1)','(3x + 2)(2x + 3)'], key:0,
+   pemb:['Hitung a × c: <b>6 × 3 = 18</b>.',
+   'Cari pasangan: <b>9 dan 2</b> (9×2 = 18 ✔, 9+2 = 11 ✔).',
+   'Pecah suku tengah: 6x² + 9x + 2x + 3.',
+   'Kelompokkan: 3x(2x + 3) + 1(2x + 3).',
+   'Keluarkan faktor (2x + 3): <b>(3x + 1)(2x + 3)</b> ✅',
+   'Cek silang: 3x·2x = 6x² ✔ · 1·3 = 3 ✔ · 3x·3 + 1·2x = 11x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">4x² + 12x + 5</span>',
+   ref:'(2x + 5)(2x + 1)',
+   opts:['(2x + 5)(2x + 1)','(4x + 5)(x + 1)','(4x + 1)(x + 5)','(2x + 5)(x + 2)'], key:0,
+   pemb:['Hitung a × c: <b>4 × 5 = 20</b>.',
+   'Cari pasangan: <b>10 dan 2</b> (10×2 = 20 ✔, 10+2 = 12 ✔).',
+   'Pecah suku tengah: 4x² + 10x + 2x + 5.',
+   'Kelompokkan: 2x(2x + 5) + 1(2x + 5).',
+   'Keluarkan faktor (2x + 5): <b>(2x + 5)(2x + 1)</b> ✅',
+   'Cek silang: 2x·2x = 4x² ✔ · 5·1 = 5 ✔ · 2x·1 + 5·2x = 12x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">2x² − 7x + 6</span>',
+   ref:'(2x − 3)(x − 2)',
+   opts:['(2x − 3)(x − 2)','(2x − 6)(x − 1)','(2x − 1)(x − 6)','(2x + 3)(x − 2)'], key:0,
+   pemb:['Hitung a × c: <b>2 × 6 = 12</b>. Karena c positif dan b negatif, kedua bilangan <b>negatif</b>.',
+   'Pasangannya <b>−3 dan −4</b> (−3×−4 = 12 ✔, −3+(−4) = −7 ✔).',
+   'Pecah suku tengah: 2x² − 3x − 4x + 6.',
+   'Kelompokkan: x(2x − 3) − 2(2x − 3).',
+   'Keluarkan faktor (2x − 3): <b>(2x − 3)(x − 2)</b> ✅',
+   'Cek silang: 2x·x = 2x² ✔ · (−3)(−2) = 6 ✔ · 2x·(−2) + (−3)·x = −7x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">3x² − 10x + 8</span>',
+   ref:'(3x − 4)(x − 2)',
+   opts:['(3x − 4)(x − 2)','(3x − 8)(x − 1)','(3x − 2)(x − 4)','(3x + 4)(x − 2)'], key:0,
+   pemb:['Hitung a × c: <b>3 × 8 = 24</b>. Karena c positif dan b negatif, kedua bilangan <b>negatif</b>.',
+   'Pasangannya <b>−6 dan −4</b> (−6×−4 = 24 ✔, −6+(−4) = −10 ✔).',
+   'Pecah suku tengah: 3x² − 6x − 4x + 8.',
+   'Kelompokkan: 3x(x − 2) − 4(x − 2).',
+   'Keluarkan faktor (x − 2): <b>(3x − 4)(x − 2)</b> ✅',
+   'Cek silang: 3x·x = 3x² ✔ · (−4)(−2) = 8 ✔ · 3x·(−2) + (−4)·x = −10x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">6x² + x − 12</span>',
+   ref:'(2x + 3)(3x − 4)',
+   opts:['(2x + 3)(3x − 4)','(6x − 4)(x + 3)','(3x + 4)(2x − 3)','(6x + 3)(x − 4)'], key:0,
+   pemb:['Hitung a × c: <b>6 × (−12) = −72</b>. Karena c negatif, tanda kedua bilangan <b>berbeda</b>.',
+   'Pasangannya <b>9 dan −8</b> (9×−8 = −72 ✔, 9+(−8) = 1 ✔; 9 lebih besar → b bertanda +).',
+   'Pecah suku tengah: 6x² + 9x − 8x − 12.',
+   'Kelompokkan: 3x(2x + 3) − 4(2x + 3).',
+   'Keluarkan faktor (2x + 3): <b>(2x + 3)(3x − 4)</b> ✅',
+   'Cek silang: 2x·3x = 6x² ✔ · 3·(−4) = −12 ✔ · 2x·(−4) + 3·3x = −8x + 9x = x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">4x² + 4x − 15</span>',
+   ref:'(2x + 5)(2x − 3)',
+   opts:['(2x + 5)(2x − 3)','(4x + 5)(x − 3)','(4x − 3)(x + 5)','(2x − 5)(2x + 3)'], key:0,
+   pemb:['Hitung a × c: <b>4 × (−15) = −60</b>. c negatif → tanda berbeda.',
+   'Pasangannya <b>10 dan −6</b> (10×−6 = −60 ✔, 10+(−6) = 4 ✔).',
+   'Pecah suku tengah: 4x² + 10x − 6x − 15.',
+   'Kelompokkan: 2x(2x + 5) − 3(2x + 5).',
+   'Keluarkan faktor (2x + 5): <b>(2x + 5)(2x − 3)</b> ✅',
+   'Cek silang: 2x·2x = 4x² ✔ · 5·(−3) = −15 ✔ · 2x·(−3) + 5·2x = −6x + 10x = 4x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut:<br><span class="math besar">5x² + 13x + 6</span>',
+   ref:'(5x + 3)(x + 2)',
+   opts:['(5x + 3)(x + 2)','(5x + 6)(x + 1)','(5x + 1)(x + 6)','(5x + 2)(x + 3)'], key:0,
+   pemb:['Hitung a × c: <b>5 × 6 = 30</b>.',
+   'Cari pasangan: <b>10 dan 3</b> (10×3 = 30 ✔, 10+3 = 13 ✔).',
+   'Pecah suku tengah: 5x² + 10x + 3x + 6.',
+   'Kelompokkan: 5x(x + 2) + 3(x + 2).',
+   'Keluarkan faktor (x + 2): <b>(5x + 3)(x + 2)</b> ✅',
+   'Cek silang: 5x·x = 5x² ✔ · 3·2 = 6 ✔ · 5x·2 + 3·x = 13x ✔'] },
+ { q:'Faktorkan bentuk kuadrat berikut — <b>ada jebakan, lho!</b><br><span class="math besar">6x² + 15x + 9</span>',
+   ref:'3(2x + 3)(x + 1)',
+   opts:['3(2x + 3)(x + 1)','(6x + 3)(x + 3)','3(2x + 5)(x + 1)','(2x + 1)(3x + 3)'], key:0,
+   pemb:['<b>Cek FPB dulu!</b> 6, 15, 9 semuanya habis dibagi 3 → keluarkan: 3(2x² + 5x + 3).',
+   'Di dalam kurung: a × c = 2 × 3 = 6; pasangan <b>3 dan 2</b> (3×2 = 6 ✔, 3+2 = 5 ✔).',
+   'Pecah: 3(2x² + 3x + 2x + 3) = 3[x(2x + 3) + 1(2x + 3)].',
+   'Faktorkan: <b>3(2x + 3)(x + 1)</b> ✅',
+   'Ingat: menjawab (6x + 3)(x + 3) atau (2x + 1)(3x + 3) belum salah hitung, tetapi <b>belum difaktorkan sampai tuntas</b> — angka 3 wajib keluar!'] }
+],
+L2: [
+ { q:'Hitung hasil pembagian berikut — <b>faktorkan dulu!</b><br><span class="math besar">(x² + 5x + 6) ÷ (x + 2)</span>',
+   pem:'x^2 + 5x + 6', pen:'x + 2',
+   opts:['x + 3','x − 3','x + 2','x + 6'], key:0,
+   pemb:['Faktorkan pembilang: x² + 5x + 6 → dua bilangan kali 6, jumlah 5 → <b>2 dan 3</b> → (x + 2)(x + 3).',
+   'Tulis: (x + 2)(x + 3) ÷ (x + 2).',
+   'Coret faktor yang sama: (x + 2)(x + 3) ÷ (x + 2) → tersisa <b>x + 3</b> ✅',
+   'Syarat coret: x + 2 ≠ 0, jadi <b>x ≠ −2</b>.'] },
+ { q:'Hitung hasil pembagian berikut:<br><span class="math besar">(x² − 9) ÷ (x + 3)</span>',
+   pem:'x^2 − 9', pen:'x + 3',
+   opts:['x − 3','x + 3','x − 1','3 − x'], key:0,
+   pemb:['Pembilang adalah <b>selisih kuadrat</b>: x² − 9 = x² − 3² = (x + 3)(x − 3).',
+   'Tulis: (x + 3)(x − 3) ÷ (x + 3).',
+   'Coret (x + 3) → tersisa <b>x − 3</b> ✅',
+   'Syarat: x ≠ −3. Hati-hati, jawaban 3 − x beda tanda — bukan itu!'] },
+ { q:'Hitung hasil pembagian berikut — pakai Trik Kali–Jumlah ya:<br><span class="math besar">(3x² + 10x + 8) ÷ (x + 2)</span>',
+   pem:'3x^2 + 10x + 8', pen:'x + 2',
+   opts:['3x + 4','3x − 4','3x + 8','x + 4'], key:0,
+   pemb:['Faktorkan dengan Trik Kali–Jumlah: a × c = 3 × 8 = 24; pasangan <b>6 dan 4</b>.',
+   '3x² + 6x + 4x + 8 = 3x(x + 2) + 4(x + 2) = (3x + 4)(x + 2).',
+   'Bagi: (3x + 4)(x + 2) ÷ (x + 2) → coret (x + 2) → <b>3x + 4</b> ✅',
+   'Syarat: x ≠ −2. Contoh Materi 1 kini jadi mesin pembagian!'] },
+ { q:'Hitung hasil pembagian berikut:<br><span class="math besar">(2x² − 8) ÷ (x + 2)</span>',
+   pem:'2x^2 − 8', pen:'x + 2',
+   opts:['2x − 4','2x + 4','x − 4','2x − 2'], key:0,
+   pemb:['<b>FPB dulu:</b> 2x² − 8 = 2(x² − 4).',
+   '<b>Selisih kuadrat:</b> 2(x + 2)(x − 2).',
+   'Bagi: 2(x + 2)(x − 2) ÷ (x + 2) → coret (x + 2) → 2(x − 2) = <b>2x − 4</b> ✅',
+   'Syarat: x ≠ −2. Jangan lupa angka 2 hasil FPB tetap ikut!'] },
+ { q:'Hitung hasil pembagian berikut:<br><span class="math besar">(6x² + 11x + 4) ÷ (2x + 1)</span>',
+   pem:'6x^2 + 11x + 4', pen:'2x + 1',
+   opts:['3x + 4','3x − 4','2x + 4','6x + 4'], key:0,
+   pemb:['Faktorkan: a × c = 24; pasangan 8 dan 3 → 6x² + 8x + 3x + 4 = 2x(3x + 4) + 1(3x + 4) = (3x + 4)(2x + 1).',
+   'Bagi: (3x + 4)(2x + 1) ÷ (2x + 1).',
+   'Coret (2x + 1) → tersisa <b>3x + 4</b> ✅',
+   'Syarat: 2x + 1 ≠ 0, jadi x ≠ −½.'] },
+ { q:'Hitung hasil pembagian berikut:<br><span class="math besar">(x² − 5x + 6) ÷ (x − 3)</span>',
+   pem:'x^2 − 5x + 6', pen:'x − 3',
+   opts:['x − 2','x + 2','x − 3','x + 6'], key:0,
+   pemb:['Faktorkan: dua bilangan kali 6, jumlah −5 → <b>−2 dan −3</b> → (x − 2)(x − 3).',
+   'Bagi: (x − 2)(x − 3) ÷ (x − 3).',
+   'Coret (x − 3) → tersisa <b>x − 2</b> ✅',
+   'Syarat: x ≠ 3.'] },
+ { q:'Soal level master — dua-duanya harus difaktorkan!<br><span class="math besar">(x² − 5x + 6) ÷ (x² − 9)</span>',
+   pem:'x^2 − 5x + 6', pen:'x^2 − 9',
+   opts:['(x − 2)/(x + 3)','(x + 2)/(x + 3)','(x − 2)/(x − 3)','(x − 3)/(x + 3)'], key:0,
+   pemb:['Faktorkan pembilang: x² − 5x + 6 = (x − 2)(x − 3).',
+   'Faktorkan penyebut (selisih kuadrat): x² − 9 = (x + 3)(x − 3).',
+   'Bagi: (x − 2)(x − 3) ÷ (x + 3)(x − 3) → coret (x − 3).',
+   'Hasilnya <b>(x − 2)/(x + 3)</b> ✅ — (x + 3) tidak punya pasangan, tetap di penyebut.',
+   'Syarat: x ≠ 3 dan x ≠ −3 (kedua faktor penyebut tidak boleh nol).'] },
+ { q:'Hitung hasil pembagian berikut:<br><span class="math besar">(2x² + 7x + 3) ÷ (x + 3)</span>',
+   pem:'2x^2 + 7x + 3', pen:'x + 3',
+   opts:['2x + 1','2x − 1','x + 1','2x + 3'], key:0,
+   pemb:['Faktorkan: a × c = 2 × 3 = 6; pasangan <b>6 dan 1</b> (6×1 = 6 ✔, 6+1 = 7 ✔).',
+   'Pecah: 2x² + 6x + x + 3 = 2x(x + 3) + 1(x + 3) = (2x + 1)(x + 3).',
+   'Bagi: (2x + 1)(x + 3) ÷ (x + 3) → coret (x + 3) → <b>2x + 1</b> ✅',
+   'Syarat: x ≠ −3.'] },
+ { q:'Hitung hasil pembagian berikut — kenali polanya:<br><span class="math besar">(x² + 4x + 4) ÷ (x + 2)</span>',
+   pem:'x^2 + 4x + 4', pen:'x + 2',
+   opts:['x + 2','x − 2','2x + 2','x + 4'], key:0,
+   pemb:['Pembilang adalah <b>kuadrat sempurna</b>: x² + 4x + 4 = (x + 2)² karena 4x = 2·x·2 ✔.',
+   'Tulis: (x + 2)(x + 2) ÷ (x + 2).',
+   'Coret satu (x + 2) → tersisa <b>x + 2</b> ✅',
+   'Syarat: x ≠ −2. Kuadrat sempurna memang penyelamat!'] },
+ { q:'Soal penutup — selisih kuadrat versi kelas lanjutan:<br><span class="math besar">(4x² − 25) ÷ (2x − 5)</span>',
+   pem:'4x^2 − 25', pen:'2x − 5',
+   opts:['2x + 5','2x − 5','x + 5','4x + 5'], key:0,
+   pemb:['Pembilang adalah selisih kuadrat: 4x² − 25 = (2x)² − 5² = (2x − 5)(2x + 5).',
+   'Bagi: (2x − 5)(2x + 5) ÷ (2x − 5).',
+   'Coret (2x − 5) → tersisa <b>2x + 5</b> ✅',
+   'Syarat: 2x − 5 ≠ 0, jadi x ≠ 5/2. Selesai — kamu resmi jago pembagian aljabar! 🎉'] }
+]
+};
+</script>
+<script id="app-js">
+/* ============ PENGAMAN GLOBAL ============ */
+/* 1) Polyfill browser lama (tanpa Element.closest semua tombol bisa mati) */
+if(!Element.prototype.closest){
+  Element.prototype.closest = function(sel){
+    var el=this;
+    while(el && el.nodeType===1){
+      if(el.matches ? el.matches(sel) : (el.msMatchesSelector && el.msMatchesSelector(sel))) return el;
+      el = el.parentElement || el.parentNode;
+    }
+    return null;
+  };
+}
+if(!Element.prototype.matches){
+  Element.prototype.matches = Element.prototype.msMatchesSelector || function(sel){
+    var el=this, all=(el.document||el.ownerDocument).querySelectorAll(sel), i;
+    for(i=0;i<all.length && all[i]!==el;i++);
+    return i<all.length;
+  };
+}
+/* 2) Penangkap error: bila ada bagian yang gagal, tampilkan banner + tombol Muat Ulang
+      (halaman tidak pernah mati diam-diam lagi) */
+window.addEventListener('error', function(ev){
+  var b=document.getElementById('errBanner');
+  if(b) return;
+  b=document.createElement('div'); b.id='errBanner';
+  b.style.cssText='position:fixed;left:12px;right:12px;bottom:78px;z-index:1000;background:#c62828;color:#fff;padding:12px 16px;border-radius:12px;font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;box-shadow:0 10px 28px rgba(0,0,0,.35)';
+  b.innerHTML='<b>\u26a0\ufe0f Ada bagian yang belum termuat sempurna.</b> Klik tombol berikut lalu muat ulang halaman: '+
+    '<button onclick="location.reload()" style="margin-left:8px;padding:6px 14px;border:none;border-radius:8px;background:#fff;color:#c62828;font-weight:800;cursor:pointer">\u21bb Muat Ulang</button>';
+  document.body.appendChild(b);
+});
+
+(function(){
+'use strict';
+/* ============ UTILITAS & STATE ============ */
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+/* 3) Penyimpanan aman: bila browser memblokir localStorage (mode privat / kebijakan
+      sekolah), aplikasi tetap berjalan penuh dengan penyimpanan sementara di memori. */
+var MEM={};
+function lsGet(k){ try{ return window.localStorage.getItem(k); }catch(e){ return (k in MEM)?MEM[k]:null; } }
+function lsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){ MEM[k]=v; } }
+function lsDel(k){ try{ window.localStorage.removeItem(k); }catch(e){ delete MEM[k]; } }
+function bacaJSON(k){ try{ return JSON.parse(lsGet(k)||'null'); }catch(e){ return null; } }
+/* 4) Inisialisasi per-bagian: satu bagian bermasalah tidak melumpuhkan bagian lain */
+function tryRun(fn,label){ try{ fn(); }catch(e){ if(window.console&&console.error) console.error('[Presentasi] Bagian "'+label+'" gagal dimuat:', e); } }
+var LS_NAMA='fa2_nama', LS_SKOR='fa2_skor', LS_REF='fa2_refleksi';
+var NAMA = lsGet(LS_NAMA) || '';
+var SKOR = bacaJSON(LS_SKOR) || {L1:{ok:0,ft:0},L2:{ok:0,ft:0}};
+var TOTAL = {L1:10,L2:10};
+var LABEL = {L1:'Latihan 1 · Faktorisasi ax² + bx + c (a ≠ 1)', L2:'Latihan 2 · Pembagian Aljabar'};
+var WARNA = ['#c62828','#17337e','#2456a6','#e0a106','#2e7d46','#7e57c2'];
+var HURUF = ['A','B','C','D'];
+
+function simpanSkor(){ lsSet(LS_SKOR, JSON.stringify(SKOR)); }
+function totSkor(){ return SKOR.L1.ok + SKOR.L2.ok; }
+function refreshNama(){
+  $$('.nama-slot').forEach(function(e){ e.textContent = NAMA || 'Sahabat Matematika'; });
+  $('#chipNama').textContent = '👤 ' + (NAMA || 'Belum diisi');
+}
+
+/* ============ NAVIGASI SLIDE ============ */
+var slides = $$('.slide'), cur = 0;
+function go(i){
+  if(i<0 || i>=slides.length) return;
+  slides[cur].classList.remove('active');
+  cur = i;
+  slides[cur].classList.add('active');
+  slides[cur].scrollTop = 0;
+  $('#progressBar').style.width = ((cur+1)/slides.length*100) + '%';
+  $('#slideCount').textContent = (cur+1) + ' / ' + slides.length;
+  $('#btnPrev').disabled = (cur===0);
+  $('#btnNext').disabled = (cur===slides.length-1);
+  var id = slides[cur].id;
+  if(id==='slideKesimpulan') renderRekap();
+  if(id==='slideThanks') konfetiHujan();
+}
+$('#btnPrev').addEventListener('click',function(){go(cur-1);});
+$('#btnNext').addEventListener('click',function(){go(cur+1);});
+document.addEventListener('keydown',function(e){
+  var t=e.target;
+  if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA')) return;
+  var menu=$('#menuOverlay');
+  if(!menu.classList.contains('hidden')){ if(e.key==='Escape') menu.classList.add('hidden'); return; }
+  if(e.key==='ArrowRight') go(cur+1);
+  if(e.key==='ArrowLeft') go(cur-1);
+});
+
+/* ============ MENU SLIDE ============ */
+slides.forEach(function(s,i){
+  var li=document.createElement('li');
+  li.innerHTML='<button class="menu-item" data-i="'+i+'"><b>'+(i+1)+'.</b><span>'+s.dataset.title+'</span></button>';
+  $('#menuList').appendChild(li);
+});
+$('#menuList').addEventListener('click',function(e){
+  var b=e.target.closest('.menu-item');
+  if(b){ go(+b.dataset.i); $('#menuOverlay').classList.add('hidden'); }
+});
+$('#btnMenu').addEventListener('click',function(){ $('#menuOverlay').classList.remove('hidden'); });
+$('#btnTutupMenu').addEventListener('click',function(){ $('#menuOverlay').classList.add('hidden'); });
+$('#menuOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.add('hidden'); });
+
+/* ============ NAMA SISWA ============ */
+function mulai(){
+  NAMA = $('#inputNama').value.trim() || 'Sahabat Matematika';
+  lsSet(LS_NAMA, NAMA);
+  refreshNama();
+  konfeti($('#btnMulai'));
+  go(1);
+}
+$('#btnMulai').addEventListener('click', mulai);
+$('#inputNama').addEventListener('keydown', function(e){ if(e.key==='Enter') mulai(); });
+if(NAMA) $('#inputNama').value = NAMA;
+
+/* ============ KONFETI ============ */
+function konfeti(el){
+  var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(var i=0;i<18;i++){
+    var p=document.createElement('i'); p.className='kft';
+    p.style.left=cx+'px'; p.style.top=cy+'px';
+    p.style.background=WARNA[i%WARNA.length];
+    p.style.setProperty('--dx',(Math.random()*280-140)+'px');
+    p.style.setProperty('--dy',(90+Math.random()*190)+'px');
+    p.style.animationDelay=(Math.random()*90)+'ms';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){this.remove();});
+  }
+}
+function konfetiHujan(){
+  for(var i=0;i<60;i++){
+    var p=document.createElement('i'); p.className='kft';
+    p.style.left=(Math.random()*100)+'vw'; p.style.top='-20px';
+    p.style.background=WARNA[i%WARNA.length];
+    p.style.setProperty('--dx',(Math.random()*180-90)+'px');
+    p.style.setProperty('--dy',(window.innerHeight*0.75+Math.random()*220)+'px');
+    p.style.animationDelay=(Math.random()*700)+'ms';
+    p.style.animationDuration=(1.2+Math.random()*1.2)+'s';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){this.remove();});
+  }
+}
+
+/* ============ RENDER SOAL: PILIH → CEK → PEMBAHASAN ============ */
+function acak(arr,seed){
+  var a=arr.slice(), s=(seed*2654435761)>>>0 || 1;
+  for(var i=a.length-1;i>0;i--){
+    s=(s*1664525+1013904223)>>>0;
+    var j=s%(i+1), tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+function renderSoal(contId, daftar, sec){
+  var wrap=document.getElementById(contId);
+  daftar.forEach(function(item,i){
+    var card=document.createElement('div');
+    card.className='soal-card';
+    card.dataset.sec=sec; card.dataset.idx=i;
+    var order=acak([0,1,2,3], i+7+(sec==='L2'?13:0));
+    var ops=order.map(function(oi,pos){
+      return '<button class="opsi" data-oi="'+oi+'"><b>'+HURUF[pos]+'.</b><span class="math">'+item.opts[oi]+'</span></button>';
+    }).join('');
+    var pemb=(item.pemb||[]).map(function(s){return '<li>'+s+'</li>';}).join('');
+    card.innerHTML=
+      '<div class="sc-top"><span class="sc-no">Soal '+(i+1)+'</span><span class="sc-st">⬜ pilih jawabanmu</span></div>'+
+      '<p class="sc-q">'+item.q+'</p>'+
+      '<div class="opsi-grid">'+ops+'</div>'+
+      '<div class="fb" hidden></div>'+
+      '<div class="sc-bawah"><button class="btn kecil cek-btn">✅ Cek Jawaban</button>'+
+      '<button class="btn ghost kecil pb-btn">📖 Pembahasan</button></div>'+
+      '<div class="pembahasan" hidden><p class="pb-judul">Pembahasan Soal '+(i+1)+'</p><ol class="langkah">'+pemb+'</ol></div>';
+    wrap.appendChild(card);
+  });
+  wrap.addEventListener('click', function(e){
+    var opsi=e.target.closest('.opsi');
+    if(opsi && !opsi.disabled){
+      var card=opsi.closest('.soal-card');
+      if(card.dataset.locked) return;
+      $$('.opsi',card).forEach(function(o){o.classList.remove('pilih');});
+      opsi.classList.add('pilih');
+    }
+    var cek=e.target.closest('.cek-btn');
+    if(cek){ cekJawaban(cek.closest('.soal-card'), daftar, sec); }
+    var pb=e.target.closest('.pb-btn');
+    if(pb){
+      var card2=pb.closest('.soal-card'), panel=card2.querySelector('.pembahasan');
+      panel.hidden=!panel.hidden;
+      pb.textContent=panel.hidden?'📖 Pembahasan':'📕 Tutup Pembahasan';
+    }
+  });
+}
+function cekJawaban(card, daftar, sec){
+  if(card.dataset.locked) return;
+  var item=daftar[+card.dataset.idx];
+  var pil=card.querySelector('.opsi.pilih');
+  var fb=card.querySelector('.fb'), st=card.querySelector('.sc-st');
+  if(!pil){
+    fb.hidden=false; fb.className='fb no';
+    fb.innerHTML='😊 Pilih dulu salah satu jawaban di atas, lalu tekan Cek Jawaban.';
+    return;
+  }
+  var oi=+pil.dataset.oi;
+  if(oi===item.key){
+    card.dataset.locked='1';
+    pil.classList.remove('pilih'); pil.classList.add('benar');
+    $$('.opsi',card).forEach(function(o){o.disabled=true;});
+    card.querySelector('.cek-btn').disabled=true;
+    st.textContent='✅ benar!'; st.classList.add('ok');
+    fb.hidden=false; fb.className='fb ok';
+    fb.innerHTML='🎉 <b>Benar, '+(NAMA||'Sahabat Matematika')+'!</b> Pembahasan lengkapnya sudah terbuka di bawah — baca sekali lagi agar makin melekat.';
+    if(!card.dataset.tried) SKOR[sec].ft++;
+    SKOR[sec].ok++;
+    simpanSkor(); perbaruiChip(sec);
+    var panel=card.querySelector('.pembahasan');
+    if(panel.hidden){ panel.hidden=false; card.querySelector('.pb-btn').textContent='📕 Tutup Pembahasan'; }
+    konfeti(pil);
+  } else {
+    card.dataset.tried='1';
+    pil.classList.remove('pilih'); pil.classList.add('salah'); pil.disabled=true;
+    fb.hidden=false; fb.className='fb no';
+    fb.innerHTML='❌ <b>Belum tepat.</b> Pilihan itu tidak cocok — pilih jawaban lain lalu cek lagi, atau buka pembahasan untuk melihat caranya.';
+    st.textContent='🔁 coba lagi'; st.classList.remove('ok');
+  }
+}
+function perbaruiChip(sec){
+  var c=$('#chip'+sec);
+  if(c) c.textContent = SKOR[sec].ok+'/'+TOTAL[sec]+' · '+SKOR[sec].ft+'⭐';
+}
+
+/* ============ REKAP KESIMPULAN ============ */
+function renderRekap(){
+  var body=$('#rekapBody'); body.innerHTML='';
+  ['L1','L2'].forEach(function(k){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+LABEL[k]+'</td><td>'+SKOR[k].ok+' / '+TOTAL[k]+'</td><td>'+SKOR[k].ft+' ⭐</td>';
+    body.appendChild(tr);
+  });
+  var tot=totSkor(), pesan;
+  if(tot>=18) pesan='🏆 LUAR BIASA, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/20 — kamu resmi jago faktorisasi a ≠ 1 dan pembagian aljabar!';
+  else if(tot>=13) pesan='🌟 Hebat, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/20 — pemahamanmu sudah kokoh, tinggal diasah.';
+  else if(tot>=8) pesan='👍 Bagus, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/20 — ulangi soal yang keliru lewat pembahasan, pasti makin naik!';
+  else pesan='💪 Jangan menyerah, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/20 — buka lagi slide materinya, lalu coba latihan sekali lagi.';
+  $('#rekapPesan').textContent=pesan;
+}
+
+/* ============ WIDGET: PASANGAN KALI–JUMLAH ============ */
+tryRun(function(){ $$('.fpb-widget[data-kali]').forEach(function(w){
+  $$('.pair-cand',w).forEach(function(b){
+    b.addEventListener('click',function(){
+      if(w.dataset.done) return;
+      var a=+b.dataset.a, c=+b.dataset.b;
+      var kali=a*c, jumlah=a+c;
+      var tk=+w.dataset.kali, tj=+w.dataset.jumlah;
+      var msg=w.querySelector('.fpb-msg');
+      if(kali===tk && jumlah===tj){
+        w.dataset.done='1';
+        b.classList.add('cocok');
+        $$('.pair-cand',w).forEach(function(x){ if(x!==b) x.disabled=true; });
+        msg.className='fpb-msg ok';
+        msg.innerHTML=a+' × '+c+' = '+kali+' ✔ dan '+a+' + '+c+' = '+jumlah+' ✔ — pasangan yang dicari!';
+        var res=w.querySelector('.fpb-result');
+        if(res) res.classList.remove('hidden');
+        konfeti(b);
+      } else {
+        b.classList.add('gagal');
+        setTimeout(function(){b.classList.remove('gagal');},450);
+        msg.className='fpb-msg no';
+        msg.innerHTML=a+' × '+c+' = '+kali+' '+(kali===tk?'✔':'✘ (harus '+tk+')')+' &nbsp;dan&nbsp; '+a+' + '+c+' = '+jumlah+' '+(jumlah===tj?'✔':'✘ (harus '+tj+')');
+      }
+    });
+  });
+}); },'Pasangan Kali–Jumlah');
+
+/* ============ WIDGET: STEPPER LANGKAH ============ */
+tryRun(function(){ $$('.stepper').forEach(function(st){
+  var steps=$$('.st-step',st), btn=$('.st-next',st), t=0;
+  if(!btn) return;
+  function reset(){
+    steps.forEach(function(s){s.classList.add('hidden');});
+    t=0; btn.dataset.mode='next'; btn.disabled=false;
+    btn.textContent='Lihat langkah 1 \u279c';
+  }
+  btn.addEventListener('click',function(){
+    if(btn.dataset.mode==='reset'){ reset(); return; }
+    if(t<steps.length){
+      steps[t].classList.remove('hidden');
+      steps[t].classList.add('pop');
+      t++;
+    }
+    if(t>=steps.length){ btn.dataset.mode='reset'; btn.textContent='\u21ba Ulangi langkah'; }
+    else { btn.textContent='Lihat langkah '+(t+1)+' \u279c'; }
+  });
+}); },'Stepper');
+
+/* ============ WIDGET: MESIN PENCORET ============ */
+tryRun(function(){ $$('.coret-demo').forEach(function(d){
+  var f=$('.cd-faktor',d), c=$('.cd-coret',d), r=$('.cd-reset',d);
+  if(!f||!c||!r) return;
+  f.addEventListener('click',function(){
+    $('.cd-s2',d).classList.remove('hidden');
+    f.disabled=true; c.disabled=false;
+  });
+  c.addEventListener('click',function(){
+    $$('.cbox',d).forEach(function(b){b.classList.add('struck');});
+    c.disabled=true;
+    setTimeout(function(){
+      $('.cd-s3',d).classList.remove('hidden');
+      var n=$('.cd-note',d); if(n) n.classList.remove('hidden');
+      konfeti($('.hasil',d)||c);
+    },550);
+  });
+  r.addEventListener('click',function(){
+    $$('.cbox',d).forEach(function(b){b.classList.remove('struck');});
+    $$('.cd-s2,.cd-s3',d).forEach(function(x){x.classList.add('hidden');});
+    var n=$('.cd-note',d); if(n) n.classList.add('hidden');
+    f.disabled=false; c.disabled=true;
+  });
+}); },'Mesin Pencoret');
+
+/* ============ WIDGET: PENGUJI SILANG ============ */
+tryRun(function(){ $$('.silang-widget').forEach(function(w){
+  var cells={}, heads={};
+  $$('.sil-cell',w).forEach(function(c){ cells[+c.dataset.c]=c; });
+  $$('.sil-head',w).forEach(function(h){ heads[+h.dataset.h]=h; });
+  var msg=w.querySelector('.sil-msg'), res=w.querySelector('.sil-result');
+  $$('.sil-cand',w).forEach(function(b){
+    b.addEventListener('click',function(){
+      for(var k=1;k<=4;k++){
+        if(heads[k]) heads[k].textContent = b.dataset['h'+k];
+        if(cells[k]){ cells[k].textContent = b.dataset['p'+k]; cells[k].classList.add('isi'); }
+      }
+      var ok=b.dataset.ok==='1';
+      if(ok){
+        w.dataset.done='1';
+        b.classList.add('cocok');
+        $$('.sil-cand',w).forEach(function(x){ if(x!==b) x.disabled=true; });
+        msg.className='sil-msg ok';
+        msg.innerHTML='✂️ Silang: '+b.dataset.cross+' = <b>'+b.dataset.sum+'</b> ✔ — persis suku tengahnya!';
+        if(res) res.classList.remove('hidden');
+        konfeti(b);
+      } else {
+        b.classList.add('gagal');
+        setTimeout(function(){b.classList.remove('gagal');},450);
+        msg.className='sil-msg no';
+        msg.innerHTML='✂️ Silang: '+b.dataset.cross+' = <b>'+b.dataset.sum+'</b> ✘ — harusnya '+w.dataset.b+'. Coba pasangan lain!';
+      }
+    });
+  });
+}); },'Penguji Silang');
+
+/* ============ REFLEKSI ============ */
+tryRun(function(){ $$('.ref-emos .emo').forEach(function(b){
+  b.addEventListener('click',function(){
+    $$('.emo',b.parentElement).forEach(function(x){x.classList.remove('aktif');});
+    b.classList.add('aktif');
+  });
+}); },'Emoji Refleksi');
+tryRun(function(){$('#btnSimpanRef').addEventListener('click',function(){
+  var pilihan=$$('.ref-row').map(function(r){
+    var a=$('.emo.aktif',r);
+    return a? +a.dataset.v : 0;
+  });
+  var teks=$('#refleksiTeks').value.trim();
+  lsSet(LS_REF, JSON.stringify({nama:NAMA,pilihan:pilihan,teks:teks,waktu:new Date().toISOString()}));
+  var h=$('#refleksiHasil');
+  var terisi=pilihan.filter(function(v){return v>0;}).length;
+  h.innerHTML='<b>💚 Terima kasih, '+(NAMA||'Sahabat Matematika')+'!</b> Refleksimu ('+terisi+'/4 aspek dinilai) sudah tersimpan di perangkat ini. '+
+    (totSkor()>=13?'Skor latihanmu '+totSkor()+'/20 — hebat!':'Terus semangat berlatih ya!');
+  h.classList.remove('hidden');
+  konfeti(h);
+}); },'Simpan Refleksi');
+
+/* ============ TOMBOL ULANGI ============ */
+tryRun(function(){$('#btnUlang').addEventListener('click',function(){
+  lsDel(LS_SKOR);
+  lsDel(LS_REF);
+  location.reload();
+}); },'Tombol Ulangi');
+
+/* ============ INISIALISASI ============ */
+tryRun(function(){renderSoal('listL1', SOAL.L1, 'L1');},'Render Soal L1');
+tryRun(function(){renderSoal('listL2', SOAL.L2, 'L2');},'Render Soal L2');
+tryRun(function(){Object.keys(TOTAL).forEach(perbaruiChip);},'Chip Skor');
+tryRun(refreshNama,'Nama');
+go(0);
+})();
+</script>
+</body>
+</html>
