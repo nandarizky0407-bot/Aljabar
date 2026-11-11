@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pecahan pada Aljabar: Penjumlahan & Pengurangan — Matematika SMP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Font dimuat non-blocking: bila internet lambat/mati, tombol & animasi TETAP berfungsi -->
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --navy:#17337e; --navy2:#0f2456; --blue:#2456a6; --sky:#eef3fc;
+  --red:#c62828; --red2:#a51d1d; --gold:#e0a106; --ok:#2e7d46;
+  --ink:#1c2540; --muted:#5a6b8c; --line:#d9e2f2; --bg:#f2f6fc;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+h1,h2,h3{font-family:'Lora',Georgia,serif;color:var(--navy)}
+h2{font-size:clamp(26px,3.6vw,38px);margin:8px 0 14px;line-height:1.15}
+h3{margin:0 0 8px;font-size:20px}
+p{line-height:1.6}
+button{font-family:inherit}
+.hidden{display:none!important}
+.kecil{font-size:13px;color:var(--muted)}
+.tanya{font-size:18px;font-weight:700;color:var(--navy)}
+.kicker{display:inline-block;background:var(--navy);color:#fff;font-weight:800;letter-spacing:.14em;font-size:12px;padding:6px 16px;border-radius:999px;text-transform:uppercase}
+.kicker.merah{background:var(--red)}
+
+/* ====== MATH CHIP ====== */
+.math{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;background:var(--sky);border:1px solid #d7e2f5;color:#12306e;border-radius:8px;padding:1px 9px;white-space:nowrap;display:inline-block;line-height:1.55;font-weight:600}
+.math.besar{font-size:clamp(17px,2.5vw,25px);padding:8px 16px}
+.rule{font-size:18px;display:inline-block;margin:4px 0 8px}
+
+/* ====== TOPBAR ====== */
+#topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px;z-index:50}
+#btnMenu{font-size:17px;padding:7px 12px;border-radius:10px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--navy);font-weight:800}
+#btnMenu:hover{border-color:var(--blue);color:var(--blue)}
+#progressWrap{flex:1;height:8px;background:#e3eaf6;border-radius:99px;overflow:hidden}
+#progressBar{height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--blue) 70%,var(--red));border-radius:99px;transition:width .4s ease}
+#slideCount{font-weight:800;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#chipNama{background:var(--sky);border:1px solid #d7e2f5;color:var(--navy);font-weight:700;padding:6px 12px;border-radius:999px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+
+/* ====== MENU OVERLAY ====== */
+#menuOverlay{position:fixed;inset:0;background:rgba(15,26,54,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px}
+.menu-kotak{background:#fff;border-radius:18px;max-width:540px;width:100%;max-height:80vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 60px rgba(15,26,54,.35)}
+.menu-kotak h3{margin-bottom:10px}
+.menu-item{display:flex;gap:10px;width:100%;text-align:left;padding:9px 12px;border:none;background:none;font-size:15px;font-weight:600;color:var(--ink);border-radius:10px;cursor:pointer}
+.menu-item b{color:var(--navy);min-width:26px}
+.menu-item:hover{background:var(--sky);color:var(--navy)}
+#btnTutupMenu{margin-top:12px;width:100%}
+
+/* ====== SLIDES ====== */
+#deck{position:absolute;inset:0;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(26px);transition:opacity .45s ease,transform .45s ease,visibility .45s;pointer-events:none;padding:78px 0 96px;background:linear-gradient(180deg,#fbfcff,#f0f5fb)}
+.slide.active{opacity:1;visibility:visible;transform:none;pointer-events:auto;z-index:2}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+.tengah{min-height:calc(100vh - 190px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+
+/* ====== CARDS ====== */
+.kartu{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.kartu.tip{border-left:6px solid var(--gold);background:#fffdf4}
+.kartu.awas{border-left:6px solid var(--red);background:#fff7f7}
+.kartu.sukses{border-left:6px solid var(--ok);background:#f4fbf6}
+.kartu.navy{background:var(--navy);color:#fff;border:none}
+.kartu.navy h3{color:#fff}
+.kartu.navy .math{background:rgba(255,255,255,.14);color:#fff;border-color:transparent}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* ====== BUTTONS ====== */
+.btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:12px;padding:11px 20px;font-size:15px;font-weight:800;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .15s}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(23,51,126,.25)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.merah{background:var(--red)} .btn.merah:hover:not(:disabled){box-shadow:0 6px 16px rgba(198,40,40,.3)}
+.btn.ghost{background:#fff;color:var(--navy);border:2px solid #c3d2ec}
+.btn.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--blue);box-shadow:none}
+.btn.kecil{font-size:14px;padding:8px 14px}
+
+/* ====== COVER ====== */
+.ribbon{background:var(--red);color:#fff;padding:8px 20px;border-radius:999px;font-weight:800;letter-spacing:.16em;font-size:13px;box-shadow:0 4px 14px rgba(198,40,40,.3)}
+.judul-besar{font-size:clamp(34px,6vw,58px);margin:18px 0 10px;line-height:1.12}
+.sub{font-size:clamp(15px,2vw,19px);color:var(--muted);max-width:660px;margin:0 auto;line-height:1.55}
+.float-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.chip-float{animation:mengapung 4.5s ease-in-out infinite}
+.chip-float.f2{animation-delay:1.4s}.chip-float.f3{animation-delay:2.6s}
+@keyframes mengapung{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.nama-kartu{max-width:560px;width:100%;margin-top:26px;text-align:left}
+.nama-kartu label{font-weight:800;color:var(--navy);font-size:17px}
+.baris-nama{display:flex;gap:10px;margin-top:12px}
+@media(max-width:560px){.baris-nama{flex-direction:column}}
+#inputNama{font:inherit;padding:12px 16px;border:2px solid var(--line);border-radius:12px;flex:1;font-size:16px;min-width:0}
+#inputNama:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(36,86,166,.12)}
+
+/* ====== TUJUAN ====== */
+.tujuan{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px}
+.tujuan li{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;align-items:flex-start;font-size:16px;line-height:1.55}
+.tujuan .ikon{font-size:24px;line-height:1.2}
+
+/* ====== PAIR WIDGET ====== */
+.fpb-widget{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:16px 18px;margin:12px 0}
+.pair-cands,.sil-cands{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pair-cand{padding:9px 18px;border-radius:12px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:15px;cursor:pointer;transition:.15s}
+.pair-cand:hover:not(:disabled){background:var(--navy);color:#fff}
+.pair-cand.cocok{background:var(--ok);border-color:var(--ok);color:#fff}
+.pair-cand.gagal{animation:goyang .45s;border-color:var(--red);color:var(--red);background:#fdeaea}
+.fpb-msg{min-height:24px;font-weight:600;margin:8px 0;color:var(--muted)}
+.fpb-msg.ok{color:var(--ok)} .fpb-msg.no{color:var(--red)}
+.fpb-result{margin-top:10px}
+
+/* ====== STEPPER ====== */
+.stepper{margin:10px 0}
+.st-step{background:var(--sky);border:1px solid #d7e2f5;border-radius:12px;padding:10px 16px;margin:8px 0;line-height:1.6}
+.st-btns{margin-top:4px}
+
+/* ====== CEK SILANG ====== */
+.silang-widget{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:16px 18px;margin:12px 0;text-align:center}
+.sil-tabel{border-collapse:collapse;margin:12px auto}
+.sil-tabel td{border:2px solid #c9d6ee;padding:8px 18px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:700;font-size:15px;text-align:center;min-width:74px;background:#fff;color:var(--ink)}
+.sil-head{background:var(--sky);color:var(--navy)}
+.sil-corner{background:transparent;border:none!important;min-width:20px!important;padding:0!important}
+.sil-cell.isi{background:#fff8e6;border-color:var(--gold);color:#8a6d1a;transition:all .3s}
+.sil-cand{padding:9px 16px;border-radius:12px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
+.sil-cand:hover:not(:disabled){background:var(--navy);color:#fff}
+.sil-cand.cocok{background:var(--ok);border-color:var(--ok);color:#fff}
+.sil-cand.gagal{animation:goyang .45s;border-color:var(--red);color:var(--red);background:#fdeaea}
+.sil-msg{min-height:24px;font-weight:600;margin:8px 0;color:var(--muted)}
+.sil-msg.ok{color:var(--ok)} .sil-msg.no{color:var(--red)}
+.sil-result{margin-top:10px}
+
+/* ====== CORET WIDGET ====== */
+.coret-demo{background:#f8faff;border:2px dashed #b9c9e8;border-radius:14px;padding:18px;margin:12px 0;text-align:center}
+.cd-head{font-weight:800;color:var(--red);letter-spacing:.1em;font-size:12px;text-transform:uppercase;margin-bottom:6px}
+.cd-line{margin:10px 0}
+.cbox{display:inline-block;border:2px solid var(--gold);border-radius:8px;padding:0 7px;background:#fff8e6}
+.cbox.struck{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px;color:#8fa0c4;opacity:.45;background:#f3f4f8;border-color:var(--red);transition:all .5s ease}
+.hasil{color:var(--ok)}
+.cd-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.cd-note{font-size:14px;color:var(--muted);margin-top:10px}
+.banner-besar{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;border-radius:16px;padding:18px 22px;text-align:center;font-size:clamp(17px,2.5vw,25px);font-weight:800;font-family:'Lora',serif;letter-spacing:.05em;margin:16px 0;box-shadow:0 8px 22px rgba(23,51,126,.25)}
+
+/* ====== PECAHAN BERTINGKAT ====== */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.25}
+.fr>.n{padding:0 7px 2px;border-bottom:2.2px solid currentColor;white-space:nowrap}
+.fr>.d{padding:2px 7px 0;white-space:nowrap}
+.sc-q .fr{font-weight:700}
+.st-step .fr,.kartu .fr{font-weight:600}
+.opsi-isi{flex:1;font-weight:700;line-height:1.7;min-width:0;overflow-wrap:break-word}
+.ket-line{font-size:14px;color:var(--muted);font-weight:600}
+.banner-rule{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;border-radius:14px;padding:14px 20px;text-align:center;font-size:clamp(16px,2.4vw,23px);font-weight:800;margin:14px 0;box-shadow:0 6px 18px rgba(23,51,126,.22)}
+.banner-rule .fr{font-family:'Lora',serif}
+.banner-rule .fr>.n{border-bottom-color:rgba(255,255,255,.85)}
+.langkah-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.langkah-mini div{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;text-align:center;font-weight:700;font-size:14px;color:var(--navy)}
+.langkah-mini div b{display:block;font-size:22px;margin-bottom:4px}
+
+/* ====== SOAL ====== */
+.latihan-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 2px}
+.skor-chip{background:#fff8e6;border:1px solid #ead9a8;color:#8a6d1a;font-weight:800;padding:6px 14px;border-radius:999px;font-size:13px;white-space:nowrap}
+.soal-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.sc-no{background:var(--navy);color:#fff;font-weight:800;border-radius:8px;padding:3px 12px;font-size:13px;white-space:nowrap}
+.sc-st{font-size:13px;color:var(--muted);font-weight:700;text-align:right}
+.sc-st.ok{color:var(--ok)}
+.sc-q{font-size:17px;margin:6px 0;font-weight:600}
+.opsi-grid{display:grid;gap:8px;margin:12px 0}
+.opsi{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer;transition:.15s;line-height:1.5}
+.opsi b{color:var(--navy);min-width:24px;font-family:'IBM Plex Mono',monospace}
+.opsi:hover:not(:disabled){border-color:var(--blue);background:#f3f7ff}
+.opsi.pilih{border-color:var(--navy);background:#e8f0fe;box-shadow:0 0 0 3px rgba(36,86,166,.14)}
+.opsi.benar{border-color:var(--ok);background:#e7f6ec}
+.opsi.salah{border-color:var(--red);background:#fdeaea;animation:goyang .45s}
+.opsi:disabled{cursor:default;opacity:.72}
+.opsi.benar:disabled{opacity:1}
+@keyframes goyang{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{border-radius:10px;padding:10px 14px;margin-top:8px;font-weight:600;line-height:1.5}
+.fb.ok{background:#e7f6ec;border:1px solid #bfe3cc}
+.fb.no{background:#fdeaea;border:1px solid #f3c1c1}
+.sc-bawah{margin-top:10px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.pembahasan{margin-top:12px;background:#f2f7ff;border-left:5px solid var(--blue);border-radius:0 12px 12px 0;padding:12px 18px}
+.pb-judul{margin:0 0 6px;font-weight:800;color:var(--navy)}
+.langkah{margin:0;padding-left:22px}
+.langkah li{margin:7px 0;line-height:1.55}
+
+/* ====== REKAP ====== */
+.rekap{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(23,51,126,.06)}
+.rekap th{background:var(--navy);color:#fff;padding:11px 14px;font-size:14px;text-align:left}
+.rekap td{padding:11px 14px;border-bottom:1px solid #e3eaf6;font-weight:600}
+.rekap tr:last-child td{border-bottom:none}
+
+/* ====== REFLEKSI ====== */
+.ref-row{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:8px 0;flex-wrap:wrap}
+.ref-row p{margin:0;font-weight:600}
+.ref-emos{display:flex;gap:6px}
+.emo{font-size:20px;width:46px;height:46px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:.15s}
+.emo:hover{transform:translateY(-2px)}
+.emo.aktif{border-color:var(--gold);background:#fff8e6;transform:scale(1.08)}
+#refleksiTeks{width:100%;min-height:96px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-family:inherit;font-size:15px;resize:vertical}
+#refleksiTeks:focus{outline:none;border-color:var(--blue)}
+
+/* ====== KONFETI & ANIMASI ====== */
+.kft{position:fixed;width:10px;height:14px;z-index:999;pointer-events:none;border-radius:2px;opacity:.95;animation:kft .95s ease-in forwards}
+@keyframes kft{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.92);opacity:0}100%{transform:scale(1);opacity:1}}
+.quote{font-style:italic;color:var(--muted);max-width:600px;margin:18px auto;font-family:'Lora',serif;font-size:17px}
+.seri-emoji{font-size:42px;letter-spacing:10px}
+
+/* ====== NAV BAWAH ====== */
+#navBawah{position:fixed;bottom:14px;right:16px;display:flex;gap:8px;z-index:60}
+@media(max-width:640px){
+  #navBawah{left:16px;right:16px}
+  #navBawah .btn{flex:1}
+  #chipNama{display:none}
+  .slide{padding:70px 0 110px}
+}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#c62828;color:#fff;padding:14px 18px;font-family:system-ui,sans-serif;font-size:15px;text-align:center;line-height:1.5">
+    ⚠️ <b>JavaScript sedang dinonaktifkan</b> di browser ini, sehingga seluruh tombol interaktif tidak dapat berfungsi. Aktifkan JavaScript (Settings/Privasi) lalu muat ulang halaman ini.
+  </div>
+</noscript>
+<header id="topbar">
+  <button id="btnMenu" title="Daftar slide">☰</button>
+  <div id="progressWrap"><div id="progressBar"></div></div>
+  <span id="slideCount">1 / 18</span>
+  <span id="chipNama">👤 Belum diisi</span>
+</header>
+<nav id="menuOverlay" class="hidden">
+  <div class="menu-kotak">
+    <h3>📚 Daftar Slide</h3>
+    <ol id="menuList" style="list-style:none;padding:0;margin:0"></ol>
+    <button id="btnTutupMenu" class="btn ghost">✕ Tutup</button>
+  </div>
+</nav>
+<main id="deck">
+<!-- ============ SLIDE 1 : COVER ============ -->
+<section class="slide" id="slideCover" data-title="Cover">
+  <div class="wrap tengah">
+    <span class="ribbon">MATEMATIKA SMP · BENTUK ALJABAR</span>
+    <h1 class="judul-besar">Pecahan pada Aljabar <span style="color:var(--red)">— Jumlah &amp; Kurang</span></h1>
+    <p class="sub">Dari pecahan berpenyebut sama sampai pecahan dengan <b>3–4 variabel berpangkat 1–3</b> — semua diungkap dengan satu kunci emas: <b>samakan penyebutnya (KPK)</b>. Lengkap dengan <b>50 soal interaktif</b>: tombol cek jawaban &amp; pembahasan langkah demi langkah.</p>
+    <div class="float-chips">
+      <span class="math besar chip-float">🔑 KPK Penyebut</span>
+      <span class="math besar chip-float f2">➕ Samakan → Gabungkan</span>
+      <span class="math besar chip-float f3">✂️ Sederhanakan</span>
+      <span class="math besar chip-float f2">🧮 50 Soal + Pembahasan</span>
+    </div>
+    <div class="kartu nama-kartu">
+      <label for="inputNama">👋 Siapa nama kamu?</label>
+      <div class="baris-nama">
+        <input id="inputNama" type="text" placeholder="Tulis namamu di sini…" maxlength="30" autocomplete="off">
+        <button id="btnMulai" class="btn">Mulai Belajar 🚀</button>
+      </div>
+      <p class="kecil" style="margin:10px 0 0">Nama hanya untuk menyapamu &amp; menyimpan skormu di perangkat ini — tidak dikirim ke mana pun.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 : TUJUAN ============ -->
+<section class="slide" id="slideTujuan" data-title="Tujuan Hari Ini">
+  <div class="wrap">
+    <span class="kicker">Peta Perjalanan</span>
+    <h2>Setelah pelajaran ini, kamu bisa…</h2>
+    <ul class="tujuan">
+      <li><span class="ikon">➕</span><span>Menjumlahkan &amp; mengurangkan pecahan aljabar <b>berpenyebut sama</b> dengan satu variabel, misalnya <span class="math">(2x + 1)/5 + (x &minus; 3)/5</span>.</span></li>
+      <li><span class="ikon">🔑</span><span>Mencari <b>KPK penyebut</b> dan menyamakan pecahan berpenyebut berbeda, termasuk penyebut <span class="math">x</span> dan <span class="math">x&sup2;</span>.</span></li>
+      <li><span class="ikon">🔍</span><span><b>Memfaktorkan penyebut dulu</b> (misalnya <span class="math">x&sup2; &minus; 9</span>) agar KPK penyebut terlihat jelas.</span></li>
+      <li><span class="ikon">🧩</span><span>Menangani pecahan dengan <b>2 variabel hingga 3–4 variabel</b> dengan pangkat 1 sampai 3, misalnya <span class="math">1/(ab) + 1/(bc)</span> atau <span class="math">1/x&sup2; + 1/y&sup3;</span>.</span></li>
+      <li><span class="ikon">✂️</span><span><b>Menyederhanakan hasil akhir</b> dan selalu mengingat syarat <b>penyebut &ne; 0</b>.</span></li>
+    </ul>
+    <div class="kartu navy">
+      <h3>🗺️ Rute Hari Ini</h3>
+      <p>Materi 1 · Penyebut Sama → 📝 Latihan 1 (10 soal) → Materi 2 · KPK Penyebut → 📝 Latihan 2 → Materi 3 · Faktorkan Dulu → 📝 Latihan 3 → Materi 4 · Dua Variabel → 📝 Latihan 4 → Materi 5 · Tiga–Empat Variabel → 📝 Latihan 5 → 🧭 Peta 5 Langkah → 🎓 Kesimpulan &amp; Refleksi</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 3 : APERSEPSI ============ -->
+<section class="slide" id="slideApersepsi" data-title="Ingat Pecahan Biasa">
+  <div class="wrap">
+    <span class="kicker">Apersepsi</span>
+    <h2>Mulai dari yang Sudah Kamu Kenal 🍕</h2>
+    <p>Ingat pecahan biasa? <span class="tanya">Berapa <span class="math besar">1/3 + 1/4</span>?</span> Bisa langsung digabung? <b>Tidak!</b> Penyebutnya berbeda. Klik tombolnya, mari kita ingat bersama:</p>
+    <div class="kartu">
+      <div class="stepper">
+        <div class="st-step hidden">Penyebutnya <b>3</b> dan <b>4</b> — berbeda. Anak pizza yang berbeda potongan <u>tidak boleh langsung</u> digabung! ✋</div>
+        <div class="st-step hidden">Cari <b>KPK</b> dari 3 dan 4 → <b>12</b>. Samakan keduanya: <span class="math">1/3 = 4/12</span> &nbsp;dan&nbsp; <span class="math">1/4 = 3/12</span>. ⚖️</div>
+        <div class="st-step hidden">Sekarang penyebutnya sama: <span class="math">4/12 + 3/12 = 7/12</span> ✅ Selesai — aturannya sederhana!</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu tip">
+      🌉 <b>Jembatan ke aljabar:</b> di pecahan aljabar caranya <b>persis sama</b> — hanya saja penyebutnya boleh memuat variabel, misalnya <span class="math">x/2 + x/3</span> atau bahkan <span class="math">1/(ab) + 1/(bc)</span>. Kalau aturan pecahan biasamu kuat, pecahan aljabar hanyalah "ganti angka dengan huruf".
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 4 : KONSEP ============ -->
+<section class="slide" id="slideKonsep" data-title="Apa Itu Pecahan Aljabar?">
+  <div class="wrap">
+    <span class="kicker">Konsep Dasar</span>
+    <h2>Apa Itu Pecahan Aljabar?</h2>
+    <div class="kartu navy">
+      <h3>📖 Definisi</h3>
+      <p><b>Pecahan aljabar</b> adalah pecahan yang <b>pembilang atau penyebutnya (atau keduanya) memuat variabel</b>. Contoh paling sederhana: <span class="math besar">x/2</span> — bentuknya sama seperti pecahan biasa, tetapi ada huruf di dalamnya.</p>
+    </div>
+    <div class="grid2">
+      <div class="kartu sukses">
+        <h3>✅ Termasuk pecahan aljabar</h3>
+        <p style="font-size:18px;font-weight:700;line-height:2.2">
+          <span class="math">x/2</span> · <span class="math">(x + 1)/(x &minus; 3)</span> · <span class="math">2/(xy)</span> · <span class="math">5/(x&sup2; + 1)</span> · <span class="math">a/(bc)</span></p>
+      </div>
+      <div class="kartu">
+        <h3>ℹ️ Bukan fokus kita (polinom)</h3>
+        <p style="font-size:18px;font-weight:700;line-height:2.2">
+          <span class="math">x&sup2; + 2x</span> · <span class="math">3a &minus; 1</span> — polinom <i>bisa</i> ditulis sebagai pecahan (penyebut 1), tetapi tidak menantang seperti pecahan sungguhan.</p>
+      </div>
+    </div>
+    <div class="kartu awas">
+      <h3>⚠️ Syarat Wajib: Penyebut Tidak Boleh Nol</h3>
+      <p>Penyebut nol membuat pecahan <b>tidak terdefinisi</b>. Maka:</p>
+      <p style="margin:6px 0">▸ penyebut <span class="math">x &minus; 3</span> → syaratnya <b>x &ne; 3</b> &nbsp;&nbsp; ▸ penyebut <span class="math">xy</span> → syaratnya <b>x &ne; 0 dan y &ne; 0</b></p>
+      <p style="margin:6px 0">Kebiasaan menuliskan syarat ini akan sangat berguna nanti saat menyederhanakan hasil.</p>
+    </div>
+    <div class="kartu tip">
+      🎯 <b>Misi hari ini:</b> menghitung <b>penjumlahan &amp; pengurangan</b> pecahan aljabar — dimulai dari yang penyebutnya sama, naik bertahap sampai penyebut berisi 3–4 variabel dengan pangkat sampai 3. Ada <b>trick</b> di setiap materi!
+    </div>
+  </div>
+</section>
+<!-- ============ SLIDE 5 : MATERI 1 ============ -->
+<section class="slide" id="slideM1" data-title="Materi 1 · Penyebut Sama">
+  <div class="wrap">
+    <span class="kicker">Materi 1 · Satu Variabel · Pangkat 1</span>
+    <h2>Penyebut Sama? Langsung Gabungkan! ➕</h2>
+    <div class="banner-rule"><span class="fr"><span class="n">a</span><span class="d">c</span></span> &nbsp;&plusmn;&nbsp; <span class="fr"><span class="n">b</span><span class="d">c</span></span> &nbsp;=&nbsp; <span class="fr"><span class="n">a &plusmn; b</span><span class="d">c</span></span></div>
+    <p>Aturan paling ramah: bila penyebutnya <b>sudah sama</b>, jumlahkan/kurangkan <b>pembilangnya saja</b> — penyebut <b>tetap</b>, jangan diubah apa pun bentuknya.</p>
+    <div class="kartu">
+      <h3>🎬 Demo: <span class="math">(2x + 1)/5 + (x &minus; 3)/5</span></h3>
+      <div class="stepper">
+        <div class="st-step hidden">Kedua penyebut sama-sama <b>5</b> → boleh langsung menggabungkan pembilangnya. ✋ tidak perlu mencari KPK lagi!</div>
+        <div class="st-step hidden">Gabungkan dalam satu pecahan: <span class="math besar"><span class="fr"><span class="n">(2x + 1) + (x &minus; 3)</span><span class="d">5</span></span></span> — kurung penting agar tanda &minus; ikut ke seluruh <span class="math">x &minus; 3</span>.</div>
+        <div class="st-step hidden">Rapikan pembilang: 2x + 1 + x &minus; 3 = <b>3x &minus; 2</b> → hasilnya <span class="math besar"><span class="fr"><span class="n">3x &minus; 2</span><span class="d">5</span></span></span> ✅ dan tidak bisa disederhanakan lagi.</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="kartu sukses">
+        <h3>✨ Contoh: hasilnya bisa "jebol"</h3>
+        <p><span class="math">(5x + 3)/6 + (x &minus; 9)/6 = (6x &minus; 6)/6</span></p>
+        <p>Pembilang dan penyebut sama-sama habis dibagi 6 → <b>x &minus; 1</b>. Selalu periksa: bisakah hasilnya disederhanakan?</p>
+      </div>
+      <div class="kartu awas">
+        <h3>🚫 Kesalahan yang sering terjadi</h3>
+        <p>Penyebut sudah sama, tetapi malah <b>dikalikan</b> atau <b>diubah</b>: <span class="math">(2x+1)/5 + (x&minus;3)/5 &ne; (3x&minus;2)/10</span>. Penyebut TIDAK berubah dan TIDAK dikali 2!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 6 : MATERI 2 ============ -->
+<section class="slide" id="slideM2" data-title="Materi 2 · KPK Penyebut">
+  <div class="wrap">
+    <span class="kicker">Materi 2 · Satu Variabel · Pangkat 1–2</span>
+    <h2>Penyebut Berbeda? Kuncinya KPK! 🔑</h2>
+    <div class="langkah-mini">
+      <div><b>1️⃣</b>Cari KPK penyebut</div>
+      <div><b>2️⃣</b>Samakan tiap pecahan</div>
+      <div><b>3️⃣</b>Jumlahkan pembilang</div>
+      <div><b>4️⃣</b>Sederhanakan</div>
+    </div>
+    <div class="kartu">
+      <h3>🎬 Demo: <span class="math">x/2 + x/3</span></h3>
+      <div class="stepper">
+        <div class="st-step hidden">Penyebut <b>2</b> dan <b>3</b> berbeda → KPK-nya <b>6</b>. Angka 6 akan menjadi penyebut bersama.</div>
+        <div class="st-step hidden">Samakan dengan mengali <span class="math">1</span> yang cerdas: <span class="math">x/2 &times; 3/3 = 3x/6</span> &nbsp;dan&nbsp; <span class="math">x/3 &times; 2/2 = 2x/6</span>. Nilai tiap pecahan tidak berubah! ⚖️</div>
+        <div class="st-step hidden">Penyebut sudah sama → <span class="math">3x/6 + 2x/6 = 5x/6</span> ✅</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="fpb-widget" data-pick="1">
+      <h3 style="margin-bottom:4px">🕹️ Mesin KPK: tentukan KPK dari <span class="math">6x&sup2;</span> dan <span class="math">4x</span>!</h3>
+      <div class="pair-cands">
+        <button class="pair-cand" data-ok="0">24x&sup2;</button>
+        <button class="pair-cand" data-ok="1">12x&sup2;</button>
+        <button class="pair-cand" data-ok="0">12x&sup3;</button>
+        <button class="pair-cand" data-ok="0">2x&sup2;</button>
+      </div>
+      <div class="fpb-msg">Klik pilihan yang menurutmu benar…</div>
+      <div class="fpb-result hidden">
+        <p style="margin:6px 0"><b>Resepnya:</b> 🔢 angka → KPK(6, 4) = <b>12</b> &nbsp;·&nbsp; 🔤 variabel → ambil <b>pangkat tertinggi</b> tiap variabel → <span class="math">x&sup2;</span>. Jadi KPK = <span class="math besar">12x&sup2;</span>.</p>
+      </div>
+    </div>
+    <div class="kartu tip">
+      🦋 <b>Trik kupu-kupu (untuk penyebut yang tidak punya faktor sama):</b>
+      <span class="math">a/c + b/d = (a&middot;d + b&middot;c)/(c&middot;d)</span> — kalikan silang, jumlahkan, penyebut dikali penyebut.
+      Contoh: <span class="math">x/2 + x/3 = (3x + 2x)/6 = 5x/6</span>. Cepat! Tetapi bila penyebut punya faktor sama (misal 4 dan 6), hasil kupu-kupu jadi besar dan <b>wajib disederhanakan</b> — KPK selalu lebih rapi.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 7 : MATERI 3 ============ -->
+<section class="slide" id="slideM3" data-title="Materi 3 · Faktorkan Dulu">
+  <div class="wrap">
+    <span class="kicker">Materi 3 · Satu Variabel · Pangkat 2</span>
+    <h2>Penyebut Kuadrat? Faktorkan Dulu! 🔍</h2>
+    <div class="langkah-mini">
+      <div><b>🔍</b>Faktorkan penyebut</div>
+      <div><b>🔑</b>KPK dari faktor</div>
+      <div><b>⚖️</b>Samakan</div>
+      <div><b>➕</b>Gabungkan</div>
+      <div><b>✂️</b>Sederhanakan</div>
+    </div>
+    <p>Penyebut seperti <span class="math">x&sup2; &minus; 9</span> menyembunyikan faktornya. <b>Faktorkan dulu</b>, barulah KPK penyebut terlihat. Ini materi favorit — seperti membuka kartu tersembunyi!</p>
+    <div class="fpb-widget" data-pick="1">
+      <h3 style="margin-bottom:4px">🕹️ Pilih KPK penyebut dari <span class="math">x&sup2; &minus; 9</span> dan <span class="math">x + 3</span>!</h3>
+      <div class="pair-cands">
+        <button class="pair-cand" data-ok="1">(x + 3)(x &minus; 3)</button>
+        <button class="pair-cand" data-ok="0">(x + 3)&sup2;</button>
+        <button class="pair-cand" data-ok="0">x&sup2; + 9</button>
+        <button class="pair-cand" data-ok="0">(x &minus; 3)&sup2;</button>
+      </div>
+      <div class="fpb-msg">Klik pilihan yang menurutmu benar…</div>
+      <div class="fpb-result hidden">
+        <p style="margin:6px 0"><b>Alasannya:</b> faktorkan dulu <span class="math">x&sup2; &minus; 9 = (x + 3)(x &minus; 3)</span> (selisih kuadrat). Faktor yang dibutuhkan: <span class="math">(x + 3)</span> dan <span class="math">(x &minus; 3)</span> → KPK = <span class="math besar">(x + 3)(x &minus; 3)</span>, dan <span class="math">(x + 3)</span> saja tidak cukup!</p>
+      </div>
+    </div>
+    <div class="kartu">
+      <h3>🎬 Demo: <span class="math">3/(x&sup2; &minus; 9) + 1/(x + 3)</span></h3>
+      <div class="stepper">
+        <div class="st-step hidden">Faktorkan: <span class="math">x&sup2; &minus; 9 = (x + 3)(x &minus; 3)</span>. KPK penyebut = <b>(x + 3)(x &minus; 3)</b> = <b>x&sup2; &minus; 9</b>.</div>
+        <div class="st-step hidden">Pecahan pertama <span class="math">3/(x&sup2; &minus; 9)</span> sudah berpenyebut KPK — biarkan. Pecahan kedua dikali <span class="math">(x &minus; 3)/(x &minus; 3)</span>: <span class="math">1/(x + 3) &times; (x &minus; 3)/(x &minus; 3) = (x &minus; 3)/(x&sup2; &minus; 9)</span>.</div>
+        <div class="st-step hidden">Gabungkan: <span class="math">(3 + x &minus; 3)/(x&sup2; &minus; 9)</span> → pembilangnya 3 + x &minus; 3 = <b>x</b>.</div>
+        <div class="st-step hidden">Hasil: <span class="math besar">x/(x&sup2; &minus; 9)</span> ✅ — jauh lebih sederhana daripada kelihatannya!</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu tip">
+      🧰 <b>Perbengkelan faktor yang wajib hafal:</b> <span class="math">x&sup2; &minus; a&sup2; = (x + a)(x &minus; a)</span> · <span class="math">x&sup2; + bx = x(x + b)</span> · <span class="math">x&sup2; &plusmn; 2ab + b&sup2; = (x &plusmn; b)&sup2;</span>. Dan <span class="math">x</span>, <span class="math">x&sup2;</span>, <span class="math">x&sup3;</span> → KPK-nya pangkat tertinggi.
+    </div>
+  </div>
+</section>
+<!-- ============ SLIDE 8 : MATERI 4 ============ -->
+<section class="slide" id="slideM4" data-title="Materi 4 · Dua Variabel">
+  <div class="wrap">
+    <span class="kicker">Materi 4 · Dua Variabel · Pangkat 1–2</span>
+    <h2>Dua Variabel? Caranya Tetap Sama! 🧩</h2>
+    <p>Sekarang penyebut memuat <b>dua variabel</b>, misalnya <span class="math">(x + y)</span>. Rahasianya: perlakukan <span class="math">(x + y)</span> dan <span class="math">(x &minus; y)</span> seperti "angka besar" — <b>jangan diuraikan dulu</b>, anggap saja satu faktor utuh.</p>
+    <div class="kartu">
+      <h3>🎬 Demo: <span class="math">1/(x + y) + 1/(x &minus; y)</span></h3>
+      <div class="stepper">
+        <div class="st-step hidden">Penyebut: <span class="math">(x + y)</span> dan <span class="math">(x &minus; y)</span> — dua faktor berbeda → KPK = <b>(x + y)(x &minus; y)</b>.</div>
+        <div class="st-step hidden">Samakan: <span class="math">1/(x + y) &times; (x &minus; y)/(x &minus; y) = (x &minus; y)/((x + y)(x &minus; y))</span> &nbsp;dan&nbsp; <span class="math">1/(x &minus; y) &times; (x + y)/(x + y) = (x + y)/((x + y)(x &minus; y))</span>.</div>
+        <div class="st-step hidden">Gabungkan pembilang: (x &minus; y) + (x + y) = <b>2x</b> — si y saling menghapus! ✨</div>
+        <div class="st-step hidden">Hasil: <span class="math besar">2x/(x&sup2; &minus; y&sup2;)</span> ✅ (penyebut boleh ditulis bentuk pemfaktoran atau diuraikan).</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="kartu tip">
+      🔄 <b>Trik Tanda (sering menyelamatkan!):</b> <span class="math besar">b &minus; a = &minus;(a &minus; b)</span>
+      <p style="margin:8px 0 0">Contoh: <span class="math">a/(a &minus; b) &minus; b/(b &minus; a)</span>. Karena <span class="math">b &minus; a = &minus;(a &minus; b)</span>, maka <span class="math">b/(b &minus; a) = &minus;b/(a &minus; b)</span> → pengurangan bilangan negatif menjadi <b>penjumlahan</b>: hasilnya <span class="math">(a + b)/(a &minus; b)</span>. Awas jebakan tanda!</p>
+    </div>
+    <div class="kartu sukses">
+      <h3>🍬 Bonus manis: hasil bisa = 1</h3>
+      <p><span class="math">x/(x + y) + y/(x + y) = (x + y)/(x + y) = 1</span> — pembilang persis penyebutnya (dengan syarat <span class="math">x + y &ne; 0</span>). Model yang sama: <span class="math">1/x + 1/y = (x + y)/(xy)</span>, bentuk paling terkenal di buku paket!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 9 : MATERI 5 ============ -->
+<section class="slide" id="slideM5" data-title="Materi 5 · Tiga–Empat Variabel">
+  <div class="wrap">
+    <span class="kicker">Materi 5 · Tiga–Empat Variabel · Pangkat 1–3</span>
+    <h2>Makin Banyak Variabel? Makin Rapi Saja! 🧮</h2>
+    <p>Tiga bahkan empat variabel <b>bukan soal baru</b> — aturannya sama persis. Kuncinya satu: <b>KPK penyebut = hasil perkalian semua faktor berbeda dengan pangkat tertinggi masing-masing</b>.</p>
+    <div class="kartu">
+      <h3>🎬 Demo: <span class="math">1/(ab) + 1/(bc)</span></h3>
+      <div class="stepper">
+        <div class="st-step hidden">Faktor penyebut: <span class="math">ab</span> memuat a dan b; <span class="math">bc</span> memuat b dan c. Faktor berbeda: <b>a, b, c</b> → KPK = <b>abc</b>.</div>
+        <div class="st-step hidden">Samakan: <span class="math">1/(ab) &times; c/c = c/(abc)</span> &nbsp;dan&nbsp; <span class="math">1/(bc) &times; a/a = a/(abc)</span>.</div>
+        <div class="st-step hidden">Gabungkan: <span class="math">c/(abc) + a/(abc) = (a + c)/(abc)</span> ✅ — selesai dalam tiga langkah!</div>
+        <div class="st-btns"><button class="btn kecil st-next">Lihat langkah 1 ➜</button></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="kartu navy">
+        <h3>📐 Pangkat sampai 3</h3>
+        <p><span class="math">1/x&sup2; + 1/y&sup3;</span> → KPK = <span class="math">x&sup2;y&sup3;</span> (tiap variabel pakai pangkat tertingginya) → hasil: <span class="math">(x&sup2; + y&sup3;)/(x&sup2;y&sup3;)</span>. Pangkat tinggi <b>tidak menakutkan</b> — dia hanya ikut naik.</p>
+      </div>
+      <div class="kartu navy">
+        <h3>⚡ Penyebut sama &amp; variabel banyak</h3>
+        <p><span class="math">2/(abc) + 3/(abc) = 5/(abc)</span> — penyebut sudah sama? Langsung gabung, sekejap! Yang berubah hanya jumlah variabelnya, bukan aturannya.</p>
+      </div>
+    </div>
+    <div class="kartu tip">
+      🗂️ <b>Tip kerapihan:</b> tulis variabel secara <b>urut abjad</b> (<span class="math">ab</span>, <span class="math">ac</span>, <span class="math">bc</span>) agar tidak tertukar, dan centang satu per satu faktor yang sudah terpakai di KPK — seperti checklist!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 10 : PETA 5 LANGKAH ============ -->
+<section class="slide" id="slideAlur" data-title="Peta 5 Langkah">
+  <div class="wrap">
+    <span class="kicker">Rangkuman Metode</span>
+    <h2>🧭 5 Langkah Pasti Pecahan Aljabar</h2>
+    <ul class="tujuan">
+      <li><span class="ikon">1️⃣</span><span><b>Lihat semua penyebut.</b> Bisakah difaktorkan (selisih kuadrat, kuadrat sempurna, ada FPB)? → <b>faktorkan dulu!</b></span></li>
+      <li><span class="ikon">2️⃣</span><span><b>Tentukan KPK penyebut:</b> KPK koefisien angka × setiap faktor/variabel dengan <b>pangkat tertinggi</b>.</span></li>
+      <li><span class="ikon">3️⃣</span><span><b>Samakan:</b> kalikan pembilang <i>dan</i> penyebut tiap pecahan dengan faktor yang kurang (mengali dengan 1 yang cerdas — nilai tidak berubah).</span></li>
+      <li><span class="ikon">4️⃣</span><span><b>Gabungkan pembilang</b> sesuai tanda +/− , penyebut tetap. Gunakan kurung agar tanda negatif aman!</span></li>
+      <li><span class="ikon">5️⃣</span><span><b>Sederhanakan</b> hasil (faktorkan &amp; coret bila bisa) dan tulis syarat <b>penyebut &ne; 0</b>.</span></li>
+    </ul>
+    <div class="kartu tip">
+      ⚡ <b>Jalan pintas:</b> penyebut sudah sama? Langsung ke langkah 4. Penyebut berbeda tanpa faktor sama? Trik kupu-kupu boleh dipakai. Sisanya — disiplin 5 langkah, dijamin tidak tersesat.
+    </div>
+  </div>
+</section>
+<!-- ============ SLIDE 11 : LATIHAN 1 ============ -->
+<section class="slide" id="slideL1" data-title="Latihan 1 · Penyebut Sama">
+  <div class="wrap">
+    <span class="kicker merah">Giliranmu! ✍️</span>
+    <div class="latihan-head">
+      <h2>Latihan 1 — Penyebut Sama</h2>
+      <span class="skor-chip" id="chipM1">0/10 · 0⭐</span>
+    </div>
+    <p>Sepuluh soal penyebut <b>sama</b> (1 variabel). Cara main: <b>pilih jawaban → tekan ✅ Cek Jawaban → baca pembahasan</b>. Benar pada percobaan pertama dapat ⭐. Bila salah, pilihan itu dikunci merah — masih boleh mencoba opsi lain!</p>
+    <div id="listM1"></div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 12 : LATIHAN 2 ============ -->
+<section class="slide" id="slideL2" data-title="Latihan 2 · KPK Penyebut">
+  <div class="wrap">
+    <span class="kicker merah">Level Naik! 📈</span>
+    <div class="latihan-head">
+      <h2>Latihan 2 — Penyebut Berbeda (KPK)</h2>
+      <span class="skor-chip" id="chipM2">0/10 · 0⭐</span>
+    </div>
+    <p>Sekarang penyebutnya <b>berbeda</b>: cari KPK, samakan, gabungkan. Hati-hati dengan penyebut <span class="math">x</span> dan <span class="math">x&sup2;</span> — ingat resep pangkat tertinggi!</p>
+    <div id="listM2"></div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 13 : LATIHAN 3 ============ -->
+<section class="slide" id="slideL3" data-title="Latihan 3 · Faktorkan Dulu">
+  <div class="wrap">
+    <span class="kicker merah">Detektif Faktor 🔍</span>
+    <div class="latihan-head">
+      <h2>Latihan 3 — Faktorkan Penyebut Dulu</h2>
+      <span class="skor-chip" id="chipM3">0/10 · 0⭐</span>
+    </div>
+    <p>Penyebutnya berbentuk kuadrat — <b>faktorkan dulu</b> sebelum mencari KPK. Selisih kuadrat dan <span class="math">x&sup2; + bx</span> adalah sahabatmu di sini.</p>
+    <div id="listM3"></div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 14 : LATIHAN 4 ============ -->
+<section class="slide" id="slideL4" data-title="Latihan 4 · Dua Variabel">
+  <div class="wrap">
+    <span class="kicker merah">Duet Variabel 💃</span>
+    <div class="latihan-head">
+      <h2>Latihan 4 — Dua Variabel</h2>
+      <span class="skor-chip" id="chipM4">0/10 · 0⭐</span>
+    </div>
+    <p>Penyebut memuat dua variabel — perlakukan <span class="math">(x + y)</span> sebagai satu faktor utuh, dan waspadai <b>jebakan tanda</b> <span class="math">b &minus; a = &minus;(a &minus; b)</span>!</p>
+    <div id="listM4"></div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 15 : LATIHAN 5 ============ -->
+<section class="slide" id="slideL5" data-title="Latihan 5 · Tiga–Empat Variabel">
+  <div class="wrap">
+    <span class="kicker merah">Level Master 🏆</span>
+    <div class="latihan-head">
+      <h2>Latihan 5 — Tiga–Empat Variabel, Pangkat 1–3</h2>
+      <span class="skor-chip" id="chipM5">0/10 · 0⭐</span>
+    </div>
+    <p>Tantangan pamungkas: pecahan dengan 3–4 variabel dan pangkat sampai 3. Semua tetap dengan 5 langkah pasti — checklis faktornya dengan rapi!</p>
+    <div id="listM5"></div>
+  </div>
+</section>
+<!-- ============ SLIDE 16 : KESIMPULAN ============ -->
+<section class="slide" id="slideKesimpulan" data-title="Kesimpulan">
+  <div class="wrap">
+    <span class="kicker">Rangkuman</span>
+    <h2>Kesimpulan Hari Ini</h2>
+    <div class="grid2">
+      <div class="kartu navy">
+        <h3>1️⃣ Penyebut Sama → Langsung</h3>
+        <p>Bila penyebut sudah sama: gabungkan pembilangnya, penyebut tetap. Contoh: <span class="math">(2x + 1)/5 + (x &minus; 3)/5 = (3x &minus; 2)/5</span>, lalu sederhanakan bila bisa.</p>
+      </div>
+      <div class="kartu navy">
+        <h3>2️⃣ Penyebut Beda → KPK</h3>
+        <p>Cari <b>KPK penyebut</b> (KPK koefisien × pangkat tertinggi tiap variabel), samakan tiap pecahan dengan mengali 1 yang cerdas, baru gabungkan.</p>
+      </div>
+      <div class="kartu navy">
+        <h3>3️⃣ Penyebut Kuadrat → Faktorkan Dulu</h3>
+        <p><span class="math">x&sup2; &minus; 9 = (x + 3)(x &minus; 3)</span> — faktorkan penyebut agar KPK terlihat, lalu lanjut 5 langkah. Contoh: <span class="math">3/(x&sup2; &minus; 9) + 1/(x + 3) = x/(x&sup2; &minus; 9)</span>.</p>
+      </div>
+      <div class="kartu navy">
+        <h3>4️⃣ Dua sampai Empat Variabel</h3>
+        <p>Perlakukan <span class="math">(x + y)</span> sebagai satu faktor utuh; KPK = semua faktor berbeda dengan pangkat tertinggi. Trik tanda: <span class="math">b &minus; a = &minus;(a &minus; b)</span>. Pangkat 3? Ikut naik saja!</p>
+      </div>
+    </div>
+    <div class="kartu sukses">
+      <h3>🧭 Rumah kita: 5 Langkah Pasti</h3>
+      <p><b>Faktorkan</b> penyebut → <b>KPK</b> → <b>Samakan</b> → <b>Gabungkan</b> pembilang → <b>Sederhanakan</b> + syarat penyebut &ne; 0. Dengan peta ini, pecahan aljabar berapa pun variabelnya tidak lagi menakutkan.</p>
+    </div>
+    <div class="kartu">
+      <h3>📊 Rekap Petualanganmu, <span class="nama-slot">Sahabat Matematika</span></h3>
+      <table class="rekap">
+        <thead><tr><th>Bagian</th><th>Selesai</th><th>⭐ Benar di Percobaan Pertama</th></tr></thead>
+        <tbody id="rekapBody"></tbody>
+      </table>
+      <p id="rekapPesan" style="font-weight:800;color:var(--navy);margin-top:12px"></p>
+    </div>
+    <div class="kartu tip">
+      🎯 <b>Untuk pertemuan berikutnya:</b> keterampilan menyamakan pecahan ini adalah pintu menuju <b>persamaan aljabar</b> dan <b>fungsi rasional</b>. Fondasimu hari ini — emas!
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 17 : REFLEKSI ============ -->
+<section class="slide" id="slideRefleksi" data-title="Refleksi">
+  <div class="wrap">
+    <span class="kicker">Introspeksi Diri 🪞</span>
+    <h2>Refleksi Belajar</h2>
+    <p>Seberapa paham kamu dengan setiap keterampilan hari ini? Pilih emoji yang paling menggambarkan perasaanmu, <b class="nama-slot">Sahabat Matematika</b>!</p>
+    <div class="ref-row"><p>Saya bisa menjumlahkan &amp; mengurangkan pecahan aljabar berpenyebut sama</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa mencari KPK penyebut dan menyamakan pecahan berpenyebut berbeda</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya bisa memfaktorkan penyebut (x&sup2; &minus; 9 dan teman-temannya) sebelum menjumlah</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="ref-row"><p>Saya percaya diri menghadapi pecahan dengan 2–4 variabel dan pangkat 1–3</p><div class="ref-emos"><button class="emo" data-v="1" title="Perlu bantuan">😟</button><button class="emo" data-v="2" title="Cukup">😐</button><button class="emo" data-v="3" title="Paham">🙂</button><button class="emo" data-v="4" title="Master!">🤩</button></div></div>
+    <div class="kartu">
+      <h3>✍️ Ceritakan Pengalamanmu</h3>
+      <textarea id="refleksiTeks" placeholder="Langkah mana yang paling seru? Di bagian mana kamu masih ingin diulang — KPK, memfaktorkan, atau variabel banyak?"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center">
+        <button id="btnSimpanRef" class="btn">💾 Simpan Refleksiku</button>
+        <span class="kecil">🔒 Refleksi hanya tersimpan di perangkatmu, tidak dikirim ke mana pun.</span>
+      </div>
+      <div id="refleksiHasil" class="kartu sukses hidden pop" style="margin-bottom:0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 18 : THANK YOU ============ -->
+<section class="slide" id="slideThanks" data-title="Thank You for Today">
+  <div class="wrap tengah">
+    <div class="seri-emoji">🎉 ➗ ✨</div>
+    <h1 class="judul-besar">Thank You for Today!</h1>
+    <p class="sub">Kerja bagus, <b style="color:var(--red)" class="nama-slot">Sahabat Matematika</b>! Hari ini kamu berlayar dari pecahan berpenyebut sama sampai pecahan bertiga–empat variabel berpangkat 1–3 — dan menemukan bahwa semuanya tunduk pada satu kunci: <b>samakan penyebutnya!</b> Terima kasih untuk hari ini — sampai jumpa di petualangan aljabar berikutnya! 🚀</p>
+    <blockquote class="quote">“Cara belajar yang baik bukanlah mempermudah segalanya, tetapi membuat yang sulit menjadi mudah dipahami.” — belajar langkah demi langkah</blockquote>
+    <button id="btnUlang" class="btn merah">🔁 Ulangi Presentasi dari Awal</button>
+  </div>
+</section>
+</main>
+<div id="navBawah">
+  <button id="btnPrev" class="btn ghost">‹ Sebelumnya</button>
+  <button id="btnNext" class="btn">Berikutnya ›</button>
+</div>
+<script id="frac-js">
+/* Pembangun pecahan bertingkat: F(pembilang, penyebut) -> HTML.
+   Dipakai oleh blok data di bawah; uji otomatis menggantinya dengan versi teks agar bisa dievaluasi. */
+function F(n,d){ return '<span class="fr"><span class="n">'+n+'</span><span class="d">'+d+'</span></span>'; }
+</script>
+<script id="data-js">
+/* ============ BANK SOAL PECAHAN ALJABAR ============
+   Digenerate otomatis oleh scripts/gen_pecahan.py + terverifikasi sympy:
+   jumlah pecahan == kunci; pengecoh pasti tidak setara; 4 tampilan opsi berbeda.
+   key = 0 (jawaban benar indeks 0 pada data; urutan diacak saat render). */
+var SOAL = {
+M1: [
+ { q: F('2x + 1','5') + ' + ' + F('x − 3','5'),
+   ket: "Hitunglah hasil penjumlahan berikut!",
+   opts: [F('3x − 2','5'), F('3x + 2','5'), F('2x − 3','5'), F('3x − 2','10')], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>5</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(2x + 1) + (x − 3)</span><span class=\"d\">5</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">3x − 2</span><span class=\"d\">5</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3x − 2</span><span class=\"d\">5</span></span> ✅",
+   ] },
+ { q: F('3x − 2','4') + ' − ' + F('x + 2','4'),
+   ket: "Hitunglah hasil pengurangan berikut!",
+   opts: [F('x − 2','2'), F('x + 2','2'), F('2x − 4','8'), "x − 2"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>4</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(3x − 2) − (x + 2)</span><span class=\"d\">4</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">2x − 4</span><span class=\"d\">4</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">2x − 4</span><span class=\"d\">4</span></span> = <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">2</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">2</span></span> ✅",
+   ] },
+ { q: F('5x + 3','6') + ' + ' + F('x − 9','6'),
+   ket: "Hasilnya bisa \"jebol\" lho — periksa dulu sebelum memilih!",
+   opts: ["x − 1", "x + 1", "6x − 6", "x − 7"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>6</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(5x + 3) + (x − 9)</span><span class=\"d\">6</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">6x − 6</span><span class=\"d\">6</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">6x − 6</span><span class=\"d\">6</span></span> = <span class=\"fr\"><span class=\"n\">x − 1</span><span class=\"d\">1</span></span>",
+     "Hasil akhir: x − 1 ✅",
+   ] },
+ { q: F('7 − 2x','3') + ' − ' + F('2 − 5x','3'),
+   ket: "Hati-hati dengan tanda minus di depan kurung!",
+   opts: [F('3x + 5','3'), F('3x − 5','3'), F('5 − 3x','3'), F('3x + 5','6')], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>3</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(7 − 2x) − (2 − 5x)</span><span class=\"d\">3</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">3x + 5</span><span class=\"d\">3</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3x + 5</span><span class=\"d\">3</span></span> ✅",
+   ] },
+ { q: F('x + 4','2') + ' + ' + F('3x − 4','2'),
+   ket: "Hitunglah!",
+   opts: ["2x", "4x", "x", "4x + 8"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>2</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(x + 4) + (3x − 4)</span><span class=\"d\">2</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">4x</span><span class=\"d\">2</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">4x</span><span class=\"d\">2</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">1</span></span>",
+     "Hasil akhir: 2x ✅",
+   ] },
+ { q: F('4x − 1','7') + ' − ' + F('2x − 8','7'),
+   ket: "Hitunglah!",
+   opts: [F('2x + 7','7'), F('2x − 7','7'), F('2x + 7','14'), F('6x − 9','7')], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>7</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(4x − 1) − (2x − 8)</span><span class=\"d\">7</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">2x + 7</span><span class=\"d\">7</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">2x + 7</span><span class=\"d\">7</span></span> ✅",
+   ] },
+ { q: F('2a + 3','5') + ' + ' + F('3a − 1','5'),
+   ket: "Variabelnya a — caranya tetap sama!",
+   opts: [F('5a + 2','5'), F('5a − 2','5'), F('5a + 2','10'), "a + 2"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>5</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(2a + 3) + (3a − 1)</span><span class=\"d\">5</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">5a + 2</span><span class=\"d\">5</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">5a + 2</span><span class=\"d\">5</span></span> ✅",
+   ] },
+ { q: F('6b − 5','8') + ' − ' + F('2b + 7','8'),
+   ket: "Jangan lupa sederhanakan hasilnya!",
+   opts: [F('b − 3','2'), F('b + 3','2'), "4b − 12", F('b − 3','4')], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>8</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(6b − 5) − (2b + 7)</span><span class=\"d\">8</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">4b − 12</span><span class=\"d\">8</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">4b − 12</span><span class=\"d\">8</span></span> = <span class=\"fr\"><span class=\"n\">b − 3</span><span class=\"d\">2</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">b − 3</span><span class=\"d\">2</span></span> ✅",
+   ] },
+ { q: F('9 − y','4') + ' − ' + F('y + 3','4'),
+   ket: "Tanda minus mengenai seluruh kurung!",
+   opts: [F('3 − y','2'), F('y + 3','2'), F('y − 3','2'), F('6 − 2y','8')], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>4</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(9 − y) − (y + 3)</span><span class=\"d\">4</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">6 − 2y</span><span class=\"d\">4</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">6 − 2y</span><span class=\"d\">4</span></span> = <span class=\"fr\"><span class=\"n\">3 − y</span><span class=\"d\">2</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3 − y</span><span class=\"d\">2</span></span> ✅",
+   ] },
+ { q: F('3t + 2','9') + ' + ' + F('6t − 2','9'),
+   ket: "Pembilangnya saling menghapus — manis sekali!",
+   opts: ["t", "9t", F('t','9'), "9"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>9</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(3t + 2) + (6t − 2)</span><span class=\"d\">9</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">9t</span><span class=\"d\">9</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">9t</span><span class=\"d\">9</span></span> = <span class=\"fr\"><span class=\"n\">t</span><span class=\"d\">1</span></span>",
+     "Hasil akhir: t ✅",
+   ] },
+],
+M2: [
+ { q: F('x','2') + ' + ' + F('x','3'),
+   ket: "Penyebut 2 dan 3 — samakan dulu!",
+   opts: [F('5x','6'), F('2x','5'), F('x','5'), F('3x','5')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>6</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">2</span></span> &times; <span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">3</span></span> = <span class=\"fr\"><span class=\"n\">3x</span><span class=\"d\">6</span></span><br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">3</span></span> &times; <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">2</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">6</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">3x + 2x</span><span class=\"d\">6</span></span> = <span class=\"fr\"><span class=\"n\">5x</span><span class=\"d\">6</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">5x</span><span class=\"d\">6</span></span> ✅",
+   ] },
+ { q: F('2x','5') + ' − ' + F('x','3'),
+   ket: "Cari KPK dari 5 dan 3!",
+   opts: [F('x','15'), F('x','2'), F('7x','15'), F('x','8')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>15</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">5</span></span> &times; <span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">3</span></span> = <span class=\"fr\"><span class=\"n\">6x</span><span class=\"d\">15</span></span><br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">3</span></span> &times; <span class=\"fr\"><span class=\"n\">5</span><span class=\"d\">5</span></span> = <span class=\"fr\"><span class=\"n\">5x</span><span class=\"d\">15</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">6x − 5x</span><span class=\"d\">15</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">15</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">15</span></span> ✅",
+   ] },
+ { q: F('x','4') + ' + ' + F('2x','3'),
+   ket: "KPK dari 4 dan 3 adalah…?",
+   opts: [F('11x','12'), F('3x','7'), F('13x','12'), F('11x','24')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>12</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">4</span></span> &times; <span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">3</span></span> = <span class=\"fr\"><span class=\"n\">3x</span><span class=\"d\">12</span></span><br><span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">3</span></span> &times; <span class=\"fr\"><span class=\"n\">4</span><span class=\"d\">4</span></span> = <span class=\"fr\"><span class=\"n\">8x</span><span class=\"d\">12</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">3x + 8x</span><span class=\"d\">12</span></span> = <span class=\"fr\"><span class=\"n\">11x</span><span class=\"d\">12</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">11x</span><span class=\"d\">12</span></span> ✅",
+   ] },
+ { q: F('x','3') + ' + ' + F('x','6'),
+   ket: "Ada pecahan yang tidak perlu diubah!",
+   opts: [F('x','2'), F('x','9'), F('2x','9'), F('x','18')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>6</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">3</span></span> &times; <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">2</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">6</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">2x + x</span><span class=\"d\">6</span></span> = <span class=\"fr\"><span class=\"n\">3x</span><span class=\"d\">6</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">3x</span><span class=\"d\">6</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">2</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">2</span></span> ✅",
+   ] },
+ { q: F('5x','6') + ' − ' + F('x','2'),
+   ket: "Hati-hati: penyebut 2 harus disamakan ke 6!",
+   opts: [F('x','3'), F('2x','3'), F('4x','3'), F('x','6')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>6</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">2</span></span> &times; <span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">3</span></span> = <span class=\"fr\"><span class=\"n\">3x</span><span class=\"d\">6</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">5x − 3x</span><span class=\"d\">6</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">6</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">6</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">3</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">3</span></span> ✅",
+   ] },
+ { q: F('x','2') + ' + ' + F('x','5') + ' + ' + F('x','10'),
+   ket: "Tiga pecahan sekaligus — semua disamakan ke KPK!",
+   opts: [F('4x','5'), F('3x','17'), F('2x','5'), F('3x','10')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>10</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">2</span></span> &times; <span class=\"fr\"><span class=\"n\">5</span><span class=\"d\">5</span></span> = <span class=\"fr\"><span class=\"n\">5x</span><span class=\"d\">10</span></span><br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">5</span></span> &times; <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">2</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">10</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">5x + 2x + x</span><span class=\"d\">10</span></span> = <span class=\"fr\"><span class=\"n\">8x</span><span class=\"d\">10</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">8x</span><span class=\"d\">10</span></span> = <span class=\"fr\"><span class=\"n\">4x</span><span class=\"d\">5</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">4x</span><span class=\"d\">5</span></span> ✅",
+   ] },
+ { q: F('2','x') + ' + ' + F('3','x²'),
+   ket: "Penyebut x dan x² — pangkat tertinggi menang!",
+   opts: [F('2x + 3','x²'), F('5','x³'), F('5','x²'), F('2x + 3','x³')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x²</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">x²</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">2x + 3</span><span class=\"d\">x²</span></span> = <span class=\"fr\"><span class=\"n\">2x + 3</span><span class=\"d\">x²</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">2x + 3</span><span class=\"d\">x²</span></span> ✅",
+     "💡 Ingat: KPK dari <span class=\"math\">x</span> dan <span class=\"math\">x&sup2;</span> adalah <b>x&sup2;</b> — variabel tetap, pangkat naik ke yang tertinggi.",
+   ] },
+ { q: F('4','x') + ' − ' + F('1','x²'),
+   ket: "Pangkat penyebutnya berbeda!",
+   opts: [F('4x − 1','x²'), F('3','x³'), F('3','x²'), F('4x − 1','x³')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x²</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">4</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">4x</span><span class=\"d\">x²</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">4x − 1</span><span class=\"d\">x²</span></span> = <span class=\"fr\"><span class=\"n\">4x − 1</span><span class=\"d\">x²</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">4x − 1</span><span class=\"d\">x²</span></span> ✅",
+   ] },
+ { q: F('3x','4') + ' − ' + F('x','6'),
+   ket: "KPK dari 4 dan 6 — hati-hati, bukan 24!",
+   opts: [F('7x','12'), F('x','6'), F('11x','12'), F('7x','24')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>12</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">3x</span><span class=\"d\">4</span></span> &times; <span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">3</span></span> = <span class=\"fr\"><span class=\"n\">9x</span><span class=\"d\">12</span></span><br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">6</span></span> &times; <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">2</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">12</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">9x − 2x</span><span class=\"d\">12</span></span> = <span class=\"fr\"><span class=\"n\">7x</span><span class=\"d\">12</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">7x</span><span class=\"d\">12</span></span> ✅",
+     "💡 KPK(4, 6) = <b>12</b> (bukan 4×6 = 24), karena 4 dan 6 punya faktor persekutuan 2. KPK selalu lebih kecil dan lebih rapi daripada kali-langsung.",
+   ] },
+ { q: F('1','x') + ' + ' + F('2','2x'),
+   ket: "Ada jalan pintas tersembunyi di sini!",
+   opts: [F('2','x'), F('1','x'), F('3','x'), F('3','2x')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>2x</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">2</span></span> = <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">2x</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">2 + 2</span><span class=\"d\">2x</span></span> = <span class=\"fr\"><span class=\"n\">4</span><span class=\"d\">2x</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">4</span><span class=\"d\">2x</span></span> = <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x</span></span> ✅",
+     "💡 <b>Jalan pintas:</b> <span class=\"math\">2/(2x) = 1/x</span> (coret faktor 2), jadi soalnya tinggal <span class=\"math\">1/x + 1/x = 2/x</span>. Mengamati bentuk dulu = hemat langkah!",
+   ] },
+],
+M3: [
+ { q: F('2','x − 1') + ' + ' + F('3','x + 1'),
+   ket: "Faktorkan penyebutnya dulu!",
+   opts: [F('5x − 1','x² − 1'), F('5x + 1','x² − 1'), F('5','x² − 1'), F('5x − 1','x² + 1')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² − 1</b> = <b>(x − 1)(x + 1) — selisih kuadrat</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x − 1)(x + 1)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x − 1</span></span> &times; <span class=\"fr\"><span class=\"n\">x + 1</span><span class=\"d\">x + 1</span></span> = <span class=\"fr\"><span class=\"n\">2x + 2</span><span class=\"d\">(x − 1)(x + 1)</span></span><br><span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">x + 1</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 1</span><span class=\"d\">x − 1</span></span> = <span class=\"fr\"><span class=\"n\">3x − 3</span><span class=\"d\">(x − 1)(x + 1)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(2x + 2) + (3x − 3)</span><span class=\"d\">(x − 1)(x + 1)</span></span> = <span class=\"fr\"><span class=\"n\">5x − 1</span><span class=\"d\">(x − 1)(x + 1)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">5x − 1</span><span class=\"d\">x² − 1</span></span> ✅",
+   ] },
+ { q: F('1','x − 2') + ' + ' + F('2','x + 2'),
+   ket: "Selisih kuadrat tersembunyi di sini!",
+   opts: [F('3x − 2','x² − 4'), F('3x + 2','x² − 4'), F('3','x² − 4'), F('3x − 2','x² + 4')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² − 4</b> = <b>(x − 2)(x + 2) — selisih kuadrat</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x − 2)(x + 2)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x − 2</span></span> &times; <span class=\"fr\"><span class=\"n\">x + 2</span><span class=\"d\">x + 2</span></span> = <span class=\"fr\"><span class=\"n\">x + 2</span><span class=\"d\">(x − 2)(x + 2)</span></span><br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x + 2</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">x − 2</span></span> = <span class=\"fr\"><span class=\"n\">2x − 4</span><span class=\"d\">(x − 2)(x + 2)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(x + 2) + (2x − 4)</span><span class=\"d\">(x − 2)(x + 2)</span></span> = <span class=\"fr\"><span class=\"n\">3x − 2</span><span class=\"d\">(x − 2)(x + 2)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3x − 2</span><span class=\"d\">x² − 4</span></span> ✅",
+   ] },
+ { q: F('3','x² − 9') + ' + ' + F('1','x + 3'),
+   ket: "Salah satu penyebut sudah siap!",
+   opts: [F('x','x² − 9'), F('4','x² − 9'), F('x + 3','x² − 9'), F('x − 3','x² − 9')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² − 9</b> = <b>(x + 3)(x − 3) — selisih kuadrat</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x + 3)(x − 3)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x + 3</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 3</span><span class=\"d\">x − 3</span></span> = <span class=\"fr\"><span class=\"n\">x − 3</span><span class=\"d\">(x + 3)(x − 3)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">3 + (x − 3)</span><span class=\"d\">(x + 3)(x − 3)</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">(x + 3)(x − 3)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x² − 9</span></span> ✅",
+     "💡 Hasil <span class=\"math\">x/(x&sup2; &minus; 9)</span> tidak bisa disederhanakan lagi — <span class=\"math\">x</span> bukan faktor penyebut. Jangan mencoret sembarangan!",
+   ] },
+ { q: F('5','x² − 1') + ' − ' + F('2','x − 1'),
+   ket: "Setelah faktorkan, lihat pecahan mana yang perlu diubah!",
+   opts: [F('3 − 2x','x² − 1'), F('2x − 3','x² − 1'), F('2x + 3','x² − 1'), F('3','x² − 1')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² − 1</b> = <b>(x − 1)(x + 1) — selisih kuadrat</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x − 1)(x + 1)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x − 1</span></span> &times; <span class=\"fr\"><span class=\"n\">x + 1</span><span class=\"d\">x + 1</span></span> = <span class=\"fr\"><span class=\"n\">2x + 2</span><span class=\"d\">(x − 1)(x + 1)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">5 − (2x + 2)</span><span class=\"d\">(x − 1)(x + 1)</span></span> = <span class=\"fr\"><span class=\"n\">3 − 2x</span><span class=\"d\">(x − 1)(x + 1)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3 − 2x</span><span class=\"d\">x² − 1</span></span> ✅",
+   ] },
+ { q: F('2','x² + x') + ' + ' + F('3','x'),
+   ket: "Keluarkan x sebagai faktor dulu!",
+   opts: [F('3x + 5','x² + x'), F('3x − 1','x² + x'), F('5x + 3','x² + x'), F('3x + 5','x² − x')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² + x</b> = <b>x(x + 1) — keluarkan FPB-nya</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x(x + 1)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">x + 1</span><span class=\"d\">x + 1</span></span> = <span class=\"fr\"><span class=\"n\">3x + 3</span><span class=\"d\">x(x + 1)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">2 + (3x + 3)</span><span class=\"d\">x(x + 1)</span></span> = <span class=\"fr\"><span class=\"n\">3x + 5</span><span class=\"d\">x(x + 1)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3x + 5</span><span class=\"d\">x² + x</span></span> ✅",
+   ] },
+ { q: F('1','x² − 4') + ' − ' + F('1','x + 2'),
+   ket: "Faktorkan, lalu perhatikan tanda pengurangannya!",
+   opts: [F('3 − x','x² − 4'), F('x − 3','x² − 4'), F('x + 3','x² − 4'), F('1 − x','x² − 4')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² − 4</b> = <b>(x − 2)(x + 2) — selisih kuadrat</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x − 2)(x + 2)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x + 2</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">x − 2</span></span> = <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">(x − 2)(x + 2)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">1 − (x − 2)</span><span class=\"d\">(x − 2)(x + 2)</span></span> = <span class=\"fr\"><span class=\"n\">3 − x</span><span class=\"d\">(x − 2)(x + 2)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3 − x</span><span class=\"d\">x² − 4</span></span> ✅",
+   ] },
+ { q: F('4','x − 3') + ' + ' + F('x','x + 3'),
+   ket: "Kali ini pembilangnya ikut memuat variabel!",
+   opts: [F('x² + x + 12','x² − 9'), F('x² − x + 12','x² − 9'), F('x² + 7x + 12','x² − 9'), F('x² + x + 12','x² + 9')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x − 3)(x + 3)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">4</span><span class=\"d\">x − 3</span></span> &times; <span class=\"fr\"><span class=\"n\">x + 3</span><span class=\"d\">x + 3</span></span> = <span class=\"fr\"><span class=\"n\">4x + 12</span><span class=\"d\">(x − 3)(x + 3)</span></span><br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x + 3</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 3</span><span class=\"d\">x − 3</span></span> = <span class=\"fr\"><span class=\"n\">x² − 3x</span><span class=\"d\">(x − 3)(x + 3)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(4x + 12) + (x² − 3x)</span><span class=\"d\">(x − 3)(x + 3)</span></span> = <span class=\"fr\"><span class=\"n\">x² + x + 12</span><span class=\"d\">(x − 3)(x + 3)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x² + x + 12</span><span class=\"d\">x² − 9</span></span> ✅",
+   ] },
+ { q: F('2','x − 2') + ' + ' + F('1','x'),
+   ket: "Penyebutnya (x − 2) dan x!",
+   opts: [F('3x − 2','x² − 2x'), F('3x + 2','x² − 2x'), F('3x − 2','x² + 2x'), F('3x − 2','x − 2')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x(x − 2)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">x − 2</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">x(x − 2)</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">x − 2</span></span> = <span class=\"fr\"><span class=\"n\">x − 2</span><span class=\"d\">x(x − 2)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">2x + (x − 2)</span><span class=\"d\">x(x − 2)</span></span> = <span class=\"fr\"><span class=\"n\">3x − 2</span><span class=\"d\">x(x − 2)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">3x − 2</span><span class=\"d\">x² − 2x</span></span> ✅",
+   ] },
+ { q: F('1','x²') + ' + ' + F('1','x³'),
+   ket: "x² dan x³ — KPK-nya mana?",
+   opts: [F('x + 1','x³'), F('2','x⁵'), F('2','x⁶'), F('x + 1','x⁵')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x³</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x²</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x³</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">x + 1</span><span class=\"d\">x³</span></span> = <span class=\"fr\"><span class=\"n\">x + 1</span><span class=\"d\">x³</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x + 1</span><span class=\"d\">x³</span></span> ✅",
+     "💡 KPK dari <span class=\"math\">x&sup2;</span> dan <span class=\"math\">x&sup3;</span> adalah <b>x&sup3;</b> — pangkat tertinggi. Itulah kenapa pangkat besar tidak menakutkan.",
+   ] },
+ { q: F('5','x² − 25') + ' − ' + F('1','x + 5'),
+   ket: "Selisih kuadrat versi 25!",
+   opts: [F('10 − x','x² − 25'), F('x − 10','x² − 25'), F('x + 10','x² − 25'), F('4','x² − 25')], key: 0,
+   pemb: [
+     "Faktorkan dulu penyebutnya: <b>x² − 25</b> = <b>(x + 5)(x − 5) — selisih kuadrat</b>.",
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x + 5)(x − 5)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x + 5</span></span> &times; <span class=\"fr\"><span class=\"n\">x − 5</span><span class=\"d\">x − 5</span></span> = <span class=\"fr\"><span class=\"n\">x − 5</span><span class=\"d\">(x + 5)(x − 5)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">5 − (x − 5)</span><span class=\"d\">(x + 5)(x − 5)</span></span> = <span class=\"fr\"><span class=\"n\">10 − x</span><span class=\"d\">(x + 5)(x − 5)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">10 − x</span><span class=\"d\">x² − 25</span></span> ✅",
+   ] },
+],
+M4: [
+ { q: F('1','x + y') + ' + ' + F('1','x − y'),
+   ket: "Perlakukan (x + y) dan (x − y) sebagai satu faktor!",
+   opts: [F('2x','x² − y²'), F('2x','x² + y²'), F('2','x² − y²'), F('2y','x² − y²')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x + y)(x − y)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x + y</span></span> &times; <span class=\"fr\"><span class=\"n\">x − y</span><span class=\"d\">x − y</span></span> = <span class=\"fr\"><span class=\"n\">x − y</span><span class=\"d\">(x + y)(x − y)</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x − y</span></span> &times; <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">x + y</span></span> = <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">(x + y)(x − y)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(x − y) + (x + y)</span><span class=\"d\">(x + y)(x − y)</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">(x + y)(x − y)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">x² − y²</span></span> ✅",
+   ] },
+ { q: F('2','a + b') + ' − ' + F('1','a − b'),
+   ket: "Dua variabel a dan b — langkahnya identik!",
+   opts: [F('a − 3b','a² − b²'), F('a + 3b','a² − b²'), F('3a − b','a² − b²'), F('a − 3b','a² + b²')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(a + b)(a − b)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">a + b</span></span> &times; <span class=\"fr\"><span class=\"n\">a − b</span><span class=\"d\">a − b</span></span> = <span class=\"fr\"><span class=\"n\">2a − 2b</span><span class=\"d\">(a + b)(a − b)</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">a − b</span></span> &times; <span class=\"fr\"><span class=\"n\">a + b</span><span class=\"d\">a + b</span></span> = <span class=\"fr\"><span class=\"n\">a + b</span><span class=\"d\">(a + b)(a − b)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(2a − 2b) − (a + b)</span><span class=\"d\">(a + b)(a − b)</span></span> = <span class=\"fr\"><span class=\"n\">a − 3b</span><span class=\"d\">(a + b)(a − b)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">a − 3b</span><span class=\"d\">a² − b²</span></span> ✅",
+   ] },
+ { q: F('x','x + y') + ' + ' + F('y','x + y'),
+   ket: "Perhatikan baik-baik pembilang yang terbentuk!",
+   opts: ["1", "0", "x + y", "2x + 2y"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>x + y</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(x) + (y)</span><span class=\"d\">x + y</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">x + y</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">x + y</span></span> = <span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">1</span></span>",
+     "Hasil akhir: 1 ✅",
+     "💡 Pembilang hasilnya persis penyebutnya: <span class=\"math\">(x + y)/(x + y) = 1</span> — berlaku dengan syarat <span class=\"math\">x + y &ne; 0</span>. Pecahan yang pembilang = penyebut selalu bernilai 1!",
+   ] },
+ { q: F('x','x + y') + ' + ' + F('y','x − y'),
+   ket: "Penyebutnya mirip tapi tidak sama!",
+   opts: [F('x² + y²','x² − y²'), "1", F('x² + 2xy + y²','x² − y²'), F('x² + y²','x − y')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x + y)(x − y)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x + y</span></span> &times; <span class=\"fr\"><span class=\"n\">x − y</span><span class=\"d\">x − y</span></span> = <span class=\"fr\"><span class=\"n\">x² − xy</span><span class=\"d\">(x + y)(x − y)</span></span><br><span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">x − y</span></span> &times; <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">x + y</span></span> = <span class=\"fr\"><span class=\"n\">xy + y²</span><span class=\"d\">(x + y)(x − y)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(x² − xy) + (xy + y²)</span><span class=\"d\">(x + y)(x − y)</span></span> = <span class=\"fr\"><span class=\"n\">x² + y²</span><span class=\"d\">(x + y)(x − y)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x² + y²</span><span class=\"d\">x² − y²</span></span> ✅",
+   ] },
+ { q: F('1','x') + ' + ' + F('1','y'),
+   ket: "Bentuk paling terkenal di buku paket!",
+   opts: [F('x + y','xy'), F('2','xy'), F('xy','x + y'), F('2','x + y')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>xy</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">y</span></span> = <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">xy</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">y</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">xy</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">y + x</span><span class=\"d\">xy</span></span> = <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">xy</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">xy</span></span> ✅",
+   ] },
+ { q: F('3','x') + ' − ' + F('2','y'),
+   ket: "Kalikan silang pembilangnya!",
+   opts: [F('−2x + 3y','xy'), F('2x − 3y','xy'), F('−2x + 3y','x + y'), F('1','xy')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>xy</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">3</span><span class=\"d\">x</span></span> &times; <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">y</span></span> = <span class=\"fr\"><span class=\"n\">3y</span><span class=\"d\">xy</span></span><br><span class=\"fr\"><span class=\"n\">2</span><span class=\"d\">y</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">2x</span><span class=\"d\">xy</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">3y − 2x</span><span class=\"d\">xy</span></span> = <span class=\"fr\"><span class=\"n\">−2x + 3y</span><span class=\"d\">xy</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">−2x + 3y</span><span class=\"d\">xy</span></span> ✅",
+   ] },
+ { q: F('2','xy') + ' + ' + F('3','xy'),
+   ket: "Penyebut sudah sama — langsung!",
+   opts: [F('5','xy'), F('6','xy'), F('5','x²y²'), F('6','x²y²')], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>xy</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(2) + (3)</span><span class=\"d\">xy</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">5</span><span class=\"d\">xy</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">5</span><span class=\"d\">xy</span></span> ✅",
+     "💡 Penyebut sama, sekalipun isinya dua variabel → langsung gabungkan. <b>Jangan mengalikan penyebutnya!</b>",
+   ] },
+ { q: F('1','x + y') + ' + ' + F('1','y'),
+   ket: "Satu penyebut murni, satu memuat variabel!",
+   opts: [F('x + 2y','y(x + y)'), F('x + 2y','x + y'), F('x + y','y(x + y)'), F('2x + y','y(x + y)')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>y(x + y)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x + y</span></span> &times; <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">y</span></span> = <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">y(x + y)</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">y</span></span> &times; <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">x + y</span></span> = <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">y(x + y)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">y + (x + y)</span><span class=\"d\">y(x + y)</span></span> = <span class=\"fr\"><span class=\"n\">x + 2y</span><span class=\"d\">y(x + y)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x + 2y</span><span class=\"d\">y(x + y)</span></span> ✅",
+   ] },
+ { q: F('a','a − b') + ' − ' + F('b','−a + b'),
+   ket: "Awas jebakan tanda: b − a bukan a − b!",
+   opts: [F('a + b','a − b'), F('a − b','a + b'), "1", F('a − 2b','a − b')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>a − b</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">a − b</span></span> &times; <span class=\"fr\"><span class=\"n\">−1</span><span class=\"d\">−1</span></span> = <span class=\"fr\"><span class=\"n\">−a</span><span class=\"d\">a − b</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">−a − b</span><span class=\"d\">a − b</span></span> = <span class=\"fr\"><span class=\"n\">−a − b</span><span class=\"d\">a − b</span></span>",
+     "Sederhanakan — bagi pembilang &amp; penyebut dengan faktor persekutuannya: <span class=\"fr\"><span class=\"n\">−a − b</span><span class=\"d\">a − b</span></span> = <span class=\"fr\"><span class=\"n\">a + b</span><span class=\"d\">a − b</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">a + b</span><span class=\"d\">a − b</span></span> ✅",
+     "💡 <b>Trik tanda:</b> <span class=\"math\">b &minus; a = &minus;(a &minus; b)</span>, maka <span class=\"math\">b/(b &minus; a) = &minus;b/(a &minus; b)</span>. Mengurangi −b sama dengan menambah b: <span class=\"math\">a/(a &minus; b) + b/(a &minus; b) = (a + b)/(a &minus; b)</span>.",
+   ] },
+ { q: F('1','xy') + ' − ' + F('1','x²y'),
+   ket: "x·y dan x²·y — pangkat tertinggi!",
+   opts: [F('x − 1','x²y'), F('x + 1','x²y'), F('x − 1','xy'), F('1 − x','x²y')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x²y</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">xy</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x²y</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">x − 1</span><span class=\"d\">x²y</span></span> = <span class=\"fr\"><span class=\"n\">x − 1</span><span class=\"d\">x²y</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x − 1</span><span class=\"d\">x²y</span></span> ✅",
+   ] },
+],
+M5: [
+ { q: F('1','a') + ' + ' + F('1','b') + ' + ' + F('1','c'),
+   ket: "Tiga variabel — checklis faktornya!",
+   opts: [F('ab + ac + bc','abc'), F('a + b + c','abc'), F('3','abc'), F('ab + bc','abc')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>abc</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">a</span></span> &times; <span class=\"fr\"><span class=\"n\">bc</span><span class=\"d\">bc</span></span> = <span class=\"fr\"><span class=\"n\">bc</span><span class=\"d\">abc</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">b</span></span> &times; <span class=\"fr\"><span class=\"n\">ac</span><span class=\"d\">ac</span></span> = <span class=\"fr\"><span class=\"n\">ac</span><span class=\"d\">abc</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">c</span></span> &times; <span class=\"fr\"><span class=\"n\">ab</span><span class=\"d\">ab</span></span> = <span class=\"fr\"><span class=\"n\">ab</span><span class=\"d\">abc</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">bc + ac + ab</span><span class=\"d\">abc</span></span> = <span class=\"fr\"><span class=\"n\">ab + ac + bc</span><span class=\"d\">abc</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">ab + ac + bc</span><span class=\"d\">abc</span></span> ✅",
+   ] },
+ { q: F('1','ab') + ' + ' + F('1','bc'),
+   ket: "Faktor b sudah ada di keduanya!",
+   opts: [F('a + c','abc'), F('a + c','ac'), F('b + c','abc'), F('2','abc')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>abc</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">ab</span></span> &times; <span class=\"fr\"><span class=\"n\">c</span><span class=\"d\">c</span></span> = <span class=\"fr\"><span class=\"n\">c</span><span class=\"d\">abc</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">bc</span></span> &times; <span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">a</span></span> = <span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">abc</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">c + a</span><span class=\"d\">abc</span></span> = <span class=\"fr\"><span class=\"n\">a + c</span><span class=\"d\">abc</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">a + c</span><span class=\"d\">abc</span></span> ✅",
+     "💡 Karena <span class=\"math\">b</span> sudah menjadi faktor kedua penyebut, KPK hanya perlu <b>satu</b> b: <span class=\"math\">abc</span>, bukan <span class=\"math\">ab&sup2;c</span>.",
+   ] },
+ { q: F('2','abc') + ' + ' + F('3','abc'),
+   ket: "Penyebut sama bertiga variabel!",
+   opts: [F('5','abc'), F('6','abc'), F('5','a²b²c²'), "5abc"], key: 0,
+   pemb: [
+     "Kedua penyebut sudah <b>sama</b>, yaitu <b>abc</b> → langsung gabungkan pembilangnya, penyebut tetap.",
+     "Tulis dalam satu pecahan: <span class=\"fr\"><span class=\"n\">(2) + (3)</span><span class=\"d\">abc</span></span>",
+     "Hitung pembilangnya: <span class=\"fr\"><span class=\"n\">5</span><span class=\"d\">abc</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">5</span><span class=\"d\">abc</span></span> ✅",
+     "💡 Penyebut sama → langsung gabungkan. <span class=\"math\">2 + 3 = 5</span>, penyebut <span class=\"math\">abc</span> tetap — bukan <span class=\"math\">a&sup2;b&sup2;c&sup2;</span>!",
+   ] },
+ { q: F('1','xy') + ' + ' + F('1','yz') + ' + ' + F('1','xz'),
+   ket: "Tiga pecahan, tiga variabel!",
+   opts: [F('x + y + z','xyz'), F('xy + xz + yz','xyz'), F('3','xyz'), F('xyz','x + y + z')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>xyz</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">xy</span></span> &times; <span class=\"fr\"><span class=\"n\">z</span><span class=\"d\">z</span></span> = <span class=\"fr\"><span class=\"n\">z</span><span class=\"d\">xyz</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">yz</span></span> &times; <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">x</span></span> = <span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">xyz</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">xz</span></span> &times; <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">y</span></span> = <span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">xyz</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">z + x + y</span><span class=\"d\">xyz</span></span> = <span class=\"fr\"><span class=\"n\">x + y + z</span><span class=\"d\">xyz</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x + y + z</span><span class=\"d\">xyz</span></span> ✅",
+     "💡 Perhatikan polanya: pembilangnya <b>jumlah ketiga variabel</b>, penyebutnya <b>perkalian ketiganya</b>. Simetris dan cantik!",
+   ] },
+ { q: F('a','bc') + ' + ' + F('b','ac'),
+   ket: "Pembilang ikut bermain!",
+   opts: [F('a² + b²','abc'), F('a + b','abc'), F('a² + b²','a²b²'), F('ab','a + b')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>abc</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">bc</span></span> &times; <span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">a</span></span> = <span class=\"fr\"><span class=\"n\">a²</span><span class=\"d\">abc</span></span><br><span class=\"fr\"><span class=\"n\">b</span><span class=\"d\">ac</span></span> &times; <span class=\"fr\"><span class=\"n\">b</span><span class=\"d\">b</span></span> = <span class=\"fr\"><span class=\"n\">b²</span><span class=\"d\">abc</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">a² + b²</span><span class=\"d\">abc</span></span> = <span class=\"fr\"><span class=\"n\">a² + b²</span><span class=\"d\">abc</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">a² + b²</span><span class=\"d\">abc</span></span> ✅",
+   ] },
+ { q: F('1','x²') + ' + ' + F('1','y³'),
+   ket: "Pangkat 2 bertemu pangkat 3!",
+   opts: [F('x² + y³','x²y³'), F('2','x⁵y³'), F('x² + y³','x⁵y³'), F('2','x²y³')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>x²y³</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x²</span></span> &times; <span class=\"fr\"><span class=\"n\">y³</span><span class=\"d\">y³</span></span> = <span class=\"fr\"><span class=\"n\">y³</span><span class=\"d\">x²y³</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">y³</span></span> &times; <span class=\"fr\"><span class=\"n\">x²</span><span class=\"d\">x²</span></span> = <span class=\"fr\"><span class=\"n\">x²</span><span class=\"d\">x²y³</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">y³ + x²</span><span class=\"d\">x²y³</span></span> = <span class=\"fr\"><span class=\"n\">x² + y³</span><span class=\"d\">x²y³</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x² + y³</span><span class=\"d\">x²y³</span></span> ✅",
+     "💡 KPK = <span class=\"math\">x&sup2;y&sup3;</span>: setiap variabel memakai <b>pangkat tertingginya sendiri</b>. Dua variabel berbeda tidak saling memengaruhi pangkat.",
+   ] },
+ { q: F('x','ab') + ' + ' + F('y','bc') + ' + ' + F('z','ac'),
+   ket: "Enam huruf bermain bersama — tetap 5 langkah!",
+   opts: [F('ay + bz + cx','abc'), F('x + y + z','abc'), F('ax + by + cz','abc'), F('xyz','abc')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>abc</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">x</span><span class=\"d\">ab</span></span> &times; <span class=\"fr\"><span class=\"n\">c</span><span class=\"d\">c</span></span> = <span class=\"fr\"><span class=\"n\">cx</span><span class=\"d\">abc</span></span><br><span class=\"fr\"><span class=\"n\">y</span><span class=\"d\">bc</span></span> &times; <span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">a</span></span> = <span class=\"fr\"><span class=\"n\">ay</span><span class=\"d\">abc</span></span><br><span class=\"fr\"><span class=\"n\">z</span><span class=\"d\">ac</span></span> &times; <span class=\"fr\"><span class=\"n\">b</span><span class=\"d\">b</span></span> = <span class=\"fr\"><span class=\"n\">bz</span><span class=\"d\">abc</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">cx + ay + bz</span><span class=\"d\">abc</span></span> = <span class=\"fr\"><span class=\"n\">ay + bz + cx</span><span class=\"d\">abc</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">ay + bz + cx</span><span class=\"d\">abc</span></span> ✅",
+   ] },
+ { q: F('1','x + y') + ' + ' + F('1','y + z'),
+   ket: "Dua faktor majemuk yang berbeda!",
+   opts: [F('x + 2y + z','(x + y)(y + z)'), F('x + y + z','(x + y)(y + z)'), F('2','x + 2y + z'), F('x + z','(x + y)(y + z)')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>(x + y)(y + z)</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">x + y</span></span> &times; <span class=\"fr\"><span class=\"n\">y + z</span><span class=\"d\">y + z</span></span> = <span class=\"fr\"><span class=\"n\">y + z</span><span class=\"d\">(x + y)(y + z)</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">y + z</span></span> &times; <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">x + y</span></span> = <span class=\"fr\"><span class=\"n\">x + y</span><span class=\"d\">(x + y)(y + z)</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">(y + z) + (x + y)</span><span class=\"d\">(x + y)(y + z)</span></span> = <span class=\"fr\"><span class=\"n\">x + 2y + z</span><span class=\"d\">(x + y)(y + z)</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">x + 2y + z</span><span class=\"d\">(x + y)(y + z)</span></span> ✅",
+   ] },
+ { q: F('1','a²b') + ' + ' + F('1','ab²'),
+   ket: "a²b dan ab² — lihat pangkatnya!",
+   opts: [F('a + b','a²b²'), F('a + b','ab'), F('2','a³b³'), F('ab','a + b')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>a²b²</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">a²b</span></span> &times; <span class=\"fr\"><span class=\"n\">b</span><span class=\"d\">b</span></span> = <span class=\"fr\"><span class=\"n\">b</span><span class=\"d\">a²b²</span></span><br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">ab²</span></span> &times; <span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">a</span></span> = <span class=\"fr\"><span class=\"n\">a</span><span class=\"d\">a²b²</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">b + a</span><span class=\"d\">a²b²</span></span> = <span class=\"fr\"><span class=\"n\">a + b</span><span class=\"d\">a²b²</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">a + b</span><span class=\"d\">a²b²</span></span> ✅",
+     "💡 KPK dari <span class=\"math\">a&sup2;b</span> dan <span class=\"math\">ab&sup2;</span> adalah <span class=\"math\">a&sup2;b&sup2;</span> — tiap huruf mengambil pangkat tertingginya.",
+   ] },
+ { q: F('2','xyz') + ' − ' + F('1','xy'),
+   ket: "Kurangi dengan cermat — pangkat penyebut berbeda!",
+   opts: [F('2 − z','xyz'), F('z − 2','xyz'), F('2 − z','xy'), F('z + 2','xyz')], key: 0,
+   pemb: [
+     "Penyebutnya berbeda → cari <b>KPK penyebut</b>: <b>xyz</b>.",
+     "Samakan tiap pecahan (kalikan dengan 1 yang cerdas):<br><span class=\"fr\"><span class=\"n\">1</span><span class=\"d\">xy</span></span> &times; <span class=\"fr\"><span class=\"n\">z</span><span class=\"d\">z</span></span> = <span class=\"fr\"><span class=\"n\">z</span><span class=\"d\">xyz</span></span>",
+     "Jumlahkan/kurangkan pembilangnya, penyebut tetap: <span class=\"fr\"><span class=\"n\">2 − z</span><span class=\"d\">xyz</span></span> = <span class=\"fr\"><span class=\"n\">2 − z</span><span class=\"d\">xyz</span></span>",
+     "Hasil akhir: <span class=\"fr\"><span class=\"n\">2 − z</span><span class=\"d\">xyz</span></span> ✅",
+     "💡 Perhatikan: <span class=\"math\">1/(xy) = z/(xyz)</span> — dikali <span class=\"math\">z/z</span> agar penyebut menjadi <span class=\"math\">xyz</span>. Hasilnya <span class=\"math\">(2 &minus; z)/(xyz)</span>.",
+   ] },
+],
+};
+</script><script id="app-js">
+/* ============ PENGAMAN GLOBAL ============ */
+/* 1) Polyfill browser lama (tanpa Element.closest semua tombol bisa mati) */
+if(!Element.prototype.closest){
+  Element.prototype.closest = function(sel){
+    var el=this;
+    while(el && el.nodeType===1){
+      if(el.matches ? el.matches(sel) : (el.msMatchesSelector && el.msMatchesSelector(sel))) return el;
+      el = el.parentElement || el.parentNode;
+    }
+    return null;
+  };
+}
+if(!Element.prototype.matches){
+  Element.prototype.matches = Element.prototype.msMatchesSelector || function(sel){
+    var el=this, all=(el.document||el.ownerDocument).querySelectorAll(sel), i;
+    for(i=0;i<all.length && all[i]!==el;i++);
+    return i<all.length;
+  };
+}
+/* 2) Penangkap error: bila ada bagian yang gagal, tampilkan banner + tombol Muat Ulang
+      (halaman tidak pernah mati diam-diam) */
+window.addEventListener('error', function(ev){
+  var b=document.getElementById('errBanner');
+  if(b) return;
+  b=document.createElement('div'); b.id='errBanner';
+  b.style.cssText='position:fixed;left:12px;right:12px;bottom:78px;z-index:1000;background:#c62828;color:#fff;padding:12px 16px;border-radius:12px;font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;box-shadow:0 10px 28px rgba(0,0,0,.35)';
+  b.innerHTML='<b>\u26a0\ufe0f Ada bagian yang belum termuat sempurna.</b> Klik tombol berikut lalu muat ulang halaman: '+
+    '<button onclick="location.reload()" style="margin-left:8px;padding:6px 14px;border:none;border-radius:8px;background:#fff;color:#c62828;font-weight:800;cursor:pointer">\u21bb Muat Ulang</button>';
+  document.body.appendChild(b);
+});
+
+(function(){
+'use strict';
+/* ============ UTILITAS & STATE ============ */
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+/* 3) Penyimpanan aman: bila browser memblokir localStorage (mode privat / kebijakan
+      sekolah), aplikasi tetap berjalan penuh dengan penyimpanan sementara di memori. */
+var MEM={};
+function lsGet(k){ try{ return window.localStorage.getItem(k); }catch(e){ return (k in MEM)?MEM[k]:null; } }
+function lsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){ MEM[k]=v; } }
+function lsDel(k){ try{ window.localStorage.removeItem(k); }catch(e){ delete MEM[k]; } }
+function bacaJSON(k){ try{ return JSON.parse(lsGet(k)||'null'); }catch(e){ return null; } }
+/* 4) Inisialisasi per-bagian: satu bagian bermasalah tidak melumpuhkan bagian lain */
+function tryRun(fn,label){ try{ fn(); }catch(e){ if(window.console&&console.error) console.error('[Presentasi] Bagian "'+label+'" gagal dimuat:', e); } }
+var SECS=['M1','M2','M3','M4','M5'];
+var LS_NAMA='fa3_nama', LS_SKOR='fa3_skor', LS_REF='fa3_refleksi';
+var NAMA = lsGet(LS_NAMA) || '';
+var SKOR = bacaJSON(LS_SKOR) || {};
+SECS.forEach(function(s){ if(!SKOR[s]) SKOR[s]={ok:0,ft:0}; });
+var TOTAL = {M1:10,M2:10,M3:10,M4:10,M5:10};
+var LABEL = {
+  M1:'Latihan 1 · Penyebut Sama',
+  M2:'Latihan 2 · Penyebut Berbeda (KPK)',
+  M3:'Latihan 3 · Faktorkan Penyebut Dulu',
+  M4:'Latihan 4 · Dua Variabel',
+  M5:'Latihan 5 · Tiga–Empat Variabel (Pangkat 1–3)'
+};
+var WARNA = ['#c62828','#17337e','#2456a6','#e0a106','#2e7d46','#7e57c2'];
+var HURUF = ['A','B','C','D'];
+
+function simpanSkor(){ lsSet(LS_SKOR, JSON.stringify(SKOR)); }
+function totSkor(){ return SECS.reduce(function(a,s){return a+SKOR[s].ok;},0); }
+function refreshNama(){
+  $$('.nama-slot').forEach(function(e){ e.textContent = NAMA || 'Sahabat Matematika'; });
+  $('#chipNama').textContent = '👤 ' + (NAMA || 'Belum diisi');
+}
+
+/* ============ NAVIGASI SLIDE ============ */
+var slides = $$('.slide'), cur = 0;
+function go(i){
+  if(i<0 || i>=slides.length) return;
+  slides[cur].classList.remove('active');
+  cur = i;
+  slides[cur].classList.add('active');
+  slides[cur].scrollTop = 0;
+  $('#progressBar').style.width = ((cur+1)/slides.length*100) + '%';
+  $('#slideCount').textContent = (cur+1) + ' / ' + slides.length;
+  $('#btnPrev').disabled = (cur===0);
+  $('#btnNext').disabled = (cur===slides.length-1);
+  var id = slides[cur].id;
+  if(id==='slideKesimpulan') renderRekap();
+  if(id==='slideThanks') konfetiHujan();
+}
+$('#btnPrev').addEventListener('click',function(){go(cur-1);});
+$('#btnNext').addEventListener('click',function(){go(cur+1);});
+document.addEventListener('keydown',function(e){
+  var t=e.target;
+  if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA')) return;
+  var menu=$('#menuOverlay');
+  if(!menu.classList.contains('hidden')){ if(e.key==='Escape') menu.classList.add('hidden'); return; }
+  if(e.key==='ArrowRight') go(cur+1);
+  if(e.key==='ArrowLeft') go(cur-1);
+});
+
+/* ============ MENU SLIDE ============ */
+slides.forEach(function(s,i){
+  var li=document.createElement('li');
+  li.innerHTML='<button class="menu-item" data-i="'+i+'"><b>'+(i+1)+'.</b><span>'+s.dataset.title+'</span></button>';
+  $('#menuList').appendChild(li);
+});
+$('#menuList').addEventListener('click',function(e){
+  var b=e.target.closest('.menu-item');
+  if(b){ go(+b.dataset.i); $('#menuOverlay').classList.add('hidden'); }
+});
+$('#btnMenu').addEventListener('click',function(){ $('#menuOverlay').classList.remove('hidden'); });
+$('#btnTutupMenu').addEventListener('click',function(){ $('#menuOverlay').classList.add('hidden'); });
+$('#menuOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.add('hidden'); });
+
+/* ============ NAMA SISWA ============ */
+function mulai(){
+  NAMA = $('#inputNama').value.trim() || 'Sahabat Matematika';
+  lsSet(LS_NAMA, NAMA);
+  refreshNama();
+  konfeti($('#btnMulai'));
+  go(1);
+}
+$('#btnMulai').addEventListener('click', mulai);
+$('#inputNama').addEventListener('keydown', function(e){ if(e.key==='Enter') mulai(); });
+if(NAMA) $('#inputNama').value = NAMA;
+
+/* ============ KONFETI ============ */
+function konfeti(el){
+  var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(var i=0;i<18;i++){
+    var p=document.createElement('i'); p.className='kft';
+    p.style.left=cx+'px'; p.style.top=cy+'px';
+    p.style.background=WARNA[i%WARNA.length];
+    p.style.setProperty('--dx',(Math.random()*280-140)+'px');
+    p.style.setProperty('--dy',(90+Math.random()*190)+'px');
+    p.style.animationDelay=(Math.random()*90)+'ms';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){this.remove();});
+  }
+}
+function konfetiHujan(){
+  for(var i=0;i<60;i++){
+    var p=document.createElement('i'); p.className='kft';
+    p.style.left=(Math.random()*100)+'vw'; p.style.top='-20px';
+    p.style.background=WARNA[i%WARNA.length];
+    p.style.setProperty('--dx',(Math.random()*180-90)+'px');
+    p.style.setProperty('--dy',(window.innerHeight*0.75+Math.random()*220)+'px');
+    p.style.animationDelay=(Math.random()*700)+'ms';
+    p.style.animationDuration=(1.2+Math.random()*1.2)+'s';
+    document.body.appendChild(p);
+    p.addEventListener('animationend',function(){this.remove();});
+  }
+}
+
+/* ============ RENDER SOAL: PILIH → CEK → PEMBAHASAN ============ */
+function acak(arr,seed){
+  var a=arr.slice(), s=(seed*2654435761)>>>0 || 1;
+  for(var i=a.length-1;i>0;i--){
+    s=(s*1664525+1013904223)>>>0;
+    var j=s%(i+1), tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+function renderSoal(contId, daftar, sec){
+  var wrap=document.getElementById(contId);
+  daftar.forEach(function(item,i){
+    var card=document.createElement('div');
+    card.className='soal-card';
+    card.dataset.sec=sec; card.dataset.idx=i;
+    var order=acak([0,1,2,3], i+7+SECS.indexOf(sec)*13);
+    var ops=order.map(function(oi,pos){
+      return '<button class="opsi" data-oi="'+oi+'"><b>'+HURUF[pos]+'.</b><span class="opsi-isi">'+item.opts[oi]+'</span></button>';
+    }).join('');
+    var pemb=(item.pemb||[]).map(function(s){return '<li>'+s+'</li>';}).join('');
+    card.innerHTML=
+      '<div class="sc-top"><span class="sc-no">Soal '+(i+1)+'</span><span class="sc-st">⬜ pilih jawabanmu</span></div>'+
+      '<p class="sc-q">'+(item.ket?'<span class="ket-line">'+item.ket+'</span><br>':'')+item.q+'</p>'+
+      '<div class="opsi-grid">'+ops+'</div>'+
+      '<div class="fb" hidden></div>'+
+      '<div class="sc-bawah"><button class="btn kecil cek-btn">✅ Cek Jawaban</button>'+
+      '<button class="btn ghost kecil pb-btn">📖 Pembahasan</button></div>'+
+      '<div class="pembahasan" hidden><p class="pb-judul">Pembahasan Soal '+(i+1)+'</p><ol class="langkah">'+pemb+'</ol></div>';
+    wrap.appendChild(card);
+  });
+  wrap.addEventListener('click', function(e){
+    var opsi=e.target.closest('.opsi');
+    if(opsi && !opsi.disabled){
+      var card=opsi.closest('.soal-card');
+      if(card.dataset.locked) return;
+      $$('.opsi',card).forEach(function(o){o.classList.remove('pilih');});
+      opsi.classList.add('pilih');
+    }
+    var cek=e.target.closest('.cek-btn');
+    if(cek){ cekJawaban(cek.closest('.soal-card'), daftar, sec); }
+    var pb=e.target.closest('.pb-btn');
+    if(pb){
+      var card2=pb.closest('.soal-card'), panel=card2.querySelector('.pembahasan');
+      panel.hidden=!panel.hidden;
+      pb.textContent=panel.hidden?'📖 Pembahasan':'📕 Tutup Pembahasan';
+    }
+  });
+}
+function cekJawaban(card, daftar, sec){
+  if(card.dataset.locked) return;
+  var item=daftar[+card.dataset.idx];
+  var pil=card.querySelector('.opsi.pilih');
+  var fb=card.querySelector('.fb'), st=card.querySelector('.sc-st');
+  if(!pil){
+    fb.hidden=false; fb.className='fb no';
+    fb.innerHTML='😊 Pilih dulu salah satu jawaban di atas, lalu tekan Cek Jawaban.';
+    return;
+  }
+  var oi=+pil.dataset.oi;
+  if(oi===item.key){
+    card.dataset.locked='1';
+    pil.classList.remove('pilih'); pil.classList.add('benar');
+    $$('.opsi',card).forEach(function(o){o.disabled=true;});
+    card.querySelector('.cek-btn').disabled=true;
+    st.textContent='✅ benar!'; st.classList.add('ok');
+    fb.hidden=false; fb.className='fb ok';
+    fb.innerHTML='🎉 <b>Benar, '+(NAMA||'Sahabat Matematika')+'!</b> Pembahasan lengkapnya sudah terbuka di bawah — baca sekali lagi agar makin melekat.';
+    if(!card.dataset.tried) SKOR[sec].ft++;
+    SKOR[sec].ok++;
+    simpanSkor(); perbaruiChip(sec);
+    var panel=card.querySelector('.pembahasan');
+    if(panel.hidden){ panel.hidden=false; card.querySelector('.pb-btn').textContent='📕 Tutup Pembahasan'; }
+    konfeti(pil);
+  } else {
+    card.dataset.tried='1';
+    pil.classList.remove('pilih'); pil.classList.add('salah'); pil.disabled=true;
+    fb.hidden=false; fb.className='fb no';
+    fb.innerHTML='❌ <b>Belum tepat.</b> Pilihan itu tidak cocok — pilih jawaban lain lalu cek lagi, atau buka pembahasan untuk melihat caranya.';
+    st.textContent='🔁 coba lagi'; st.classList.remove('ok');
+  }
+}
+function perbaruiChip(sec){
+  var c=$('#chip'+sec);
+  if(c) c.textContent = SKOR[sec].ok+'/'+TOTAL[sec]+' · '+SKOR[sec].ft+'⭐';
+}
+
+/* ============ REKAP KESIMPULAN ============ */
+function renderRekap(){
+  var body=$('#rekapBody'); body.innerHTML='';
+  SECS.forEach(function(k){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+LABEL[k]+'</td><td>'+SKOR[k].ok+' / '+TOTAL[k]+'</td><td>'+SKOR[k].ft+' ⭐</td>';
+    body.appendChild(tr);
+  });
+  var tot=totSkor(), pesan;
+  if(tot>=45) pesan='🏆 LUAR BIASA, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/50 — kamu resmi master pecahan aljabar!';
+  else if(tot>=33) pesan='🌟 Hebat, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/50 — pemahamanmu sudah kokoh, tinggal diasah.';
+  else if(tot>=20) pesan='👍 Bagus, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/50 — ulangi soal yang keliru lewat pembahasan, pasti makin naik!';
+  else pesan='💪 Jangan menyerah, '+(NAMA||'Sahabat Matematika')+'! '+tot+'/50 — buka lagi slide materinya, lalu coba latihan sekali lagi.';
+  $('#rekapPesan').textContent=pesan;
+}
+
+/* ============ WIDGET: PILIH KPK ============ */
+tryRun(function(){ $$('.fpb-widget[data-pick]').forEach(function(w){
+  $$('.pair-cand',w).forEach(function(b){
+    b.addEventListener('click',function(){
+      if(w.dataset.done) return;
+      var msg=w.querySelector('.fpb-msg');
+      if(b.dataset.ok==='1'){
+        w.dataset.done='1';
+        b.classList.add('cocok');
+        $$('.pair-cand',w).forEach(function(x){ if(x!==b) x.disabled=true; });
+        msg.className='fpb-msg ok';
+        msg.innerHTML='🎉 <b>Tepat sekali!</b> '+(b.dataset.yes||'');
+        var res=w.querySelector('.fpb-result');
+        if(res) res.classList.remove('hidden');
+        konfeti(b);
+      } else {
+        b.classList.add('gagal');
+        setTimeout(function(){b.classList.remove('gagal');},450);
+        msg.className='fpb-msg no';
+        msg.innerHTML='✘ Belum tepat. '+(b.dataset.no||'Coba pilihan lain!')+'';
+      }
+    });
+  });
+}); },'Pilih KPK');
+
+/* ============ WIDGET: STEPPER LANGKAH ============ */
+tryRun(function(){ $$('.stepper').forEach(function(st){
+  var steps=$$('.st-step',st), btn=$('.st-next',st), t=0;
+  if(!btn) return;
+  function reset(){
+    steps.forEach(function(s){s.classList.add('hidden');});
+    t=0; btn.dataset.mode='next'; btn.disabled=false;
+    btn.textContent='Lihat langkah 1 \u279c';
+  }
+  btn.addEventListener('click',function(){
+    if(btn.dataset.mode==='reset'){ reset(); return; }
+    if(t<steps.length){
+      steps[t].classList.remove('hidden');
+      steps[t].classList.add('pop');
+      t++;
+    }
+    if(t>=steps.length){ btn.dataset.mode='reset'; btn.textContent='\u21ba Ulangi langkah'; }
+    else { btn.textContent='Lihat langkah '+(t+1)+' \u279c'; }
+  });
+}); },'Stepper');
+
+/* ============ REFLEKSI ============ */
+tryRun(function(){ $$('.ref-emos .emo').forEach(function(b){
+  b.addEventListener('click',function(){
+    $$('.emo',b.parentElement).forEach(function(x){x.classList.remove('aktif');});
+    b.classList.add('aktif');
+  });
+}); },'Emoji Refleksi');
+tryRun(function(){$('#btnSimpanRef').addEventListener('click',function(){
+  var pilihan=$$('.ref-row').map(function(r){
+    var a=$('.emo.aktif',r);
+    return a? +a.dataset.v : 0;
+  });
+  var teks=$('#refleksiTeks').value.trim();
+  lsSet(LS_REF, JSON.stringify({nama:NAMA,pilihan:pilihan,teks:teks,waktu:new Date().toISOString()}));
+  var h=$('#refleksiHasil');
+  var terisi=pilihan.filter(function(v){return v>0;}).length;
+  h.innerHTML='<b>💚 Terima kasih, '+(NAMA||'Sahabat Matematika')+'!</b> Refleksimu ('+terisi+'/4 aspek dinilai) sudah tersimpan di perangkat ini. '+
+    (totSkor()>=33?'Skor latihanmu '+totSkor()+'/50 — hebat!':'Terus semangat berlatih ya!');
+  h.classList.remove('hidden');
+  konfeti(h);
+}); },'Simpan Refleksi');
+
+/* ============ TOMBOL ULANGI ============ */
+tryRun(function(){$('#btnUlang').addEventListener('click',function(){
+  lsDel(LS_SKOR);
+  lsDel(LS_REF);
+  location.reload();
+}); },'Tombol Ulangi');
+
+/* ============ INISIALISASI ============ */
+SECS.forEach(function(sec){
+  tryRun(function(){renderSoal('list'+sec, SOAL[sec], sec);},'Render Soal '+sec);
+});
+tryRun(function(){Object.keys(TOTAL).forEach(perbaruiChip);},'Chip Skor');
+tryRun(refreshNama,'Nama');
+go(0);
+})();
+</script>
+</body>
+</html>
